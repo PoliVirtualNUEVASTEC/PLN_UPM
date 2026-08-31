@@ -1,0 +1,19 @@
+# Unity — merge de escenas y prefabs con la herramienta que trae el editor.
+# Aun asi, la regla 5 del equipo manda: conflicto en .unity o .prefab -> se descarta y se rehace.
+*.unity     merge=unityyamlmerge eol=lf
+*.prefab    merge=unityyamlmerge eol=lf
+*.asset     merge=unityyamlmerge eol=lf
+*.mat       merge=unityyamlmerge eol=lf
+*.controller merge=unityyamlmerge eol=lf
+
+# Texto normalizado
+*.cs        text diff=csharp
+*.asmdef    text
+*.json      text
+*.md        text
+
+# Binarios
+*.onnx      binary
+*.wav       binary
+*.png       binary
+*.fbx       binary

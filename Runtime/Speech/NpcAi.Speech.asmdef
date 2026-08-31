@@ -1,0 +1,17 @@
+{
+    "name": "NpcAi.Speech",
+    "rootNamespace": "NpcAi.Speech",
+    "references": [
+        "NpcAi.Core",
+        "NpcAi.Core.Channels"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

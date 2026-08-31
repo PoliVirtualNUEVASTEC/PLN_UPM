@@ -1,0 +1,16 @@
+{
+    "name": "NpcAi.Receptivity",
+    "rootNamespace": "NpcAi.Receptivity",
+    "references": [
+        "NpcAi.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

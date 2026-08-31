@@ -1,0 +1,26 @@
+{
+    "name": "NpcAi.VrInput.Tests",
+    "rootNamespace": "NpcAi.VrInput.Tests",
+    "references": [
+        "NpcAi.Core",
+        "NpcAi.Core.Tests",
+        "NpcAi.VrInput",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,16 @@
+{
+    "name": "NpcAi.Core.Channels",
+    "rootNamespace": "NpcAi.Core.Channels",
+    "references": [
+        "NpcAi.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

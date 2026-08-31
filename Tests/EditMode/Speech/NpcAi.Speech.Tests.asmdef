@@ -1,0 +1,26 @@
+{
+    "name": "NpcAi.Speech.Tests",
+    "rootNamespace": "NpcAi.Speech.Tests",
+    "references": [
+        "NpcAi.Core",
+        "NpcAi.Core.Tests",
+        "NpcAi.Speech",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

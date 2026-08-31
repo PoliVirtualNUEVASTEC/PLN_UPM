@@ -1,0 +1,24 @@
+{
+  "name": "com.poli.npc-ai",
+  "version": "0.1.0",
+  "displayName": "NPC AI — Personalidad y Receptividad",
+  "description": "Sistema de IA on-device para dar personalidad y receptividad a NPC en entornos de VR/AR. Trabajo de grado — Politecnico Colombiano Jaime Isaza Cadavid, proyecto macro FIN01.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Jefferson Aristizabal Quiceno; Luis Miguel Canaveral Restrepo"
+  },
+  "keywords": [
+    "npc",
+    "ai",
+    "vr",
+    "nlp",
+    "sentis"
+  ],
+  "samples": [
+    {
+      "displayName": "Banco de pruebas sin VR (M11)",
+      "description": "Escena de escritorio para probar el pipeline completo sin headset.",
+      "path": "Samples~/Harness"
+    }
+  ]
+}
