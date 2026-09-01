@@ -3,6 +3,7 @@
     "rootNamespace": "NpcAi.Core.Tests",
     "references": [
         "NpcAi.Core",
+        "NpcAi.Core.Channels",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

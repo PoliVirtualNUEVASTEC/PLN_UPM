@@ -52,5 +52,23 @@ namespace NpcAi.Core.Tests
 
             Assert.AreNotEqual(receptivo.Text, noReceptivo.Text);
         }
+
+        // --- G8: Generate NO exige determinismo (asimetria frente a Classify) ---
+
+        [Test]
+        public void Generate_no_esta_obligado_a_ser_determinista()
+        {
+            var g = CreateSubject();
+            var intent = IntentResult.Unknown();
+
+            var primera = g.Generate(Personalidad, Core.Receptivity.Neutral, intent);
+            var segunda = g.Generate(Personalidad, Core.Receptivity.Neutral, intent);
+
+            // Dos llamadas con la misma entrada PUEDEN devolver texto igual o distinto: el
+            // contrato NO exige igualdad (el generador real usa Markov). Lo unico exigible
+            // es que ninguna salida sea vacia. NO se asertan (des)igualdad a proposito.
+            Assert.IsFalse(primera.IsEmpty);
+            Assert.IsFalse(segunda.IsEmpty);
+        }
     }
 }
