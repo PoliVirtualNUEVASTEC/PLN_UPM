@@ -1,0 +1,84 @@
+schema: spec-driven
+project: com.poli.npc-ai
+
+# Detected by sdd-init on 2026-08-31. Artifact store: hybrid (files + Engram).
+context: |
+  Stack: Unity 6000.5.4f1 UPM package (com.poli.npc-ai), pure C#, Unity Sentis
+  (com.unity.ai.inference 2.6.1) for on-device NLU. The git repo IS this package;
+  a host Unity project wraps it only to run tests.
+  Architecture: hexagonal / ports-and-adapters. NpcAi.Core is the frozen contract v1
+  (asmdef noEngineReferences: true): 5 immutable DTO structs, 4 enums, 7 ports, zero
+  logic. 10 runtime assemblies; feature modules reference only NpcAi.Core, plus
+  NpcAi.Core.Channels when Inspector-wired via ScriptableObject EventChannels. No
+  other inter-module references.
+  Modules: M0 Core/CoreChannels, M1 Speech, M2 Nlu, M3 Data/Corpus, M4 Receptivity
+  (pure C#, no UnityEngine), M5 Data/Personalities, M6 Dialogue, M7 VrInput,
+  M8 Presentation, M9 Scenarios/Emergency, M10 Scenarios/Boardroom,
+  M11 Samples~/Harness, M12 Docs.
+  Testing: Unity Test Framework 1.7.0 EditMode + NUnit 3. Each of the 7 ports has an
+  abstract contract-test base class in NpcAi.Core.Tests; every module fake
+  (Runtime/<Module>/Fakes/) and its future real implementation inherit that same
+  base. Tests run with no scene, no VR, no real implementations.
+  Language: Spanish everywhere. Existing source, comments and NUnit test method
+  names are Spanish, Colombian (see repo-root CLAUDE.md). OpenSpec planning
+  artifacts (proposal, spec, design, tasks) are authored in neutral/professional
+  Spanish per the 2026-08-31 session decision; module source stays Spanish.
+
+rules:
+  proposal:
+    - One change targets exactly one Runtime/ module. If it needs two folders, stop and report mis-cut scope.
+    - Contract changes to Runtime/Core or Runtime/CoreChannels are their own SDD change, reviewed before merge by the other shared M0 owner (or the advisor); no fixed day, no full-owner quorum.
+    - Include a rollback plan for risky changes.
+  specs:
+    - Write scenarios in Spanish using Dado/Cuando/Entonces (Given/When/Then).
+    - Use RFC 2119 requirement levels in Spanish: DEBE, NO DEBE, DEBERIA, PUEDE.
+  design:
+    - Name the single module and assembly the change touches; confirm its reference graph stays NpcAi.Core (plus NpcAi.Core.Channels only if Inspector-wired).
+    - Document architecture decisions with rationale; add sequence diagrams for any multi-module flow.
+    - New personalities, corpus entries, base replies and thresholds are data under Data/ (ScriptableObject or JSON), never new classes.
+  tasks:
+    - Group by phase, hierarchical numbering, each task completable in one session.
+    - Every module change ships its deterministic fake in Runtime/<Module>/Fakes/, inheriting the same contract-test base class as the real implementation.
+    - Do not use /sdd-ff on the AI modules (M1 Speech, M2 Nlu, M4 Receptivity, M6 Dialogue).
+  apply:
+    guidelines:
+      - Follow existing code patterns and the established Spanish naming for code, comments and NUnit test methods.
+      - No Debug.Log in module runtime code; ports return values, they do not print.
+      - git add only your own module folders before review; inspect git diff --cached first.
+      - Never hand-merge Unity YAML (.unity, .prefab, .asset, .mat, .controller); on conflict discard and redo.
+    tdd: true
+    test_command: "Unity Test Runner > EditMode > Run All (Window > General > Test Runner)"
+  verify:
+    test_command: "Unity -runTests -batchmode -projectPath <host-unity-project> -testPlatform EditMode -testResults results.xml"
+    build_command: ""
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive contract deltas.
+    - Record every relevant decision in the project context doc and in Engram (team rule 10).
+
+strict_tdd: true
+
+testing:
+  runner: "Unity Test Framework 1.7.0 (com.unity.test-framework)"
+  framework: "NUnit 3 — EditMode tests"
+  test_command: "Unity Test Runner > EditMode > Run All"
+  ci_command: "Unity -runTests -batchmode -projectPath <host-unity-project> -testPlatform EditMode -testResults results.xml"
+  layers:
+    unit: true
+    integration: false
+    e2e: false
+  coverage:
+    available: false
+    command: ""
+  quality:
+    linter: ""
+    type_checker: "Roslyn / Unity C# compiler"
+    formatter: ""
+  notes: |
+    Contract-first by construction: NpcAi.Core.Tests holds one abstract base class per
+    port (SpeechToTextContract, IntentClassifierContract, PhysicalActionSourceContract,
+    ReceptivityEngineContract, DialogueGeneratorContract, NpcPresenterContract,
+    ScenarioObjectiveContract) plus ContractTypeTests for DTO/enum invariants. A module
+    fake and its real implementation must pass the identical base class.
+    No automated integration/E2E layer yet; M11 Samples~/Harness is a manual desktop
+    (no-VR) wiring of the fakes. No coverage tool, linter or formatter configured.
