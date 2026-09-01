@@ -51,7 +51,7 @@ namespace NpcAi.Core
             From       = from;
             To         = to;
             Score      = score;
-            ReasonCode = reasonCode;
+            ReasonCode = reasonCode ?? string.Empty; // nunca null: ReasonCode es diagnostico, no bandera
         }
 
         public bool Changed  => From != To;
@@ -68,7 +68,7 @@ namespace NpcAi.Core
 
         public NpcReply(string text, string emotionTag, string animationCue)
         {
-            Text         = text;
+            Text         = text         ?? string.Empty;
             EmotionTag   = emotionTag   ?? string.Empty;
             AnimationCue = animationCue ?? string.Empty;
         }

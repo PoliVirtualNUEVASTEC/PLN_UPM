@@ -71,5 +71,53 @@ namespace NpcAi.Core.Tests
                 s.Classify("123 456");
             });
         }
+
+        // --- G9: Classify NO DEBE lanzar en ningun estado; no-listo DEBERIA devolver Unknown ---
+
+        [Test]
+        public void Classify_no_lanza_en_ningun_estado()
+        {
+            var listo = CreateSubject();
+            var noListo = new ClasificadorNoListo();
+
+            Assert.DoesNotThrow(() =>
+            {
+                var _ = listo.IsReady;
+                listo.Classify(null);
+                listo.Classify(string.Empty);
+                listo.Classify("   ");
+                listo.Classify("texto normal");
+
+                var __ = noListo.IsReady;
+                noListo.Classify(null);
+                noListo.Classify("por favor");
+            });
+        }
+
+        [Test]
+        public void Un_clasificador_no_listo_devuelve_Unknown()
+        {
+            var noListo = new ClasificadorNoListo();
+
+            var r = noListo.Classify("por favor");
+
+            Assert.IsFalse(noListo.IsReady);
+            Assert.AreEqual(Intent.Desconocida, r.Intent);
+            Assert.AreEqual(Tone.Neutral,       r.Tone);
+            Assert.AreEqual(0f,                 r.Confidence);
+            Assert.AreEqual(0f,                 r.LatencyMs);
+        }
+
+        /// <summary>
+        /// Stub minimo NO listo, definido DENTRO de Tests/EditMode/Core/ (decision D3):
+        /// no es un doble de modulo. <c>ScriptedIntentClassifier</c> tiene
+        /// <c>IsReady == true</c> por diseno, asi que el camino no-listo solo se alcanza
+        /// con este stub local.
+        /// </summary>
+        private sealed class ClasificadorNoListo : IIntentClassifier
+        {
+            public bool IsReady => false;
+            public IntentResult Classify(string text) => IntentResult.Unknown();
+        }
     }
 }

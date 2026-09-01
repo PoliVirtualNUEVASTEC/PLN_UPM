@@ -26,6 +26,29 @@ namespace NpcAi.Core.Tests
                 "Dos motores reiniciados con la misma personalidad deben arrancar igual");
         }
 
+        // --- G7: Current es Neutral hasta Reset; Reset idempotente ---
+
+        [Test]
+        public void Current_es_Neutral_antes_del_primer_Reset()
+        {
+            Assert.AreEqual(Core.Receptivity.Neutral, CreateSubject().Current,
+                "Un motor recien creado no tiene estado hasta Reset: arranca Neutral");
+        }
+
+        [Test]
+        public void Reset_repetido_con_la_misma_personalidad_es_idempotente()
+        {
+            var e = CreateSubject();
+
+            e.Reset(Cualquiera);
+            var trasElPrimero = e.Current;
+            e.Reset(Cualquiera);
+            var trasElSegundo = e.Current;
+
+            Assert.AreEqual(trasElPrimero, trasElSegundo,
+                "Reset repetido con la misma personalidad no debe cambiar Current");
+        }
+
         [Test]
         public void La_transicion_reporta_el_estado_previo_y_el_nuevo()
         {

@@ -68,5 +68,72 @@ namespace NpcAi.Core.Tests
             s.StopListening();
             Assert.DoesNotThrow(() => s.StopListening());
         }
+
+        // --- G10: eventos finos de la ventana de escucha ---
+
+        [Test]
+        public void No_emite_nada_antes_del_primer_StartListening()
+        {
+            var s = CreateSubject();
+            var recibidas = 0;
+            s.OnUtterance += _ => recibidas++;
+
+            EmitTestUtterance(s, new Utterance("antes de escuchar", 1f, 1f));
+
+            Assert.AreEqual(0, recibidas);
+        }
+
+        [Test]
+        public void StartListening_repetido_no_lanza_y_deja_escuchando()
+        {
+            var s = CreateSubject();
+
+            Assert.DoesNotThrow(() =>
+            {
+                s.StartListening();
+                s.StartListening();
+            });
+            Assert.IsTrue(s.IsListening);
+        }
+
+        [Test]
+        public void La_secuencia_Start_Stop_Start_reanuda_la_emision()
+        {
+            var s = CreateSubject();
+            var recibidas = 0;
+            s.OnUtterance += _ => recibidas++;
+
+            s.StartListening();
+            s.StopListening();
+            s.StartListening();
+            EmitTestUtterance(s, new Utterance("de vuelta", 1f, 1f));
+
+            Assert.AreEqual(1, recibidas);
+        }
+
+        [Test]
+        public void Entrega_cada_Utterance_a_todos_los_suscriptores()
+        {
+            var s = CreateSubject();
+            var a = 0;
+            var b = 0;
+            s.OnUtterance += _ => a++;
+            s.OnUtterance += _ => b++;
+
+            s.StartListening();
+            EmitTestUtterance(s, new Utterance("para los dos", 1f, 1f));
+
+            Assert.AreEqual(1, a);
+            Assert.AreEqual(1, b);
+        }
+
+        [Test]
+        public void Emitir_sin_suscriptores_no_lanza()
+        {
+            var s = CreateSubject();
+            s.StartListening();
+
+            Assert.DoesNotThrow(() => EmitTestUtterance(s, new Utterance("nadie escucha", 1f, 1f)));
+        }
     }
 }
