@@ -5,7 +5,7 @@ Este es el paquete UPM `com.poli.npc-ai`. Antes de escribir una sola linea, lee 
 ## Reglas duras — se aplican a cada cambio, sin excepcion
 
 1. **Un cambio toca exactamente un modulo.** Si el trabajo pide tocar dos carpetas de `Runtime/`, esta mal cortado: para y avisa.
-2. **`Runtime/Core/` y `Runtime/CoreChannels/` son de solo lectura** salvo que el cambio sea explicitamente un cambio de contrato (M0). Un cambio de contrato es su propio cambio SDD, se integra solo los lunes y requiere aprobacion de todos los duenos de modulo.
+2. **`Runtime/Core/` y `Runtime/CoreChannels/` son de solo lectura** salvo que el cambio sea explicitamente un cambio de contrato (M0). Un cambio de contrato es su propio cambio SDD; antes del merge lo revisa el otro dueno compartido de M0 (o, en su defecto, el asesor). Sin ventana fija ni quorum de todos los duenos.
 3. **Cada modulo referencia `NpcAi.Core`.** Los que se conectan por Inspector referencian ademas `NpcAi.Core.Channels`. Ninguna otra referencia entre modulos: si hace falta, es un cambio de contrato, no una tarea de programacion.
 4. **Todo modulo publica su doble** en `Runtime/<Modulo>/Fakes/`, determinista, y ese doble hereda de la misma clase de prueba de contrato que la implementacion real.
 5. **`NpcAi.Core` no puede referenciar `UnityEngine`** (`noEngineReferences: true`). Si necesitas un tipo de Unity en el contrato, la respuesta es no.
