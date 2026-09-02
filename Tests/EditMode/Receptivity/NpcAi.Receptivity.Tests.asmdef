@@ -5,6 +5,7 @@
         "NpcAi.Core",
         "NpcAi.Core.Tests",
         "NpcAi.Receptivity",
+        "NpcAi.Receptivity.Unity",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

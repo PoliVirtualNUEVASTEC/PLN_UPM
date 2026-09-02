@@ -37,7 +37,7 @@ namespace NpcAi.Receptivity.Fakes
                     : _score <= UmbralNoReceptivo ? Core.Receptivity.NoReceptivo
                                                   : Core.Receptivity.Neutral;
 
-            return new ReceptivityChange(from, Current, _score, RazonDe(intent.Intent, action));
+            return new ReceptivityChange(from, Current, _score, RazonDe(intent.Intent, action, delta));
         }
 
         private static int DeltaPorIntencion(Intent intent) => intent switch
@@ -59,15 +59,37 @@ namespace NpcAi.Receptivity.Fakes
             _                             => 0,
         };
 
-        private static string RazonDe(Intent intent, PhysicalAction action)
+        /// <summary>
+        /// Vocabulario de diagnostico. Espejo exacto de
+        /// <see cref="NpcAi.Receptivity.ReceptivityEngine"/>: el doble puede mover el
+        /// puntaje distinto (es mas simple e ignora el tono), pero la razon que
+        /// reporta para una (intencion, accion) dada es la misma que la del motor
+        /// real. La paridad la fija RazonParityTests.
+        /// </summary>
+        private static string RazonDe(Intent intent, PhysicalAction action, int delta)
         {
-            if (intent == Intent.SolicitudAgresiva)   return "AGRESION_DIRECTA";
-            if (intent == Intent.Empatia)             return "GESTO_EMPATICO";
-            if (intent == Intent.Interrupcion)        return "INTERRUPCION";
-            if (intent == Intent.PreguntaFueraDeTema) return "FUERA_DE_TEMA";
-            if (action == PhysicalAction.GestoCalma)  return "GESTO_CALMA";
-            if (action == PhysicalAction.Alejarse)    return "DISTANCIAMIENTO";
-            return "SIN_CAMBIO_RELEVANTE";
+            switch (intent)
+            {
+                case Intent.SolicitudAgresiva:   return "AGRESION_DIRECTA";
+                case Intent.Interrupcion:        return "INTERRUPCION";
+                case Intent.PreguntaFueraDeTema: return "FUERA_DE_TEMA";
+                case Intent.Empatia:             return "GESTO_EMPATICO";
+                case Intent.SolicitudRespetuosa: return "PETICION_RESPETUOSA";
+                case Intent.AportaInformacion:   return "APORTA_INFORMACION";
+            }
+
+            switch (action)
+            {
+                case PhysicalAction.GestoCalma:      return "GESTO_CALMA";
+                case PhysicalAction.Alejarse:        return "DISTANCIAMIENTO";
+                case PhysicalAction.Acercarse:       return "ACERCAMIENTO";
+                case PhysicalAction.ContactoVisual:  return "CONTACTO_VISUAL";
+                case PhysicalAction.TocarPaciente:   return "CONTACTO_FISICO";
+                case PhysicalAction.EntregarObjeto:  return "ENTREGA_OBJETO";
+                case PhysicalAction.SenalarPantalla: return "SENALA_PANTALLA";
+            }
+
+            return delta == 0 ? "SIN_CAMBIO_RELEVANTE" : "AJUSTE_MENOR";
         }
 
         private static int Clamp(int value, int min, int max) =>
