@@ -1,8 +1,9 @@
 {
-    "name": "NpcAi.Receptivity",
-    "rootNamespace": "NpcAi.Receptivity",
+    "name": "NpcAi.Receptivity.Unity",
+    "rootNamespace": "NpcAi.Receptivity.Unity",
     "references": [
-        "NpcAi.Core"
+        "NpcAi.Core",
+        "NpcAi.Receptivity"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -12,5 +13,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }
