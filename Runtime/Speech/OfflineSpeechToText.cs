@@ -1,38 +1,171 @@
 using System;
 using NpcAi.Core;
+using NpcAi.Speech.Config;
+using NpcAi.Speech.Segmentation;
+using NpcAi.Speech.Threading;
 
 namespace NpcAi.Speech
 {
     /// <summary>
-    /// Adaptador real de <see cref="ISpeechToText"/>. Este corte (PR1) solo trae el
-    /// nucleo: ventana de escucha, contador de generacion, guarda de emision tardia
-    /// (Decision 5 de design.md) y clamps de <see cref="Utterance"/> (G14). La captura de
-    /// microfono, las estrategias de segmentacion y el motor real se cablean en
-    /// PR2/PR3/PR4; hasta entonces <see cref="StartListening"/>/<see cref="StopListening"/>
-    /// solo mueven estado, y las costuras <c>internal</c> ejercitan el mismo camino de
-    /// emision que usara el motor real (requisito "Costura de prueba determinista sin
-    /// microfono ni modelo").
+    /// Adaptador real de <see cref="ISpeechToText"/>. Nucleo: ventana de escucha, contador de
+    /// generacion, guarda de emision tardia (Decision 5 de design.md) y clamps de
+    /// <see cref="Utterance"/> (G14) — todo desde PR1, siempre disponible aunque el sujeto no
+    /// este cableado a un motor real. El constructor sin parametros (usado por la gemela de
+    /// contrato y las pruebas de guarda) deja las costuras <c>internal</c>
+    /// (<see cref="EmitirParaPrueba"/>, <see cref="ProcesarResultadoDePrueba"/>) como el unico
+    /// camino de emision, exactamente como en PR1/PR2. El constructor cableado (PR3, tasks.md
+    /// 3.8) agrega segmentacion + motor + bomba: <see cref="StartListening"/> abre la
+    /// estrategia de segmentacion y reinicia el motor; <see cref="AlimentarBloqueDeAudio"/> es
+    /// la costura por la que entra cada bloque de muestras (produccion: el futuro
+    /// <c>SpeechToTextBehaviour</c> de PR4 leyendo <c>IAudioCapture</c> en <c>Update()</c>;
+    /// pruebas: llamada directa; ver Deviation en apply-progress); <see cref="StopListening"/>
+    /// cierra el segmento abierto y emite DENTRO de si misma, antes de bajar la bandera
+    /// (Decision 4 de design.md).
     /// </summary>
     public sealed class OfflineSpeechToText : ISpeechToText
     {
+        private readonly SpeechSettings _config;
+        private readonly IRecognitionEngine _motor;
+        private readonly IMainThreadPump _bomba;
+
+        private ISegmentationStrategy _estrategia;
+        private double _segundosEnFrase;
         private int _generacion;
 
         public event Action<Utterance> OnUtterance;
         public bool IsListening { get; private set; }
+
+        /// <summary>
+        /// Construye un sujeto sin cablear: solo el nucleo de PR1 (ventana, generacion,
+        /// guardas, clamps). Es lo que usan la gemela de contrato y las pruebas de guarda —
+        /// <see cref="StartListening"/>/<see cref="StopListening"/> solo mueven estado.
+        /// </summary>
+        public OfflineSpeechToText()
+        {
+        }
+
+        /// <summary>
+        /// Construye un sujeto cableado (tasks.md 3.8) con la bomba por defecto
+        /// (<see cref="ImmediateMainThreadPump"/>, sincronica — Decision 3 de design.md: "la
+        /// bomba por defecto ... es la que usan las pruebas").
+        /// </summary>
+        internal OfflineSpeechToText(SpeechSettings config, IRecognitionEngine motor)
+            : this(config, motor, new ImmediateMainThreadPump())
+        {
+        }
+
+        /// <summary>
+        /// Construye un sujeto cableado (tasks.md 3.8): segmentacion + motor + bomba.
+        /// <c>internal</c> porque <see cref="IRecognitionEngine"/> y <see cref="SpeechSettings"/>
+        /// son costuras del modulo (regla dura 3: ningun otro modulo las referencia); la
+        /// escena anfitriona solo ve <see cref="ISpeechToText"/> a traves del futuro
+        /// <c>SpeechToTextBehaviour</c> (PR4).
+        /// </summary>
+        internal OfflineSpeechToText(SpeechSettings config, IRecognitionEngine motor, IMainThreadPump bomba)
+        {
+            _config = config ?? throw new ArgumentNullException(nameof(config));
+            _motor  = motor  ?? throw new ArgumentNullException(nameof(motor));
+            _bomba  = bomba  ?? throw new ArgumentNullException(nameof(bomba));
+        }
 
         public void StartListening()
         {
             if (IsListening) return; // transicion no efectiva: no abre generacion nueva
             IsListening = true;
             _generacion++;
+            AbrirSegmentacionSiHayMotor();
         }
 
         public void StopListening()
         {
             if (!IsListening) return; // transicion no efectiva
+            CerrarSegmentoAbiertoYEmitir();
             IsListening = false;
             _generacion++;
+            _estrategia = null;
         }
+
+        /// <summary>
+        /// Costura por la que entra cada bloque de muestras capturado (tasks.md 3.8, Decision
+        /// 3 de design.md). No hace nada si el sujeto no esta cableado
+        /// (<c>_motor == null</c>) o no esta escuchando. Segun la decision de la estrategia
+        /// para este bloque: <c>Continuar</c> alimenta el motor; <c>CerrarFrase</c> finaliza,
+        /// emite via <see cref="_bomba"/> y reabre la ventana (solo alcanzable en
+        /// <see cref="TriggerStrategy.ActividadDeVoz"/>, ver design.md diagrama B);
+        /// <c>Descartar</c> no hace nada (silencio antes de acumular voz minima).
+        /// </summary>
+        internal void AlimentarBloqueDeAudio(float[] muestras, int cantidad)
+        {
+            if (_motor == null || !IsListening || _estrategia == null) return;
+
+            _segundosEnFrase += DuracionEnSegundos(cantidad);
+
+            switch (_estrategia.Evaluar(muestras, cantidad, _segundosEnFrase))
+            {
+                case SegmentDecision.Continuar:
+                    _motor.Alimentar(muestras, cantidad);
+                    break;
+
+                case SegmentDecision.CerrarFrase:
+                    CerrarSegmentoPorSilencioYReabrir();
+                    break;
+            }
+        }
+
+        private void AbrirSegmentacionSiHayMotor()
+        {
+            if (_motor == null) return; // sujeto sin cablear (PR1/PR2): solo estado
+
+            _estrategia = SegmentationFactory.Crear(
+                _config.Estrategia,
+                _config.UmbralDeEnergia,
+                _config.MsMinimosDeVoz,
+                _config.MsDeSilencioParaCortar,
+                _config.MaxSegundosPorFrase);
+            _estrategia.AbrirVentana();
+            _motor.Reiniciar();
+            _segundosEnFrase = 0d;
+        }
+
+        /// <summary>
+        /// Decision 4 de design.md: cerrar segmento -> Finalizar() -> EmitirSiVigente(...) con
+        /// <see cref="IsListening"/> AUN <c>true</c> -> recien despues de este metodo
+        /// <see cref="StopListening"/> baja la bandera y sube la generacion. Es la unica
+        /// ordenacion que respeta a la vez "la ventana ES la frase" y "el contrato prohibe
+        /// emitir despues de StopListening".
+        /// </summary>
+        private void CerrarSegmentoAbiertoYEmitir()
+        {
+            if (_motor == null || _estrategia == null) return; // sujeto sin cablear
+
+            _estrategia.CerrarVentana();
+            var resultado = _motor.Finalizar();
+            var utterance = ConstruirUtteranceAcotada(resultado.Texto, resultado.ConfianzaCruda, DuracionEnSegundos(resultado.MuestrasAlimentadas));
+            EmitirSiVigente(_generacion, utterance);
+        }
+
+        /// <summary>
+        /// Cierre automatico por silencio dentro de una ventana <see cref="TriggerStrategy.ActividadDeVoz"/>
+        /// (design.md, diagrama B): a diferencia de <see cref="CerrarSegmentoAbiertoYEmitir"/>,
+        /// la ventana de escucha sigue abierta, asi que la emision pasa por
+        /// <see cref="_bomba"/> (no directo) y la segmentacion se reabre para la frase
+        /// siguiente sin tocar generacion ni <see cref="IsListening"/>.
+        /// </summary>
+        private void CerrarSegmentoPorSilencioYReabrir()
+        {
+            var resultado = _motor.Finalizar();
+            var utterance = ConstruirUtteranceAcotada(resultado.Texto, resultado.ConfianzaCruda, DuracionEnSegundos(resultado.MuestrasAlimentadas));
+            var generacionDeLaFrase = _generacion;
+
+            _bomba.Post(generacionDeLaFrase, utterance, (gen, frase) => EmitirSiVigente(gen, frase));
+
+            _estrategia.AbrirVentana();
+            _motor.Reiniciar();
+            _segundosEnFrase = 0d;
+        }
+
+        private float DuracionEnSegundos(int cantidadDeMuestras)
+            => _config != null && _config.TasaDeMuestreo > 0 ? (float)cantidadDeMuestras / _config.TasaDeMuestreo : 0f;
 
         /// <summary>
         /// Generacion vigente de la ventana de escucha actual (o de la ultima cerrada).
