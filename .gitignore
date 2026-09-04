@@ -23,4 +23,10 @@ Thumbs.db
 
 # Gentle-AI / agentes (memoria local, no se versiona)
 .engram/
-.claude/settings.local.json
+.claude/
+.atl/
+.codegraph/
+.copilot/
+.mcp.json
+AppData/
+AppData.meta
