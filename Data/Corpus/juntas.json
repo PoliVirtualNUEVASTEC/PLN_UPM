@@ -1,0 +1,1262 @@
+[
+  {
+    "text": "¿Podemos revisar los números del trimestre? Quiero entender cómo vamos.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Señor presidente, ¿me permite hacer una pregunta sobre el presupuesto?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Necesito que me expliquen por qué se aprobó eso sin consultarnos.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Me pueden compartir el informe antes de que lo discutamos?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Podemos posponer esta decisión para la próxima reunión? No estamos listos.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Esto es inaceptable, llevamos tres meses sin resultados y nadie hace nada.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¡Basta de excusas! Necesitamos soluciones, no más vueltas.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me diga que todo está bien cuando los números no cuadran.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Quién es responsable de este desastre? Porque alguien tiene que explicar esto.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Ya me tiene harto con las promesas vacías, necesito acción real.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Entiendo la presión que tenemos, es difícil tomar estas decisiones.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Sé que el equipo está trabajando duro, pero necesitamos ver resultados.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Comprendo que hay restricciones, pero el tiempo no nos alcanza.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Es que uno se siente frustrado cuando las cosas no avanzan.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Gracias por la transparencia, sé que no es fácil mostrar estos números.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El informe dice que las ventas bajaron un quince por ciento este trimestre.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Tengo datos que muestran que el mercado está cambiando más rápido de lo que pensábamos.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Nuestros competidores lanzaron un producto similar la semana pasada.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Revisé los números y tenemos un problema serio con el flujo de caja.",
+    "intent": "AportaInformacion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El cliente principal nos pidió una reunión para renegotiar el contrato.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Qué opinan sobre contratar a alguien externo para que nos ayude?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería mejor mudar la oficina a un lugar más central?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Y si compramos esa empresa que está en quiebra? Podría ser buena oportunidad.",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Qué pasó con el proyecto del año pasado? Nunca nos dieron respuesta.",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Ustedes creen que debemos invertir en inteligencia artificial?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Permítame interrumpir, tengo un dato importante que cambiaría todo.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No, espérese, yo no estoy de acuerdo con lo que acaba de decir.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Espere, espere, antes de que vote le quiero mostrar otro dato.",
+    "intent": "Interrupcion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Perdón que lo interrumpa, pero hay algo que no cuadra en esa propuesta.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No no, espérese que yo no he terminado de presentar mi punto.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Nos podemos comprometer a una fecha firme de entrega?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Señor gerente, ¿usted me puede aclarar ese punto del contrato?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Necesito que alguien me explique por qué el presupuesto se duplicó.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Podemos revisar el cronograma antes de aprobar el proyecto?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Me permiten hacer una observación sobre el punto anterior?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¡Esto es un fraude! Los números que nos presentaron no son reales.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me vengan con cuentos, yo sé cómo funcionan estas cosas.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Llevamos hora y media y no hemos decidido nada, ¡esto es ridículo!",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Usted se está dando cuenta de que estamos perdiendo dinero cada día?",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Basta de postergar, ¡tenemos que decidir ya!",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Es que da impotencia ver cómo se dilapidan los recursos.",
+    "intent": "Empatia",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Entiendo que es difícil para todos, pero no podemos seguir así.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Sé que el equipo está agotado, necesitamos repriorizar.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Comprendo la posición de la gerencia, pero los empleados también sufren.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Gracias por reconocer el problema, eso es el primer paso para solucionarlo.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Los clientes proyectados para el próximo año suman dos mil millones de pesos.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Tengo evidencia de que el proveedor nos está cobrando de más.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Los resultados de la encuesta de satisfacción muestran un cuarenta por ciento de descontento.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Revisé el contrato y hay una cláusula que nos protege en este caso.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El informe técnico dice que necesitamos invertir en infraestructura urgente.",
+    "intent": "AportaInformacion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Qué piensan sobre la propuesta del consultor externo?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No deberíamos contratar a más personal antes de lanzar el proyecto?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Y si hacemos una alianza con esa empresa que nos ofreció?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Ustedes se acuerdan del proyecto que propusimos el año pasado?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería mejor esperar a que mejore la economía del país?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Disculpe que lo interrumpa, pero hay un dato que cambia todo lo que estábamos discutiendo.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No, espérese, yo no estoy de acuerdo con esa conclusión.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Ay, espérese, que se me olvidó decir algo importante sobre el presupuesto.",
+    "intent": "Interrupcion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No no, espérese que yo le estaba contando otra cosa del mercado.",
+    "intent": "Interrupcion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Perdón, pero necesito interrumpirlo porque hay un error en esos números.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Podemos definir las responsabilidades antes de terminar la reunión?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Señora directora, ¿usted me puede aclarar ese punto del informe?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Necesito que alguien me explique por qué el proyecto va tres meses de retraso.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Me pueden enviar el resumen ejecutivo antes del viernes?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Podemos volver al punto tres? No quedó claro.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¡Esto es un desastre total! Nadie sabe qué está haciendo.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me diga que todo marcha bien cuando el morale del equipo está por los suelos.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Quién autorizó ese gasto? ¡Eso no pasó por ningún comité!",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Ya me tiene harto con las excusas, ¡necesitamos resultados!",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me venga a decir que no hay plata cuando ustedes se subieron el sueldo.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Entiendo que es un momento difícil para la empresa.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Sé que la gerencia está haciendo lo que puede con los recursos que hay.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Comprendo que hay presión de arriba, pero los de abajo también sufrimos.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Es frustrante ver cómo se pierden oportunidades por falta de decisión.",
+    "intent": "Empatia",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Gracias por escuchar nuestras preocupaciones, eso significa mucho.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El proyecto piloto mostró un aumento del veinte por ciento en productividad.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Tengo datos que muestran que los clientes prefieren el modelo anterior.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El análisis de riesgo identificó tres factores críticos que debemos atender.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Revisé los contratos y tenemos una penalización si no cumplimos la fecha.",
+    "intent": "AportaInformacion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El benchmarking con la competencia nos muestra que vamos rezagados.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Qué opinan sobre tercerizar esa función? Varios países lo hacen así.",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No deberíamos esperar a que cambie el gobierno para decidir esto?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Y si patrocinamos ese evento para ganar visibilidad?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Ustedes se acuerdan de lo que pasó con el otro proveedor?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería mejor contratar a un abogado antes de firmar eso?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Permítame interrumpir, necesito aclarar un punto antes de que sigamos.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No, espérese, yo no estoy de acuerdo con lo que propone.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Espere, antes de que vote le quiero mostrar otro panorama.",
+    "intent": "Interrupcion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Disculpe, pero hay algo que no cuadra en esa presentación.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No no, espérese que yo no he terminado con mi análisis.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Me pueden explicar por qué el costo se disparó de esa manera?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Señor vicepresidente, ¿usted me puede aclarar la parte contractual?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Necesito que alguien me explique qué estamos votando exactamente.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Podemos diferir la decisión hasta tener más información?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Me permiten hacer una propuesta alternativa antes de cerrar?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¡Esto es un caos! Nadie sabe ni qué está votando.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me venga con datos viejos, eso ya no sirve para esta discusión.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Quién respondió por el dinero que se invirtió en el proyecto fallido?",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Ya basta de reuniones sin resultados, ¡esto es un circo!",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me diga que es un plan estratégico cuando no tiene ni un solo objetivo medible.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Entiendo que estamos en crisis, pero no podemos tomar decisiones desesperadas.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Sé que es difícil para la dirección, pero los empleados necesitan respuestas.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Comprendo la frustración de todos, es un momento complicado.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Es que uno se siente impotente cuando las decisiones no dependen de uno.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Gracias por reconocer el problema, espero que ahora sí actuemos.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El informe de sostenibilidad muestra que redujimos emisiones en un treinta por ciento.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Tengo una propuesta concreta con datos que podría funcionar.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El análisis de costo-beneficio muestra que invertir en tecnología nos ahorraría dinero.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Los datos de encuesta muestran que el setenta por ciento de empleados está descontento.",
+    "intent": "AportaInformacion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Revisé el mercado y hay una oportunidad que no estamos aprovechando.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Qué opinan sobre implementar metodología ágil en todo el equipo?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería mejor que cada uno presentara su parte por separado?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Y si nos asociamos con la universidad para el proyecto de investigación?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Ustedes creen que deberíamos tener un comité de ética?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería bueno contratar un psicólogo organizacional para el equipo?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Disculpe, pero necesito aclarar un punto antes de que sigamos discutiendo.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No, espérese, esa conclusión se sacó sin revisar los datos completos.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Ay, espérese, se me olvidó decir que tengo un dato nuevo.",
+    "intent": "Interrupcion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No no, espérese que yo le estaba contando otra cosa importante.",
+    "intent": "Interrupcion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Perdón que lo interrumpa, pero hay un error en la presentación.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Podemos definir los próximos pasos antes de cerrar la reunión?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Señor director, ¿usted me puede confirmar si hay disponibilidad presupuestal?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Necesito que alguien me explique por qué no se ejecutó el plan anterior.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Me pueden aclarar qué implicaciones legales tiene esta decisión?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Podemos volver al punto dos? No me quedó claro el alcance.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¡Esto es inaceptable! Llevamos meses sin avanzar en lo más mínimo.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me venga a decir que es un plan cuando no tiene ni cronograma.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Quién autorizó ese gasto? ¡Eso no pasó por el comité de presupuesto!",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Ya me tiene harto con las vueltas, ¡decidamos de una vez!",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me diga que todo está bien cuando el equipo está desmoralizado.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Entiendo que la situación es complicada, pero necesitamos ser honestos.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Sé que la gerencia está bajo presión, pero los empleados también.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Comprendo que hay intereses encontrados, pero debemos priorizar la empresa.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Es que uno se siente tan pequeño cuando las decisiones grandes no dependen de uno.",
+    "intent": "Empatia",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Gracias por la oportunidad de expresarnos, eso no es común en estas reuniones.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El análisis financiero muestra que debemos recortar un quince por ciento de gastos fijos.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Tengo datos de que el mercado está creciendo en un diez por ciento anual.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "La auditoría interna encontró irregularidades en tres departamentos.",
+    "intent": "AportaInformacion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Revisé los benchmarks y nuestros competidores están invirtiendo en innovación.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El informe de riesgos operativos identificó cinco vulnerabilidades críticas.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Qué opinan sobre implementar un sistema de gestión del conocimiento?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería mejor que hiciéramos una pausa y volviéramos mañana?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Y si creamos una filial para ese mercado nuevo?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Ustedes creen que debemos cambiar de asesoría legal?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería bueno hacer una capacitación antes de implementar el cambio?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Permítame interrumpir, tengo un dato que no puede ignorarse.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No, espérese, esa propuesta no me convence y hay que revisarla con calma.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Espere, antes de que termine le quiero mostrar otra alternativa.",
+    "intent": "Interrupcion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Disculpe, pero hay un error en esos números que necesito aclarar.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No no, espérese, ¡todavía no he terminado y aquí se me escucha hasta el final!",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Me pueden explicar por qué la utilidad bajó este trimestre?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Señor gerente general, ¿usted me puede aclarar el nuevo plan estratégico?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Necesito que alguien me explique por qué no se cumplieron las metas del año anterior.",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Podemos revisar el inventario antes de aprobar nuevas compras?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Me permiten presentar una propuesta alternativa al plan original?",
+    "intent": "SolicitudRespetuosa",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¡Esto es un escándalo! Estamos perdiendo clientes a diario y nadie hace nada.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me venga con explicaciones técnicas, necesito soluciones concretas.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Quién va a responder por este desastre administrativo?",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Ya es la tercera reunión que hablamos de lo mismo y nada cambia.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No me diga que es un plan de acción cuando no tiene ni un responsable asignado.",
+    "intent": "SolicitudAgresiva",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Entiendo que la empresa está pasando por un mal momento.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Sé que la directiva está tomando medidas, pero necesitamos ver resultados.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Comprendo que hay restricciones, pero los empleados necesitan certeza.",
+    "intent": "Empatia",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Es que la incertidumbre nos tiene a todos ansiosos y la productividad baja.",
+    "intent": "Empatia",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Gracias por la honestidad, no es fácil reconocer que las cosas no van bien.",
+    "intent": "Empatia",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El flujo de caja proyectado muestra que necesitamos financiamiento urgente.",
+    "intent": "AportaInformacion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Tengo evidencia de que el proveedor incumplió el contrato de servicio.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El informe de productividad muestra que el equipo está por debajo del promedio del sector.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Revisé los números y tenemos un margen de utilidad del cinco por ciento, muy bajo.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "El análisis competitivo muestra que necesitamos innovar o quedarnos atrás.",
+    "intent": "AportaInformacion",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Qué opinan sobre crear una unidad de negocio separada para ese segmento?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería mejor que el próximo informe lo haga un auditor externo?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Y si empezamos con un proyecto piloto antes de escalar?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿Ustedes creen que deberíamos invertir en capacitación este año?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Neutral",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "¿No sería bueno que cada área presentara sus indicadores clave?",
+    "intent": "PreguntaFueraDeTema",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Disculpe que lo interrumpa, pero necesito aclarar un punto antes de que sigamos.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No, espérese, yo no estoy de acuerdo con esa propuesta.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Ay, espérese, se me olvidó decir que tengo un dato nuevo importante.",
+    "intent": "Interrupcion",
+    "tone": "Ansioso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "No no, espérese que yo le estaba contando otra cosa crucial.",
+    "intent": "Interrupcion",
+    "tone": "Agresivo",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  },
+  {
+    "text": "Perdón, pero hay un error en la presentación que necesito corregir.",
+    "intent": "Interrupcion",
+    "tone": "Respetuoso",
+    "scenario": "juntas",
+    "labeler": "Luis"
+  }
+]
