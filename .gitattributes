@@ -17,3 +17,9 @@
 *.wav       binary
 *.png       binary
 *.fbx       binary
+
+# Git LFS — binarios vendorizados de M1 (motor Vosk + modelo es-CO, decidido antes
+# del primer commit de estos archivos: openspec/changes/m1-speech-to-text/design.md)
+Runtime/Speech/Plugins/**/*.so  filter=lfs diff=lfs merge=lfs -text
+Runtime/Speech/Plugins/**/*.dll filter=lfs diff=lfs merge=lfs -text
+Runtime/Speech/Plugins/**/*.bytes filter=lfs diff=lfs merge=lfs -text
