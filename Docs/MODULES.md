@@ -284,7 +284,7 @@ por ser la rama compartida real del equipo.
 ## M13 — Bitácora de sesión
 
 - **Carpeta**: `Runtime/SessionLog` (planeado — todavía no existe en el repo).
-- **Dueño**: sin asignar.
+- **Dueño**: asignado (nombre no registrado en este documento).
 - **Qué hace (planeado)**: al terminar una sesión de entrenamiento, guarda un registro
   persistente de la conversación completa (lo que dijo el usuario y lo que respondió el NPC) en
   una base de datos local del Quest, para exportar y revisar después. Se suscribe a los canales

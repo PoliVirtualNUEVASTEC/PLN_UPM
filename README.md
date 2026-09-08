@@ -37,7 +37,7 @@ Reparto inicial (sujeto a cambios; al reasignar, actualizar esta tabla).
 | Luis Miguel Canaveral Restrepo | M1, M2, M3, M7, M9 |
 | Jefferson Estiven Aristizabal Quiceno | M4, M5, M6, M8, M10, M11 |
 | Compartido (Luis + Jefferson) | M0, M12 |
-| Sin asignar | M13 |
+| Asignado | M13 |
 
 ## Las diez reglas de convivencia
 
