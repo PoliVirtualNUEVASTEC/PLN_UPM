@@ -14,7 +14,7 @@ Cada sección abajo fue verificada leyendo el archivo real correspondiente (cód
 previo. Donde local `main` y `origin/main` difieren, se documenta el estado de `origin/main`
 por ser la rama compartida real del equipo.
 
-> **Nota de alcance temporal**: este documento describe el estado verificado el 2026-09-03.
+> **Nota de alcance temporal**: este documento describe el estado verificado el 2026-09-09.
 > Los módulos evolucionan; si pasa tiempo desde esa fecha, re-verificar contra el repo antes de
 > confiar en el detalle fino de "Estado actual".
 
@@ -79,22 +79,32 @@ por ser la rama compartida real del equipo.
 - **Contrato que expone**: `IIntentClassifier` — `IsReady` (nunca lanza), `Classify(string text)`
   (nunca lanza ante `null`/vacío/símbolos/números/cadenas largas; determinista en `Intent` y
   `Tone` para la misma entrada; `Confidence` y `LatencyMs` no están obligados a serlo).
-- **Estado actual**: real e implementado, y mergeado en `origin/main`. **Desviación de diseño sin
-  documentar**: la propuesta archivada de M2 (`proposal.md`, sección "Approach") comprometió
-  explícitamente un motor de inferencia por modelo entrenado — *"Motor de Inferencia:
-  Procesamiento local mediante Sentis / ONNX..."* con MiniLM como candidato — para clasificar
-  semánticamente. Lo que existe hoy en `NluIntentClassifier.cs` y `SemanticMatcher.cs` es un
-  clasificador **basado en reglas de palabras clave**: un arreglo estático de ~45 tuplas
-  `(patrón, Intent, confianza_fija)` en español, resuelto por `string.Contains` sobre el texto
-  normalizado — sin modelo, sin embeddings, sin entrenamiento, y sin ninguna conexión al corpus
-  de M3. Cumple el contrato `IIntentClassifier` al pie de la letra, pero no es lo que la
-  propuesta prometió, y esa desviación no quedó registrada en ningún documento de diseño ni en
-  el changelog del contrato.
+- **Estado actual**: real e implementado, y mergeado en `origin/main`, pero **motor actual
+  distinto del que promete la propuesta de trabajo de grado**: lo que existe hoy en
+  `NluIntentClassifier.cs` y `SemanticMatcher.cs` es un clasificador **basado en reglas de
+  palabras clave**: un arreglo estático de ~45 tuplas `(patrón, Intent, confianza_fija)` en
+  español, resuelto por `string.Contains` sobre el texto normalizado — sin modelo, sin
+  embeddings, sin entrenamiento, y sin ninguna conexión al corpus de M3. Cumple el contrato
+  `IIntentClassifier` al pie de la letra, pero no es el motor final.
+  **Esta desviación ya está cerrada con un plan concreto**, no solo señalada: el cambio
+  `openspec/changes/2026-09-09-m2-clasificador-bert-reducido/` (propuesto 2026-09-09, decisiones
+  confirmadas con el usuario) especifica el reemplazo — un encoder BERT reducido (clase
+  MiniLM/DistilBERT, ~20-60M de parámetros) **congelado**, con una **cabeza de clasificación
+  entrenada por transfer learning** sobre el corpus de M3, exportado a ONNX y ejecutado
+  on-device vía Unity Sentis (`com.unity.ai.inference`, hoy solo en `keywords` de
+  `package.json`, no como dependencia real — el cambio lo corrige). Motivo de la elección:
+  con el volumen de corpus disponible (30 frases/intención/escenario hoy, meta documentada
+  60-100), afinar el transformer completo sobreajustaría; congelar el encoder y entrenar solo la
+  cabeza es transfer learning estándar para datasets chicos y corre en una GPU de consumo (GTX
+  1660, 6 GB — verificado suficiente, sin necesidad de Colab). Hasta que ese cambio se mergee,
+  `NluIntentClassifier.cs`/`SemanticMatcher.cs`/`ToneAnalyzer.cs` siguen siendo el motor real; no
+  se borran ni con el cambio nuevo, quedan como respaldo determinista documentado.
 - **Specs formales**: `openspec/specs/clasificador-intenciones-m2/spec.md` (7 requisitos: nunca
   lanza, determinismo, `Confidence`∈[0,1], resiliencia a entradas atípicas, comportamiento
   cuando `IsReady` es falso, conformidad con `IntentClassifierContract`). La spec formaliza el
-  comportamiento observable del puerto, no el enfoque de implementación — por eso la desviación
-  de Sentis/ONNX no aparece ahí ni la contradice formalmente, pero sí contradice la propuesta.
+  comportamiento observable del puerto, no el enfoque de implementación — sigue vigente sin
+  cambios con el nuevo motor, porque el comportamiento observable no cambia, solo el motor que
+  lo satisface.
 
 ---
 
@@ -108,11 +118,30 @@ por ser la rama compartida real del equipo.
 - **Contrato que expone**: no es un puerto de código — es un esquema de datos. Cada `intent` y
   `tone` debe coincidir exactamente con un miembro de los enums `Intent`/`Tone` de `NpcAi.Core`.
   Regla de calidad: 10% de las frases doble-etiquetadas para medir acuerdo entre etiquetadores.
-- **Estado actual**: los datos existen y fueron depurados (`emergencia.json` con 181 entradas,
-  `juntas.json` con 180 entradas — duplicados y errores ortográficos corregidos el 2026-09-01),
-  pero **están sin commitear**: `git status` los marca como `??` (untracked) en el working tree
-  local, y no existen en ninguna rama de `origin`. Solo `Data/Corpus/README.md` está en
-  `origin/main`. Es decir: el trabajo de M3 está hecho pero no entregado.
+- **Estado actual**: los datos existen, fueron depurados (duplicados y errores ortográficos
+  corregidos el 2026-09-01) y **ya están commiteados en `origin/main`**
+  (PR "docs/corpus-m3-y-modulos-m13", mergeado 2026-09-04) — `emergencia.json` con 181 entradas,
+  `juntas.json` con 180 entradas. Esto corrige el estado reportado en una verificación anterior
+  de este documento, que los marcaba como `untracked`.
+  **Volumen por debajo de la meta documentada**: ambos archivos tienen exactamente 30 ejemplos
+  por cada una de las 6 categorías de `Intent` por escenario (180/181 frases en total), frente a
+  la meta de "60-100 frases por categoría de intención, por escenario" que el propio
+  `Data/Corpus/README.md` fija — es decir, entre 2× y 3.3× por debajo de la meta en cada
+  categoría, no solo en el total.
+  **Desbalance de `Tone` no cubierto por la meta de volumen**: `Tone.Empatico` tiene apenas 1
+  ejemplo en `emergencia.json` y 0 en `juntas.json` (de 180-181 frases); `Tone.Ansioso` tiene
+  solo 16 de 180 en `juntas.json`. Ampliar el volumen total sin corregir explícitamente este
+  desbalance no resuelve el problema — un modelo entrenado sobre este corpus no puede aprender a
+  reconocer `Empatico` con 1 ejemplo. Ver `Data/Corpus/PENDIENTE-AMPLIACION.md` (nuevo) para el
+  detalle línea por línea.
+  **Acuerdo entre etiquetadores no medido todavía**: el campo `labeler` es `"Luis"` en el 100% de
+  las entradas de ambos archivos — la regla de calidad del propio README ("10% de las frases
+  doble-etiquetadas para medir acuerdo entre etiquetadores") no se ha aplicado aún; no hay una
+  segunda persona etiquetando ni una sola frase para poder medir el acuerdo.
+  Este corpus es la entrada de `Training/Nlu/` en el cambio
+  `2026-09-09-m2-clasificador-bert-reducido`: el pipeline de entrenamiento puede correr sobre el
+  corpus actual como prueba de humo del pipeline, pero la calidad del modelo resultante (sobre
+  todo en `Empatico`) depende de que esta ampliación avance.
 - **Specs formales**: no existe `openspec/specs/corpus-*`. La única especificación es
   `Data/Corpus/README.md`, que no pasó por el ciclo SDD (documento de diseño directo, no delta
   formal).
@@ -177,12 +206,26 @@ por ser la rama compartida real del equipo.
   `null`; funciona con `PersonalityId.None` sin lanzar; `Receptivo` y `NoReceptivo` deben
   producir texto distinto. A diferencia de `IIntentClassifier`, **no se exige determinismo**: es
   una asimetría deliberada del contrato de M0.
-- **Estado actual**: **solo doble**. `Runtime/Dialogue/` en `origin/main` únicamente contiene
+- **Estado actual**: **solo doble en `origin/main` todavía**, pero con plan concreto ya
+  especificado. `Runtime/Dialogue/` en `origin/main` únicamente contiene
   `Fakes/ScriptedDialogueGenerator.cs` — un `switch` fijo sobre `Receptivity` con 3 plantillas de
   texto codificadas (`"Claro, digame en que le ayudo"`, `"No tengo nada mas que hablar con
-  usted"`, `"Lo escucho"`). No hay implementación real.
-- **Specs formales**: no existe `openspec/specs/dialogo-*` ni carpeta de cambio archivada para
-  M6.
+  usted"`, `"Lo escucho"`). No hay implementación real todavía.
+  El cambio `openspec/changes/2026-09-09-m6-generador-markov/` (propuesto 2026-09-09) especifica
+  el reemplazo — `MarkovDialogueGenerator`, una cadena de Markov de palabras (bigramas) construida
+  a partir de un corpus semilla nuevo (`Data/Dialogue/<personalidad>.json`, uno por cada una de
+  las 4 personalidades de M5, con frases de ejemplo por estado de `Receptivity`), coherente con
+  la propuesta de trabajo de grado ("cadenas de Markov... para darle respuesta"). Este corpus
+  semilla es distinto del de M3: M3 etiqueta lo que dice el *usuario*; el de M6 son ejemplos de
+  lo que dice el *NPC*, y no existe todavía en ningún lado del repo — el propio cambio de M6 lo
+  crea. La primera entrega indexa el corpus por personalidad y receptividad únicamente
+  (`IntentResult` se acepta en la firma pero no condiciona el texto todavía, ver el cambio →
+  Out of Scope). El comentario ya existente en
+  `Tests/EditMode/Core/DialogueGeneratorContract.cs` ("el generador real usa Markov") anticipaba
+  exactamente este enfoque.
+- **Specs formales**: no existe `openspec/specs/dialogo-*` ni carpeta de cambio archivada
+  todavía — el cambio `2026-09-09-m6-generador-markov` crea la primera,
+  `openspec/specs/generador-dialogo-m6/spec.md`, cuando se mergee.
 
 ---
 
@@ -283,22 +326,26 @@ por ser la rama compartida real del equipo.
 
 ## M13 — Bitácora de sesión
 
-- **Carpeta**: `Runtime/SessionLog` (planeado — todavía no existe en el repo).
-- **Dueño**: sin asignar.
-- **Qué hace (planeado)**: al terminar una sesión de entrenamiento, guarda un registro
-  persistente de la conversación completa (lo que dijo el usuario y lo que respondió el NPC) en
-  una base de datos local del Quest, para exportar y revisar después. Se suscribe a los canales
+- **Carpeta**: `Runtime/SessionLog`.
+- **Dueño**: asignado (nombre no registrado en este documento).
+- **Qué hace (núcleo ya implementado; SQLite todavía planeado)**: al terminar una sesión de
+  entrenamiento, guarda un registro persistente de la conversación completa (lo que dijo el
+  usuario y lo que respondió el NPC), para exportar y revisar después. Se suscribe a los canales
   ya existentes — `UtteranceChannel` (M1, voz del usuario) y el canal de respuesta del NPC (M6)
-  — sin necesidad de tocar el contrato de `NpcAi.Core`. El archivo de texto que también se pide
-  como salida es una exportación generada a partir de lo que ya está en la base, no una escritura
-  paralela.
-- **Contrato que expone**: ninguno todavía — no está en `Runtime/Core/Ports.cs`. Al ser un
-  suscriptor puro de canales existentes, no necesariamente hace falta un puerto nuevo en M0.
-- **Estado actual**: **decidido, no iniciado.** Confirmado con el usuario (2026-09-03): módulo
-  nuevo M13, no se cuelga de ningún módulo existente. Decisión de diseño ya fijada antes de
-  arrancar el SDD: escritura **turno por turno** a SQLite (no acumular en memoria y volcar recién
-  al cerrar la sesión), para no perder la conversación si la app crashea a mitad de una sesión de
-  entrenamiento. Almacenamiento propuesto: SQLite embebido (p. ej. `sqlite-net-pcl`), con el
-  binario nativo vendorizado por plataforma siguiendo el mismo patrón que M1 resolvió para Vosk.
-- **Specs formales**: no existe `openspec/specs/bitacora-sesion-m13` — ningún cambio SDD
-  arrancó todavía para este módulo.
+  — sin necesidad de tocar el contrato de `NpcAi.Core`.
+- **Contrato que expone**: ninguno en `Runtime/Core/Ports.cs` — `ISessionStore` es un seam
+  interno de `NpcAi.SessionLog`, no un puerto compartido de M0 (decisión ya tomada: al ser un
+  suscriptor puro de canales existentes, no hace falta un puerto nuevo).
+- **Estado actual**: **PR1 mergeado en `origin/main`** (PR #8,
+  "feat/m13-session-log-pr1", 2026-09-09): núcleo puro (`SessionTurn.cs`, `ISessionStore.cs`,
+  `SessionRecorder.cs`) y doble en memoria (`Fakes/InMemorySessionStore.cs`). Escritura
+  **turno por turno** ya implementada tal como se decidió (no acumula en memoria para volcar
+  recién al cerrar la sesión, evitando perder la conversación si la app crashea a mitad de una
+  sesión). **Pendiente (PR2/PR3 del mismo cambio, no iniciados)**: el adaptador real de
+  persistencia sobre SQLite embebido (`sqlite-net-pcl`, con el binario nativo resuelto vía UPM en
+  vez de vendorizado manual como M1 hizo con Vosk) y el sub-ensamblado Unity que cablea
+  `SessionRecorder` a los canales reales en una escena. Hasta que eso se mergee, M13 solo
+  funciona con el doble en memoria (no persiste entre sesiones de la app).
+- **Specs formales**: no existe todavía `openspec/specs/bitacora-sesion-m13` — la spec se archiva
+  al cerrar el último PR del cambio `openspec/changes/2026-09-07-bitacora-sesion-m13/`
+  (actualmente con PR1 completado y PR2/PR3 pendientes).
