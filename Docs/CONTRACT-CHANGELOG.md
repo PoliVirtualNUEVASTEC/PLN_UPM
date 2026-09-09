@@ -73,7 +73,7 @@ Decisiones de diseno que quedan registradas con la v1:
 
 ### Enums congelados en v1 (nombre = valor)
 
-El nombre, el valor numerico, el orden y la cardinalidad de cada enum quedan fijados. Cualquier rename, reorden o cambio de valor futuro es, **por diseno**, una ruptura de contrato (ventana del lunes, co-aprobacion). El miembro con valor `0` es el neutro o seguro de cada enum.
+El nombre, el valor numerico, el orden y la cardinalidad de cada enum quedan fijados. Cualquier rename, reorden o cambio de valor futuro es, **por diseno**, una ruptura de contrato (cambio SDD de contrato propio, co-revisado por el otro dueno de M0 o el asesor antes del merge; ver la regla del encabezado). El miembro con valor `0` es el neutro o seguro de cada enum.
 
 | Enum | Miembros |
 |---|---|
