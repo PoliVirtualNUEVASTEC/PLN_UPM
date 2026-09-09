@@ -94,11 +94,12 @@
 
 ## Phase 3: Verificación de contrato (tareas de apply)
 
-- [ ] 3.1 MANUAL (Editor de Unity): Test Runner → EditMode → Run All. En verde deben
+- [x] 3.1 MANUAL (Editor de Unity): Test Runner → EditMode → Run All. En verde deben
   quedar `ContractTypeTests`, `ContractVersionChangelogTests` (con `Version == 2`),
   `CoreAssemblyPurityTests`, `EventChannelTests`, las 7 bases `*Contract` previas
   (sin cambios) y `ClinicalResponderContract` (contra el stub local).
-  **Compuerta humana — ningún agente ejecuta Unity. Es el único bloqueo real de `sdd-verify`.**
+  **Compuerta humana — ningún agente ejecuta Unity.** Confirmado en verde por el autor
+  el 2026-09-09.
 - [x] 3.2 Confirmar por inspección del `.asmdef` que `NpcAi.Core` no ganó ninguna
   referencia. Verificado 2026-09-09: `Runtime/Core/NpcAi.Core.asmdef` tiene `references: []`
   y `noEngineReferences: true`; `git diff main -- Runtime/Core/NpcAi.Core.asmdef` es vacío.
