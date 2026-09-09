@@ -12,9 +12,11 @@ namespace NpcAi.Core.Tests
     public class ContractTypeTests
     {
         [Test]
-        public void Version_del_contrato_es_uno()
+        public void Version_del_contrato_es_dos()
         {
-            Assert.AreEqual(1, Contract.Version);
+            // v2: primer cambio de contrato. La atadura version <-> changelog la cubre
+            // ContractVersionChangelogTests; este es el pin literal.
+            Assert.AreEqual(2, Contract.Version);
         }
 
         [Test]
@@ -137,6 +139,43 @@ namespace NpcAi.Core.Tests
             Assert.IsTrue(new PersonalityId("").IsNone);
             Assert.IsTrue(new PersonalityId("   ").IsNone);
             Assert.IsTrue(PersonalityId.None.IsNone);
+        }
+
+        // --- v2: ClinicalCaseId (espejo de PersonalityId) ---
+
+        [Test]
+        public void ClinicalCaseId_normaliza_el_valor_recibido()
+        {
+            Assert.AreEqual("caso-01", new ClinicalCaseId(" Caso-01 ").Value);
+        }
+
+        [Test]
+        public void ClinicalCaseId_None_es_el_valor_por_defecto_y_hashea_a_cero()
+        {
+            Assert.IsTrue(ClinicalCaseId.None.IsNone);
+            Assert.AreEqual(0, ClinicalCaseId.None.GetHashCode());
+            Assert.IsTrue(new ClinicalCaseId("   ").IsNone);
+        }
+
+        [Test]
+        public void ClinicalCaseId_compara_por_valor_normalizado_y_Ordinal()
+        {
+            var a = new ClinicalCaseId("caso-01");
+            var b = new ClinicalCaseId(" CASO-01 ");
+            var otro = new ClinicalCaseId("caso-02");
+
+            Assert.IsTrue(a == b);
+            Assert.AreEqual(a, b);
+            Assert.IsTrue(a != otro);
+            Assert.AreNotEqual(a, otro);
+        }
+
+        // --- v2: ClinicalResponse ---
+
+        [Test]
+        public void ClinicalResponse_NoAplica_no_esta_manejado()
+        {
+            Assert.IsFalse(ClinicalResponse.NoAplica.Handled);
         }
 
         // --- IntentResult ---

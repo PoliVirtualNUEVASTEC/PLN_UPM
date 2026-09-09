@@ -75,4 +75,27 @@ namespace NpcAi.Core
 
         public bool IsEmpty => string.IsNullOrWhiteSpace(Text);
     }
+
+    /// <summary>
+    /// Respuesta del respondedor clinico. Producido por M15, consumido por el enrutador (M11).
+    /// <para>
+    /// <c>Handled == false</c> significa "turno no clinico": el llamador enruta a
+    /// <see cref="IDialogueGenerator"/> (M6) y <c>Reply</c> NO tiene garantias.
+    /// <c>Handled == true</c> significa que <c>Reply</c> va tal cual a M8.
+    /// </para>
+    /// </summary>
+    public readonly struct ClinicalResponse
+    {
+        public readonly bool     Handled;   // false => turno no clinico, enrutar a M6
+        public readonly NpcReply Reply;     // valido solo si Handled
+
+        public ClinicalResponse(bool handled, NpcReply reply)
+        {
+            Handled = handled;
+            Reply   = reply;
+        }
+
+        /// <summary>Centinela de "este turno no es clinico": <c>Handled == false</c>.</summary>
+        public static ClinicalResponse NoAplica => new ClinicalResponse(false, default);
+    }
 }

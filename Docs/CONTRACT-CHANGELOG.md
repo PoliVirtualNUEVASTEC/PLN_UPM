@@ -1,7 +1,59 @@
 # Historial del contrato (`NpcAi.Core`)
 
 Toda modificacion a `NpcAi.Core` sube `Contract.Version` y deja una entrada aqui.
-Regla: los cambios de contrato se integran **solo los lunes**, en un cambio SDD propio, con aprobacion de todos los duenos de modulo.
+Regla: un cambio de contrato a `Runtime/Core` o `Runtime/CoreChannels` es su propio cambio SDD, revisado antes del merge por el otro dueno compartido de M0 (o, en su defecto, el asesor). Sin ventana fija ni quorum de todos los duenos.
+
+## v2 — 2026-09-09 — Puerto de respuesta clinica (M15)
+
+Primer cambio de contrato despues del congelamiento de v1. Extension **puramente aditiva**:
+ningun enum, DTO ni puerto de v1 cambia (nombre, valor, orden, cardinalidad, firma). Agrega
+la superficie que permite que M15 (respondedor clinico) exista como modulo de primera clase.
+
+### Tipos nuevos
+
+- **DTO inmutables:** `ClinicalCaseId`, `ClinicalResponse` (los DTO pasan de 5 a 7).
+- **Puertos:** `IClinicalResponder` (los puertos pasan de 7 a 8).
+
+Los tres son C# puro (`string`, `bool`, `struct` y tipos de v1): `NpcAi.Core` mantiene
+`noEngineReferences: true` y cero referencias `NpcAi.*` ajenas (`CoreAssemblyPurityTests` lo verifica).
+
+### `ClinicalCaseId` — identificador estable sobre string
+
+`readonly struct` sobre `string`, **espejo exacto de `PersonalityId`** (decision 1 de v1):
+`Value` normalizado a minusculas y sin espacios de borde (`Trim().ToLowerInvariant()`), `null`
+/ vacio / solo espacios ⇒ `Value == null`; igualdad completa y `Ordinal` (`Equals`,
+`GetHashCode`, `operator ==`, `operator !=`); `None = default`; `IsNone == true` solo para
+`None`; `GetHashCode()` de `None` es `0`. El numero de casos clinicos es dato de M14
+(`Data/Cases/`), **nunca** un cambio de contrato.
+
+### `ClinicalResponse` — senal de enrutado
+
+`readonly struct` con `Handled` (bool) y `Reply` (`NpcReply`). `ClinicalResponse.NoAplica`
+DEBE tener `Handled == false`. `Handled == false` DEBE significar "turno no clinico": el
+llamador enruta a `IDialogueGenerator` (M6) y `Reply` NO tiene garantias. `Handled == true`
+DEBE significar que `Reply` va tal cual a M8. NO implementa `IEquatable<T>` (igualdad
+estructural por defecto, igual que los DTO de v1 distintos de `PersonalityId`).
+
+### Invariantes de `IClinicalResponder`
+
+Toda implementacion real (`Runtime/<Modulo>/`) y todo doble (`Runtime/<Modulo>/Fakes/`) DEBE
+heredar `NpcAi.Core.Tests.ClinicalResponderContract` y pasar el 100% de sus `[Test]`, sin
+escena de Unity ni entorno de VR.
+
+- **`IsReady`**: leer NO DEBE lanzar en ningun estado. DEBE ser `false` hasta que `AssignCase` vincule un `ClinicalCaseId` existente en M14.
+- **`AssignCase(ClinicalCaseId, PersonalityId)`**: con el mismo par DEBE ser determinista e idempotente. Con un `ClinicalCaseId` desconocido NO DEBE lanzar y DEBE dejar `IsReady == false`. Caso y personalidad son estado de sesion, no de turno (mismo patron que `IReceptivityEngine.Reset`).
+- **`Respond(Utterance, IntentResult)`**: NO DEBE lanzar en ningun estado (sin `AssignCase`, con `Utterance` vacio o `default`, con `IntentResult` `default`, con solo simbolos, con cadenas de 5000 caracteres). Con `IsReady == false` DEBE devolver `ClinicalResponse.NoAplica`. Cuando `Handled == true`, `Reply.Text` NO DEBE ser vacio ni solo espacios y `Reply.EmotionTag` / `Reply.AnimationCue` NO DEBEN ser `null`.
+
+### Asimetria de determinismo
+
+A la de v1 (`IIntentClassifier.Classify` determinista en `Intent` / `Tone`;
+`IDialogueGenerator.Generate` NO obligado a serlo) se suma la de v2, **opuesta** a la de M6:
+`IClinicalResponder.Respond` **DEBE** ser determinista en `Handled` y en `Reply.Text` para la
+misma tupla `(ClinicalCaseId, PersonalityId, Utterance, IntentResult)` (`Reply.EmotionTag`,
+`Reply.AnimationCue` y cualquier latencia NO estan obligados). Un hecho clinico ("hace 2
+meses", "alergica al Tramadol") no puede cambiar de redaccion entre turnos: M15 usa
+plantillas, no cadenas de Markov. Una prueba de contrato de `Respond` SI debe exigir igualdad
+de `Handled` y `Reply.Text` entre dos llamadas con la misma entrada.
 
 ## v1 — 2026-08-30 — Contrato inicial congelado (Sprint 0)
 

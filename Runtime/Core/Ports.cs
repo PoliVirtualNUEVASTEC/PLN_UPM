@@ -43,6 +43,46 @@ namespace NpcAi.Core
         IntentResult Classify(string text);
     }
 
+    // ------------------------------------------------------------------ Respuesta clinica
+
+    /// <summary>
+    /// M15 — responde como el paciente del caso clinico asignado, anclando la respuesta a un
+    /// hecho del caso ("hace 2 meses", "alergica al Tramadol"). Paso "clinico" del patron
+    /// enrutador: si el turno no es clinico devuelve <see cref="ClinicalResponse.NoAplica"/>
+    /// y el llamador enruta a <see cref="IDialogueGenerator"/> (M6).
+    /// </summary>
+    public interface IClinicalResponder
+    {
+        /// <summary>
+        /// <c>false</c> hasta que <see cref="AssignCase"/> vincule un
+        /// <see cref="ClinicalCaseId"/> existente. Leer NO DEBE lanzar en ningun estado.
+        /// </summary>
+        bool IsReady { get; }
+
+        /// <summary>
+        /// Vincula el caso y la personalidad (estado de sesion, no de turno; mismo patron que
+        /// <see cref="IReceptivityEngine.Reset"/>). Con el mismo par DEBE ser determinista e
+        /// idempotente. Con un <see cref="ClinicalCaseId"/> desconocido NO DEBE lanzar y DEBE
+        /// dejar <see cref="IsReady"/> en <c>false</c>.
+        /// </summary>
+        void AssignCase(ClinicalCaseId caseId, PersonalityId personality);
+
+        /// <summary>
+        /// NO DEBE lanzar en ningun estado (sin <see cref="AssignCase"/> previo, con
+        /// <paramref name="nurseUtterance"/> vacio o <c>default</c>, con
+        /// <paramref name="intent"/> <c>default</c>, con solo simbolos o cadenas muy largas).
+        /// Con <see cref="IsReady"/> en <c>false</c> DEBE devolver
+        /// <see cref="ClinicalResponse.NoAplica"/>. Cuando <c>Handled == true</c>,
+        /// <c>Reply.Text</c> NO DEBE ser vacio ni solo espacios y <c>Reply.EmotionTag</c> /
+        /// <c>Reply.AnimationCue</c> NO DEBEN ser <c>null</c>. DEBE ser determinista en
+        /// <c>Handled</c> y en <c>Reply.Text</c> para la misma tupla
+        /// <c>(ClinicalCaseId, PersonalityId, Utterance, IntentResult)</c> (tags y latencia
+        /// NO obligados). Asimetria deliberada frente a
+        /// <see cref="IDialogueGenerator.Generate"/>, que NO es determinista.
+        /// </summary>
+        ClinicalResponse Respond(Utterance nurseUtterance, IntentResult intent);
+    }
+
     // ------------------------------------------------------------------ Decision
 
     /// <summary>M4 — maquina de estados Receptivo / Neutral / No receptivo.</summary>
