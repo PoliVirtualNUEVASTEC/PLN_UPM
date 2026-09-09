@@ -20,41 +20,41 @@
 
 ## Phase 0: Guardrails (leer antes de escribir)
 
-- [ ] 0.1 Frontera de escritura de PR1: SOLO `Training/Nlu/` y este directorio de cambio
+- [x] 0.1 Frontera de escritura de PR1: SOLO `Training/Nlu/` y este directorio de cambio
   (`openspec/changes/2026-09-09-m2-clasificador-bert-reducido/`). Nada en `Runtime/` todavía.
-- [ ] 0.2 Frontera de escritura de PR2: `Runtime/Nlu/BertIntentClassifier.cs`,
+- [x] 0.2 Frontera de escritura de PR2: `Runtime/Nlu/BertIntentClassifier.cs`,
   `Runtime/Nlu/Models/`, `Tests/EditMode/Nlu/BertIntentClassifierTests.cs`, `package.json`,
   `.gitattributes`. **No tocar `Runtime/Nlu/SemanticMatcher.cs`, `ToneAnalyzer.cs`,
   `NluIntentClassifier.cs`, `TextPreprocessor.cs`** (Out of Scope — quedan como referencia).
-- [ ] 0.3 Cero cambio en `Runtime/Core/Ports.cs`, `Dtos.cs`, `Enums.cs`. `IIntentClassifier`,
+- [x] 0.3 Cero cambio en `Runtime/Core/Ports.cs`, `Dtos.cs`, `Enums.cs`. `IIntentClassifier`,
   `IntentResult`, `Intent`, `Tone` no cambian una firma. Si algo de este cambio parece requerir
   tocar `Runtime/Core/` o `Runtime/CoreChannels/`, parar y avisar — eso es cambio de contrato y
   necesita co-revisión de todos los dueños de módulo (regla del repo), fuera de lo que este
   cambio autoriza.
-- [ ] 0.4 `Tests/EditMode/Core/IntentClassifierContract.cs` no se modifica en ningún PR:
+- [x] 0.4 `Tests/EditMode/Core/IntentClassifierContract.cs` no se modifica en ningún PR:
   `BertIntentClassifierTests` hereda, no edita, la base.
-- [ ] 0.5 Este módulo es IA (M2): `/sdd-ff` no aplica — cada PR pasa por el flujo completo
+- [x] 0.5 Este módulo es IA (M2): `/sdd-ff` no aplica — cada PR pasa por el flujo completo
   propuesta → diseño → tareas → revisión humana, sin atajos.
-- [ ] 0.6 El corpus (`Data/Corpus/*.json`) es de M3, no de este cambio: PR1 lo consume tal cual
+- [x] 0.6 El corpus (`Data/Corpus/*.json`) es de M3, no de este cambio: PR1 lo consume tal cual
   está en `main` en el momento de entrenar; no se edita el corpus dentro de este cambio (ver
   `Data/Corpus/PENDIENTE-AMPLIACION.md`, entregado aparte).
 
 ## Phase 1: Pipeline de entrenamiento offline (PR1)
 
-- [ ] 1.1 Crear `Training/Nlu/requirements.txt` (framework de entrenamiento, biblioteca del
+- [x] 1.1 Crear `Training/Nlu/requirements.txt` (framework de entrenamiento, biblioteca del
   encoder pre-entrenado, exportador ONNX — versiones fijadas, no rangos abiertos).
-- [ ] 1.2 Crear `Training/Nlu/prepare_dataset.py`: carga y unifica
+- [x] 1.2 Crear `Training/Nlu/prepare_dataset.py`: carga y unifica
   `Data/Corpus/emergencia.json` + `Data/Corpus/juntas.json`, valida el esquema
   (`text`/`intent`/`tone`/`scenario`/`labeler`), hace el split train/validación (estratificado
   por `intent` y por `tone` en la medida en que el tamaño de cada clase lo permita).
-- [ ] 1.3 Crear `Training/Nlu/train.py`: carga el encoder pre-entrenado candidato (parámetro de
+- [x] 1.3 Crear `Training/Nlu/train.py`: carga el encoder pre-entrenado candidato (parámetro de
   línea de comandos, no hardcodeado — para poder probar los 2-3 candidatos del spike de Fase 1
   sin editar el script), lo congela, entrena la cabeza de `Intent` y la cabeza de `Tone` sobre el
   mismo embedding, valida contra el split de prueba, exporta a ONNX.
-- [ ] 1.4 El script de validación imprime precisión por clase (no solo agregada) — necesario para
+- [x] 1.4 El script de validación imprime precisión por clase (no solo agregada) — necesario para
   ver explícitamente qué tan mal le va a `Tone.Empatico` mientras el corpus no se amplíe (ver
   `Risks` en `proposal.md`).
-- [ ] 1.5 Crear `Training/Nlu/README.md`: cómo instalar dependencias, cómo correr
+- [x] 1.5 Crear `Training/Nlu/README.md`: cómo instalar dependencias, cómo correr
   `prepare_dataset.py` → `train.py`, qué encoders probar, cómo leer las métricas impresas, dónde
   queda el `.onnx` resultante.
 - [ ] 1.6 Correr el pipeline una vez de punta a punta sobre el corpus actual (30/intención/
@@ -62,9 +62,18 @@
   producción; documentar en el resultado que la precisión en clases con pocos ejemplos
   (`Tone.Empatico` sobre todo) será baja hasta que `Data/Corpus/PENDIENTE-AMPLIACION.md` se
   resuelva.
+  <!-- COMPUERTA HUMANA (apply PR1, 2026-09-09): requiere GPU + descarga del encoder desde
+  Hugging Face; ningun agente entrena de forma autonoma. prepare_dataset.py ya se corrio de
+  verdad sobre el corpus real (361 entradas -> train 287 / val 74, estratificado por
+  intent x tone, con degradacion avisada para las 3 clases singleton incluida Empatia||Empatico).
+  Falta la corrida de train.py de punta a punta. -->
 - [ ] 1.7 Confirmar reproducibilidad (Success Criteria de `proposal.md`): correr `train.py` dos
   veces sobre el mismo corpus y comparar que el modelo resultante da el mismo `Intent`/`Tone`
   para un conjunto fijo de frases de prueba.
+  <!-- COMPUERTA HUMANA (apply PR1, 2026-09-09): train.py imprime el bloque "Chequeo de
+  reproducibilidad" con Intent/Tone para 6 frases fijas del dominio (REPRO_PHRASES) y usa
+  semilla fija (--seed 42); la persona corre train.py dos veces y hace diff de ese bloque. -->
+
 
 > PR1 es Python puro, fuera de Unity: no requiere Test Runner ni Unity Editor para validarse,
 > solo correr los scripts y revisar la salida.
