@@ -92,29 +92,36 @@
   `design.md` → Testing Strategy para `ClinicalCaseId` y `ClinicalResponse`. No tocar
   ningún `[Test]` existente.
 
-## Phase 3: Verificación de contrato
+## Phase 3: Verificación de contrato (tareas de apply)
 
 - [ ] 3.1 MANUAL (Editor de Unity): Test Runner → EditMode → Run All. En verde deben
   quedar `ContractTypeTests`, `ContractVersionChangelogTests` (con `Version == 2`),
   `CoreAssemblyPurityTests`, `EventChannelTests`, las 7 bases `*Contract` previas
   (sin cambios) y `ClinicalResponderContract` (contra el stub local).
-- [ ] 3.2 Confirmar por reflexión / inspección del `.asmdef` que `NpcAi.Core` no ganó
-  ninguna referencia (`references: []`, `noEngineReferences: true` intacto).
+  **Compuerta humana — ningún agente ejecuta Unity. Es el único bloqueo real de `sdd-verify`.**
+- [x] 3.2 Confirmar por inspección del `.asmdef` que `NpcAi.Core` no ganó ninguna
+  referencia. Verificado 2026-09-09: `Runtime/Core/NpcAi.Core.asmdef` tiene `references: []`
+  y `noEngineReferences: true`; `git diff main -- Runtime/Core/NpcAi.Core.asmdef` es vacío.
+- [x] 3.3 `git add` solo de la frontera de M0
+  (`Runtime/Core/`, `Docs/CONTRACT-CHANGELOG.md`, `Tests/EditMode/Core/`,
+  `openspec/changes/2026-09-09-m0-puerto-respuesta-clinica/`) y `git diff --cached`
+  confirmando que no se cruza a otro módulo. Hecho: commit `ba329bb` en la rama
+  `feat/m0-puerto-respuesta-clinica`, diff acotado a esas rutas.
 
-## Phase 4: Cierre (acciones del autor)
+## Después de `sdd-verify` (NO son tareas de apply — no bloquean verify)
 
-- [ ] 4.1 `git add` solo de `Runtime/Core/`, `Docs/CONTRACT-CHANGELOG.md`,
-  `Tests/EditMode/Core/` y `openspec/changes/2026-09-09-m0-puerto-respuesta-clinica/`;
-  `git diff --cached` confirmando que no se cruza a otro módulo.
-- [ ] 4.2 Checklist "Antes de mergear" del `README.md`, **incluido el punto 7**
-  (cambio de contrato: revisado antes del merge por el otro dueño de M0 o el asesor).
-- [ ] 4.3 Al cerrar: mover este cambio a `openspec/changes/archive/`, crear
-  `openspec/specs/respuesta-clinica-m0/spec.md` (requisitos DEBE/NO DEBE con Dado/Cuando/
-  Entonces y trazabilidad a `ClinicalResponderContract` + `ContractTypeTests`), y dejar
-  `archive-report.md`.
-- [ ] 4.4 PR mergeado a `main` por el autor (regla 8), tras la co-revisión de M0.
-- [ ] 4.5 Registrar en el documento de contexto del proyecto y en Engram: "Contrato v2 —
-  puerto `IClinicalResponder` para M15" (regla 10).
+Estos pasos van **después** de que `sdd-verify` pase, en orden: verify → checklist de
+merge + co-revisión de M0 → merge → archive.
+
+- Checklist "Antes de mergear" del `README.md`, **incluido el punto 7** (cambio de
+  contrato: revisado antes del merge por el otro dueño de M0 — Jefferson — o el asesor).
+- PR mergeado a `main` por el autor (regla 8), tras la co-revisión de M0.
+- `sdd-archive`: mover el cambio a `openspec/changes/archive/`, promover
+  `specs/respuesta-clinica-m0/spec.md` a `openspec/specs/respuesta-clinica-m0/spec.md`,
+  dejar `archive-report.md`.
+- Registrar en el documento de contexto del proyecto la decisión "Contrato v2 — puerto
+  `IClinicalResponder` para M15" (regla 10). En Engram ya quedó como
+  `sdd/2026-09-09-m0-puerto-respuesta-clinica/apply-progress`.
 
 ## Notas
 
