@@ -55,6 +55,27 @@ meses", "alergica al Tramadol") no puede cambiar de redaccion entre turnos: M15 
 plantillas, no cadenas de Markov. Una prueba de contrato de `Respond` SI debe exigir igualdad
 de `Handled` y `Reply.Text` entre dos llamadas con la misma entrada.
 
+### Decisiones y proceso (regla 10)
+
+- **Enfoque** (confirmado con el usuario 2026-09-08/09): el contenido del caso clinico llega
+  al NPC por un **modulo dedicado nuevo (M15)**, no creciendo `IDialogueGenerator` ni por un
+  canal de estado ambiente. Patron **enrutador**: M15 arma el `NpcReply` clinico completo; M6
+  queda intacto para el turno social; el llamador (M11) enruta con `ClinicalResponse.Handled`.
+- El caso viaja como `ClinicalCaseId` (string), no como DTO: el esquema del caso es dato de
+  M14 y evoluciona sin tocar el contrato.
+- **Dueno de M15**: Luis (confirmado 2026-09-09).
+- **Co-revision de M0** (regla 3): APROBADA por Luis (autor y dueno compartido de M0) el
+  2026-09-09.
+- **Ciclo SDD**: `spec -> apply -> verify -> archive` cerrado el 2026-09-09. Verify: PASA con
+  observaciones (0 CRITICAL). Verde de Test Runner EditMode confirmado por el autor. Artefactos
+  en `openspec/changes/archive/2026-09-09-m0-puerto-respuesta-clinica/` y en Engram
+  (`sdd/2026-09-09-m0-puerto-respuesta-clinica/*`, obs #46/#48/#49).
+- **Entrega**: merge de `feat/m0-puerto-respuesta-clinica` a `main`, integrado con el PR #8
+  (M13 session-log PR1) y pusheado a `origin/main`.
+- **Diferido a M15** (`2026-09-09-m15-respondedor-clinico`): ejecutar los 8 escenarios
+  trazados hacia adelante heredando `ClinicalResponderContract`; cerrar el hueco de
+  `Respond_no_lanza_en_ningun_estado` en el camino listo.
+
 ## v1 — 2026-08-30 — Contrato inicial congelado (Sprint 0)
 
 Primera version. Define:
