@@ -1,154 +1,188 @@
-# Archive Report: 2026-09-09-m0-puerto-respuesta-clinica
+# Reporte de archivo: 2026-09-09-m0-puerto-respuesta-clinica
 
-**Change**: `2026-09-09-m0-puerto-respuesta-clinica`  
-**Type**: Contract extension (v1 → v2)  
-**Archive date**: 2026-09-09  
-**Mode**: SDD hybrid (OpenSpec + Engram)
+**Cambio**: `2026-09-09-m0-puerto-respuesta-clinica`
+**Tipo**: Extensión de contrato (v1 → v2)
+**Fecha de archivo**: 2026-09-09
+**Modo**: SDD hybrid (OpenSpec + Engram)
 
-## Summary
+## Resumen
 
-This change formalizes the clinical responder port `IClinicalResponder` as a new contract surface in `NpcAi.Core` (contract v1 → v2), enabling M15 (clinical respondent module) to operate as a first-class module. The change is purely additive:
-- **3 new types**: `ClinicalCaseId` (struct mirror of `PersonalityId`), `ClinicalResponse` (routing signal struct), `IClinicalResponder` (port with `IsReady`, `AssignCase`, `Respond`)
-- **All v1 types untouched**: no enum, DTO, or port from contract v1 is renamed, reordered, or reshaped
-- **Contract version**: bumped from 1 to 2 with corresponding `## v2` section in `Docs/CONTRACT-CHANGELOG.md`
-- **Spec promoted**: new capability `respuesta-clinica-m0` moved from delta to main specs at `openspec/specs/respuesta-clinica-m0/spec.md`
+Este cambio formaliza el puerto `IClinicalResponder` como superficie de contrato nueva en
+`NpcAi.Core` (contrato v1 → v2), para que M15 (módulo respondedor clínico) exista como
+módulo de primera clase. El cambio es puramente aditivo:
 
-**Traceability**: 8 ADDED requirements / 16 scenarios. 8 scenarios are runtime-verified now (human EditMode green 2026-09-09); 8 are forward-traced to M15 (abstract `ClinicalResponderContract` base with 7 [Test] methods, no runtime execution yet).
+- **3 tipos nuevos**: `ClinicalCaseId` (struct, espejo de `PersonalityId`), `ClinicalResponse`
+  (struct con la señal de enrutado), `IClinicalResponder` (puerto con `IsReady`, `AssignCase`,
+  `Respond`).
+- **Ningún tipo de v1 tocado**: no se renombra, reordena ni cambia la forma de ningún enum,
+  DTO ni puerto del contrato v1.
+- **Versión de contrato**: sube de 1 a 2, con la sección `## v2` correspondiente en
+  `Docs/CONTRACT-CHANGELOG.md`.
+- **Spec promovida**: la capacidad nueva `respuesta-clinica-m0` pasa de delta a specs
+  principales en `openspec/specs/respuesta-clinica-m0/spec.md`.
 
----
-
-## Verification Authority
-
-### Verification Report
-- **Verdict**: PASS WITH WARNINGS — archive-eligible after M0 co-review
-- **Blockers**: 0
-- **Critical findings**: 0
-- **Requirements**: 8/8 ✓
-- **Scenarios**: 16/16 (8 now, 8 forward)
-- **Engram observation ID**: #48 (`sdd/2026-09-09-m0-puerto-respuesta-clinica/verify-report`)
-
-### Final-State Facts (per handoff, overriding intermediate snapshots)
-
-1. **Runtime Evidence**: Human EditMode Run All 100% GREEN, 2026-09-09 (author luisk, tasks.md 3.1)
-   - Covers: `ContractTypeTests` (v1 enum freeze + 4 new v2 cases), `ContractVersionChangelogTests`, `CoreAssemblyPurityTests`, 7 pre-existing `*Contract` bases
-   - Does NOT execute `ClinicalResponderContract` (abstract, no M15 subclass yet); its 7 [Test] are forward-traced
-
-2. **Task Completion**: 18/18 tasks marked [x] in `tasks.md` (authoritative; `apply-progress.md` is stale per WARNING 2 of verify-report)
-   - Phases 0, 1, 2: code and tests written, committed
-   - Phase 3: manual gates (EditMode, .asmdef inspection) and git boundary audit completed
-
-3. **Co-review of M0 (repo rule 3)**: APPROVED by Luis (author and shared M0 owner) on 2026-09-09
-   - Pre-merge gate satisfied; no blocker for archive
-
-4. **SUG 1 (RESOLVED in commit 5b7c8af)**:
-   - Issue: `Docs/CONTRACT-CHANGELOG.md` line 76 (frozen `## v1` section) still read "(ventana del lunes, co-aprobacion)" — contradicted the corrected line 4
-   - Resolution: Removed obsolete phrasing; now points to the v2 header and the rule in line 4
-
-5. **Commits on branch `feat/m0-puerto-respuesta-clinica`**:
-   - `ba329bb` — feat: v2 contract surface + types + port + base + new tests
-   - `05808bd` — chore: task checkpoint
-   - `d4dfbbc` — chore: task checkpoint
-   - `ffc803b` — docs: verify-report.md (sdd-verify)
-   - `5b7c8af` — docs: CONTRACT-CHANGELOG.md line 76 fix (SUG 1)
+**Trazabilidad**: 8 requisitos ADDED / 16 escenarios. 8 escenarios están verificados por
+runtime ahora (verde EditMode humano del 2026-09-09); 8 están trazados hacia adelante a M15
+(base abstracta `ClinicalResponderContract` con 7 métodos `[Test]`, sin ejecución de runtime
+todavía).
 
 ---
 
-## Warnings & Disposition
+## Autoridad de verificación
 
-| # | Category | Issue | Disposition | Blocker for Archive? |
-|---|----------|-------|------------|--------|
-| W1 | INFO | Scenario count mismatch in Engram metadata | Spec.md has 16 scenarios (8 req), Engram #46 says 18; archive uses authoritative spec.md count (16) | No |
-| W2 | INFO | `apply-progress.md` stale | Shows 3.1/3.2/4.x as [ ]; tasks.md (authoritative) is 18/18 [x] | No |
-| W3 | FORWARD | 8/16 scenarios are forward-traced to M15 | `ClinicalResponderContract` abstract; behavioral execution deferred to M15 verify | No (by design; spec declares forward traceability) |
-| W4 | FAST-FOLLOW | `Respond_no_lanza_en_ningun_estado` only exercises not-ready path | No ready subject exists in M0 (stub never ready, M15 absent); gap closes in M15 apply with 4-line AssignCase + Assume.That addition | No (M15 responsibility) |
+### Reporte de verify
 
-**Suggestions** (non-blocking):
-- SUGGESTION 1: Add optional direct `.asmdef` parse assertion (`noEngineReferences == true`, `references` length == 0)
-- SUGGESTION 2: Consider documenting why the 18→16 scenario reconciliation happened in Engram (optional metadata note)
+- **Veredicto**: PASA CON OBSERVACIONES — apto para archivo tras la co-revisión de M0
+- **Bloqueos**: 0
+- **Hallazgos CRITICAL**: 0
+- **Requisitos**: 8/8 ✓
+- **Escenarios**: 16/16 (8 ahora, 8 hacia adelante)
+- **ID de observación en Engram**: #48 (`sdd/2026-09-09-m0-puerto-respuesta-clinica/verify-report`)
 
----
+### Datos de estado final (por el handoff; prevalecen sobre los snapshots intermedios)
 
-## Metrics
+1. **Evidencia de runtime**: Test Runner EditMode → Run All 100% VERDE, 2026-09-09
+   (autor luisk, tarea 3.1 de `tasks.md`).
+   - Cubre: `ContractTypeTests` (congelamiento de enums de v1 + 4 casos nuevos de v2),
+     `ContractVersionChangelogTests`, `CoreAssemblyPurityTests`, las 7 bases `*Contract`
+     previas.
+   - NO ejecuta `ClinicalResponderContract` (abstracta, sin subclase de M15 todavía); sus
+     7 `[Test]` están trazados hacia adelante.
 
-| Metric | Value |
-|--------|-------|
-| ADDED requirements | 8 |
-| Total scenarios | 16 |
-| Code + test diff | +343 / -4 lines (~347 net) |
-| Review budget (800 lines) | **Low risk** (43% utilized) |
-| Tasks total | 18 |
-| Tasks complete [x] | 18 |
-| Write boundary violations | 0 (M0 routes only: `Runtime/Core/`, `Docs/CONTRACT-CHANGELOG.md`, `Tests/EditMode/Core/`, change directory) |
-| v1 enum/DTO/port signatures altered | 0 (purely additive) |
-| CRITICAL findings | 0 |
-| Blockers | 0 |
-| Verify verdict | PASS WITH WARNINGS |
+2. **Completitud de tareas**: 18/18 tareas marcadas `[x]` en `tasks.md` (autoritativo;
+   `apply-progress.md` quedó desactualizado, ver WARNING 2 del reporte de verify).
+   - Fases 0, 1, 2: código y pruebas escritos y commiteados.
+   - Fase 3: compuertas manuales (EditMode, inspección del `.asmdef`) y auditoría de la
+     frontera de `git` completadas.
 
----
+3. **Co-revisión de M0 (regla 3 del repo)**: APROBADA por Luis (autor y dueño compartido
+   de M0) el 2026-09-09.
+   - Compuerta de pre-merge satisfecha; sin bloqueo para el archivo.
 
-## Spec Promotion & Archive Contents
+4. **SUG 1 (RESUELTA en el commit `5b7c8af`)**:
+   - Problema: `Docs/CONTRACT-CHANGELOG.md` línea 76 (sección congelada `## v1`) todavía
+     decía "(ventana del lunes, co-aprobacion)" — contradecía la línea 4 ya corregida.
+   - Resolución: se quitó la frase obsoleta; ahora apunta a la regla del encabezado.
 
-### Promoted Spec
-- **Source**: `openspec/changes/2026-09-09-m0-puerto-respuesta-clinica/specs/respuesta-clinica-m0/spec.md`
-- **Destination**: `openspec/specs/respuesta-clinica-m0/spec.md`
-- **Mechanical copy verification**: diff -r empty ✓
-
-### Archive Directory
-Path: `openspec/changes/archive/2026-09-09-m0-puerto-respuesta-clinica/`
-
-Contents (moved via `git mv`):
-- `proposal.md` — scope, approach, rollback
-- `design.md` — architectural decisions, port signatures, testing strategy
-- `tasks.md` — 18 implementation tasks (18/18 complete ✓)
-- `apply-progress.md` — apply-phase snapshot (stale; archive includes for audit trail)
-- `verify-report.md` — verification report (canonical version in Engram #48)
-- `specs/respuesta-clinica-m0/spec.md` — delta spec (now also in main specs)
-- `archive-report.md` (this file) — final audit trail
-
-**Mechanical move verification**: diff -r between pre-move snapshot and archived content shows no differences ✓
+5. **Commits en la rama `feat/m0-puerto-respuesta-clinica`**:
+   - `ba329bb` — feat: superficie de contrato v2 + tipos + puerto + base + pruebas nuevas
+   - `05808bd` — chore: checkpoint de tareas
+   - `d4dfbbc` — chore: checkpoint de tareas
+   - `ffc803b` — docs: `verify-report.md` (sdd-verify)
+   - `5b7c8af` — docs: corrección de `CONTRACT-CHANGELOG.md` línea 76 (SUG 1)
 
 ---
 
-## Engram Observation IDs (SDD Artifact Traceability)
+## Observaciones y disposición
 
-| Phase | Artifact | Engram ID | Topic Key |
-|-------|----------|-----------|-----------|
-| spec | Specification | #46 | `sdd/2026-09-09-m0-puerto-respuesta-clinica/spec` |
-| verify | Verification Report | #48 | `sdd/2026-09-09-m0-puerto-respuesta-clinica/verify-report` |
-| archive | This Archive Report | (saving now) | `sdd/2026-09-09-m0-puerto-respuesta-clinica/archive-report` |
+| # | Categoría | Problema | Disposición | ¿Bloquea el archivo? |
+|---|-----------|----------|-------------|----------------------|
+| W1 | INFO | Discrepancia en el conteo de escenarios del metadato de Engram | `spec.md` tiene 16 escenarios (8 req); Engram #46 dice 18; el archivo usa el conteo autoritativo de `spec.md` (16) | No |
+| W2 | INFO | `apply-progress.md` desactualizado | Muestra 3.1/3.2/4.x como `[ ]`; `tasks.md` (autoritativo) está 18/18 `[x]` | No |
+| W3 | HACIA ADELANTE | 8/16 escenarios trazados hacia adelante a M15 | `ClinicalResponderContract` abstracta; la ejecución de comportamiento se difiere al verify de M15 | No (por diseño; la spec declara la trazabilidad hacia adelante) |
+| W4 | FAST-FOLLOW | `Respond_no_lanza_en_ningun_estado` solo ejercita el camino no-listo | No existe ningún sujeto listo en M0 (el stub nunca lo es, M15 ausente); el hueco se cierra en el apply de M15 con 4 líneas: `AssignCase` + `Assume.That` | No (responsabilidad de M15) |
 
----
+**Sugerencias** (no bloquean):
 
-## What Remains for the Pipeline
-
-1. **M0 Co-review gate**: ALREADY SATISFIED (Luis approved 2026-09-09)
-2. **Merge PR to main**: Author (luisk) merges the PR on `feat/m0-puerto-respuesta-clinica` to `main` after co-review gate closes
-3. **M15 responsibility** (2026-09-09-m15-respondedor-clinico SDD):
-   - Inherit `ClinicalResponderContract` in the M15 module doubles and implementation
-   - Execute the 8 forward-traced scenarios (W3, W4 disposition)
-   - Add ready-state coverage for `Respond_no_lanza_en_ningun_estado` (4-line fast-follow, optional)
-4. **Project context doc**: Record decision "Contrato v2 — puerto `IClinicalResponder` para M15" (CLAUDE.md rule 10)
+- SUGERENCIA 1: agregar una aserción directa opcional de parseo del `.asmdef`
+  (`noEngineReferences == true`, largo de `references` == 0).
+- SUGERENCIA 2: documentar en el metadato de Engram por qué se reconcilió el conteo 18→16
+  (nota opcional).
 
 ---
 
-## Compliance Gates
+## Métricas
 
-| Gate | Status | Evidence |
-|------|--------|----------|
-| **Task Completion** | ✓ PASS | 18/18 [x] in tasks.md |
-| **Native Review Receipt** | ✓ ORDINARY POLICY | No formal review gate; co-review approved by Luis (rule 3) |
-| **CRITICAL Issues** | ✓ NONE | verify-report: 0 critical_findings |
-| **Blockers** | ✓ NONE | verify-report: 0 blockers |
-| **Spec Promotion** | ✓ PASS | Mechanical copy to `openspec/specs/respuesta-clinica-m0/spec.md`, diff verified |
-| **Archive Move** | ✓ PASS | `git mv` to `openspec/changes/archive/`, source removed, diff verified |
-| **Write Boundary** | ✓ PASS | Only M0 contract routes touched; no cross-module contamination |
+| Métrica | Valor |
+|---------|-------|
+| Requisitos ADDED | 8 |
+| Escenarios totales | 16 |
+| Diff de código + pruebas | +343 / −4 líneas (~347 neto) |
+| Presupuesto de revisión (800 líneas) | **Riesgo bajo** (43% usado) |
+| Tareas totales | 18 |
+| Tareas completas `[x]` | 18 |
+| Violaciones de frontera de escritura | 0 (rutas de M0: `Runtime/Core/`, `Docs/CONTRACT-CHANGELOG.md`, `Tests/EditMode/Core/`, directorio del cambio) |
+| Firmas de enum/DTO/puerto de v1 alteradas | 0 (puramente aditivo) |
+| Hallazgos CRITICAL | 0 |
+| Bloqueos | 0 |
+| Veredicto de verify | PASA CON OBSERVACIONES |
 
 ---
 
-## Next Step
+## Promoción de spec y contenido del archivo
 
-**Status**: Archive complete and closed.
+### Spec promovida
 
-The SDD cycle for change `2026-09-09-m0-puerto-respuesta-clinica` is CLOSED. The spec, design, tasks, and verification artifacts are now in the audit trail. The merged PR will be the runtime delivery vehicle. M15 will inherit the contract base and execute forward-traced scenarios.
+- **Origen**: `openspec/changes/2026-09-09-m0-puerto-respuesta-clinica/specs/respuesta-clinica-m0/spec.md`
+- **Destino**: `openspec/specs/respuesta-clinica-m0/spec.md`
+- **Verificación de copia mecánica**: `diff -r` vacío ✓
 
-No further SDD phases are needed for M0.
+### Directorio de archivo
+
+Ruta: `openspec/changes/archive/2026-09-09-m0-puerto-respuesta-clinica/`
+
+Contenido (movido con `git mv`):
+
+- `proposal.md` — alcance, enfoque, rollback
+- `design.md` — decisiones de arquitectura, firmas del puerto, estrategia de pruebas
+- `tasks.md` — 18 tareas de implementación (18/18 completas ✓)
+- `apply-progress.md` — snapshot de la fase apply (desactualizado; se incluye para el rastro
+  de auditoría)
+- `verify-report.md` — reporte de verificación (versión canónica en Engram #48)
+- `specs/respuesta-clinica-m0/spec.md` — delta de spec (ahora también en specs principales)
+- `archive-report.md` (este archivo) — rastro de auditoría final
+
+**Verificación del movimiento mecánico**: `diff -r` entre el snapshot pre-movimiento y el
+contenido archivado no muestra diferencias ✓
+
+---
+
+## IDs de observación en Engram (trazabilidad de artefactos SDD)
+
+| Fase | Artefacto | ID Engram | Topic key |
+|------|-----------|-----------|-----------|
+| spec | Especificación | #46 | `sdd/2026-09-09-m0-puerto-respuesta-clinica/spec` |
+| verify | Reporte de verificación | #48 | `sdd/2026-09-09-m0-puerto-respuesta-clinica/verify-report` |
+| archive | Este reporte de archivo | #49 | `sdd/2026-09-09-m0-puerto-respuesta-clinica/archive-report` |
+
+---
+
+## Qué queda para el pipeline
+
+1. **Compuerta de co-revisión de M0**: YA SATISFECHA (Luis aprobó el 2026-09-09).
+2. **Merge del PR**: el autor (luisk) mergea el PR de `feat/m0-puerto-respuesta-clinica`
+   tras cerrarse la compuerta de co-revisión.
+3. **Responsabilidad de M15** (SDD `2026-09-09-m15-respondedor-clinico`):
+   - Heredar `ClinicalResponderContract` en el doble y la implementación real de M15.
+   - Ejecutar los 8 escenarios trazados hacia adelante (disposición de W3, W4).
+   - Agregar cobertura del camino listo para `Respond_no_lanza_en_ningun_estado`
+     (fast-follow de 4 líneas, opcional).
+4. **Documento de contexto del proyecto**: registrar la decisión "Contrato v2 — puerto
+   `IClinicalResponder` para M15" (regla 10 del `CLAUDE.md`).
+
+---
+
+## Compuertas de cumplimiento
+
+| Compuerta | Estado | Evidencia |
+|-----------|--------|-----------|
+| **Completitud de tareas** | ✓ PASA | 18/18 `[x]` en `tasks.md` |
+| **Receipt de revisión nativa** | ✓ POLÍTICA ORDINARIA | Sin compuerta formal de revisión; co-revisión aprobada por Luis (regla 3) |
+| **Hallazgos CRITICAL** | ✓ NINGUNO | verify-report: 0 `critical_findings` |
+| **Bloqueos** | ✓ NINGUNO | verify-report: 0 `blockers` |
+| **Promoción de spec** | ✓ PASA | Copia mecánica a `openspec/specs/respuesta-clinica-m0/spec.md`, diff verificado |
+| **Movimiento de archivo** | ✓ PASA | `git mv` a `openspec/changes/archive/`, origen eliminado, diff verificado |
+| **Frontera de escritura** | ✓ PASA | Solo rutas del contrato de M0; sin contaminación entre módulos |
+
+---
+
+## Siguiente paso
+
+**Estado**: archivo completo y cerrado.
+
+El ciclo SDD del cambio `2026-09-09-m0-puerto-respuesta-clinica` está CERRADO. La spec, el
+diseño, las tareas y los artefactos de verificación quedan en el rastro de auditoría. El PR
+mergeado es el vehículo de entrega de runtime. M15 heredará la base de contrato y ejecutará
+los escenarios trazados hacia adelante.
+
+No se necesitan más fases SDD para M0.
