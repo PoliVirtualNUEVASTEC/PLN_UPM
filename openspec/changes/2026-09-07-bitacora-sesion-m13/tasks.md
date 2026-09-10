@@ -58,22 +58,36 @@
 
 ## Phase 2: Adaptador SQLite real (PR2)
 
-- [ ] 2.1 Declarar `sqlite-net-pcl` en `package.json` (`dependencies`, siguiendo el precedente que
-  M1 dejó documentado pero sin usar — M1 terminó vendorizando Vosk en vez de declarar dependencia
-  UPM; aquí sí aplica porque `sqlite-net-pcl` es un paquete .NET estándar, no un plugin nativo
-  propio).
-- [ ] 2.2 Crear `Runtime/SessionLog/Sqlite/SqliteSessionStore.cs` implementando `ISessionStore`
-  sobre `Application.persistentDataPath` (o ruta equivalente inyectada, para poder probarlo con
-  una ruta temporal en EditMode).
-- [ ] 2.3 RED/GREEN: `Tests/EditMode/SessionLog/SqliteSessionStoreTests.cs : SessionStoreContract`
+- [x] 2.1 ~~Declarar `sqlite-net-pcl` en `package.json` (`dependencies`)~~ — **decisión revisada
+  con el usuario (2026-09-08): vendorizado manual**, igual que M1 hizo con Vosk, en vez de
+  resolución vía UPM/NuGet. `sqlite-net-pcl` no es en realidad un paquete UPM: el AD original
+  subestimó esto. DLLs administrados (`SQLite-net.dll`, `SQLitePCLRaw.core.dll`,
+  `SQLitePCLRaw.provider.e_sqlite3.dll`, `SQLitePCLRaw.batteries_v2.dll`) y nativos
+  (`e_sqlite3.dll` Windows x86_64, `libe_sqlite3.so` Android arm64-v8a) copiados a
+  `Runtime/SessionLog/Sqlite/` con sus `.meta` de importación (mismo patrón que
+  `Runtime/Speech/Plugins/` de M1). **Nota de seguridad**: la versión de `sqlite-net-pcl`
+  (1.9.172) depende por defecto de `SQLitePCLRaw.bundle_green` 2.1.2, cuyo binario nativo tiene
+  una vulnerabilidad conocida de severidad alta (CVE-2025-6965, corrupción de memoria en SQLite
+  < 3.50.2). Se forzaron los paquetes nativos (`SQLitePCLRaw.lib.e_sqlite3` /
+  `.lib.e_sqlite3.android`) a la versión 2.1.13, verificada binariamente para embeber SQLite
+  3.53.3 (parchado). `package.json` no se toca — no hay dependencia UPM que declarar.
+- [x] 2.2 Crear `Runtime/SessionLog/Sqlite/SqliteSessionStore.cs` implementando `ISessionStore`
+  sobre una ruta de archivo inyectada por constructor (en Unity real, bajo
+  `Application.persistentDataPath`; en pruebas EditMode, una ruta temporal).
+- [x] 2.3 RED/GREEN: `Tests/EditMode/SessionLog/SqliteSessionStoreTests.cs : SessionStoreContract`
   contra un archivo `.db` temporal por prueba (crear y borrar en `[SetUp]`/`[TearDown]`).
-- [ ] 2.4 RED/GREEN: prueba dedicada — un turno escrito con `RegistrarTurno` sobrevive a reabrir
+- [x] 2.4 RED/GREEN: prueba dedicada — un turno escrito con `RegistrarTurno` sobrevive a reabrir
   el mismo archivo sin haber llamado `FinalizarSesion()` (garantía de "turno por turno").
-- [ ] 2.5 MANUAL (dispositivo o build IL2CPP): confirmar que `SQLitePCLRaw.bundle_e_sqlite3`
-  resuelve el binario nativo sin vendorizado manual en Android/arm64. Si falla, revisar AD7 y
-  considerar el respaldo de P/Invoke manual documentado en `Risks`.
-- [ ] 2.6 Función de exportación a texto (AD8): método puro sobre `ISessionStore.ObtenerTurnos()`,
+- [ ] 2.5 MANUAL (dispositivo o build IL2CPP): confirmar que el binario nativo vendorizado
+  (`libe_sqlite3.so` arm64-v8a) carga correctamente en un build IL2CPP/Android real. Si falla,
+  revisar AD7 y considerar el respaldo de P/Invoke manual documentado en `Risks`.
+- [x] 2.6 Función de exportación a texto (AD8): método puro sobre `ISessionStore.ObtenerTurnos()`,
   con prueba de que el resultado es derivable 1:1 de los turnos ya persistidos.
+
+> PR2 (2.1–2.4, 2.6) razonado e implementado por el agente; RED/GREEN no se ejecutó en el agente
+> (sin CI/runner headless en este repo, igual que PR1) — **verificación manual en Unity Editor
+> pendiente del usuario** (Test Runner > EditMode > Run All). 2.5 sigue pendiente: requiere
+> dispositivo o build IL2CPP real.
 
 ## Phase 3: Sub-ensamblado Unity + cableado (PR3)
 
