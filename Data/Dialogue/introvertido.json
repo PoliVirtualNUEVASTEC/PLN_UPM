@@ -1,0 +1,27 @@
+{
+  "personalidad": "introvertido",
+  "Receptivo": [
+    "El dolor es acá, en el centro del pecho, como un peso.",
+    "Empezó despacio y fue subiendo; ya llevo un día así.",
+    "Tengo antecedentes: mi papá tuvo un infarto joven.",
+    "Le agradezco que no me apure, así puedo pensar bien.",
+    "Cuando camino rápido me falta el aire y me tengo que parar.",
+    "Sí, prefiero contarle a usted que a otra persona."
+  ],
+  "Neutral": [
+    "Me duele el pecho desde anoche.",
+    "Sí, tomo pastillas para la presión.",
+    "Casi no fumo, algún cigarro suelto.",
+    "Me falta el aire al subir escaleras.",
+    "Está bien, pregunte lo que necesite.",
+    "Últimamente como poco, sin ganas."
+  ],
+  "NoReceptivo": [
+    "No quiero hablar de eso ahora.",
+    "Ya le dije lo que sé, nada más.",
+    "Prefiero esperar solo, si no le molesta.",
+    "No sé, no me acuerdo bien.",
+    "¿De verdad es necesario preguntar tanto?",
+    "Déjelo así, no vale la pena."
+  ]
+}

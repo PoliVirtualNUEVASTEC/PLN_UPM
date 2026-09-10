@@ -1,0 +1,27 @@
+{
+  "personalidad": "grosero",
+  "Receptivo": [
+    "Está bien, le cuento: empezó como un peso acá en el pecho.",
+    "La última vez me mandaron para la casa y volví peor.",
+    "Fumo, sí, un paquete al día más o menos.",
+    "Le hago caso, pero que sea rápido.",
+    "Si contar todo esto sirve para que me atiendan, pregunte.",
+    "El dolor baja por el brazo izquierdo, ahora que lo dice."
+  ],
+  "Neutral": [
+    "Me duele el pecho desde anoche, ahí tiene.",
+    "Tomo algo para la presión, no me sé el nombre.",
+    "Ya le dije lo que me pasa, apúrese.",
+    "Pregunte rápido que no tengo todo el día.",
+    "Será el estómago, qué sé yo, usted es el enfermero.",
+    "Sí, me falta el aire cuando camino, ¿algo más?"
+  ],
+  "NoReceptivo": [
+    "No pienso repetirlo, ya se lo dije a la otra.",
+    "¿Y a usted qué le importa? Haga su trabajo.",
+    "Llevo dos horas acá tirado y recién aparecen.",
+    "Déjeme tranquilo, no voy a contestar más preguntas.",
+    "Otra vez lo mismo, ¿nadie anota nada en este hospital?",
+    "Pregúntele a la máquina, para eso la tienen."
+  ]
+}
