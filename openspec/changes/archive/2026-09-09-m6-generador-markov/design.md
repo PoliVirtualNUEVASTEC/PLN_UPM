@@ -11,12 +11,13 @@ tablas de transición; cada `Generate` hace un paseo aleatorio sobre la tabla qu
 
 ### Unidad de módulo y grafo de referencias
 
-    NpcAi.Dialogue -> [NpcAi.Core]   (sin cambio)
+    NpcAi.Dialogue -> [NpcAi.Core, NpcAi.Core.Channels]   (sin cambio)
 
-`Runtime/Dialogue` ya tiene `noEngineReferences: true` (no depende de `UnityEngine`, a
-diferencia de `NpcAi.Nlu` con Sentis) — este cambio no lo modifica: una cadena de Markov de
-palabras es lógica pura de C#, no necesita ningún paquete de Unity. Ningún otro ensamblado gana
-ni pierde referencias.
+`Runtime/Dialogue` tiene `noEngineReferences: false` (referencia `NpcAi.Core` y
+`NpcAi.Core.Channels`) — este cambio no lo modifica. `MarkovChainBuilder` es lógica pura de C#
+(sin `UnityEngine`); `MarkovDialogueGenerator` sí usa `UnityEngine` para leer el corpus semilla
+(`TextAsset` + `JsonUtility`), igual que el resto del ensamblado. Ningún otro ensamblado gana ni
+pierde referencias.
 
 `Data/Dialogue/` vive fuera de cualquier `.asmdef`: son archivos `.json` de datos, cargados en
 runtime como `TextAsset` (mismo patrón que M3 usa para `Data/Corpus/*.json` y M5 para sus
