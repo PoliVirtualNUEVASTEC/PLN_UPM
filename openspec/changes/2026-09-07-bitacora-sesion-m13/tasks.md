@@ -91,17 +91,25 @@
 
 ## Phase 3: Sub-ensamblado Unity + cableado (PR3)
 
-- [ ] 3.1 Crear `Runtime/SessionLog/Unity/NpcAi.SessionLog.Unity.asmdef` (referencias:
+- [x] 3.1 Crear `Runtime/SessionLog/Unity/NpcAi.SessionLog.Unity.asmdef` (referencias:
   `NpcAi.Core`, `NpcAi.Core.Channels`, `NpcAi.SessionLog`).
-- [ ] 3.2 Crear `Runtime/SessionLog/Unity/SessionLogBehaviour.cs`: campos `[SerializeField]` para
+- [x] 3.2 Crear `Runtime/SessionLog/Unity/SessionLogBehaviour.cs`: campos `[SerializeField]` para
   `UtteranceChannel`/`NpcReplyChannel`, `Subscribe` en `OnEnable`, `Unsubscribe` en `OnDisable`,
   expone `IniciarSesion()`/`FinalizarSesion()` a la escena anfitriona (mismo patrón que
   `SpeechToTextBehaviour` de M1 sobre `OfflineSpeechToText`).
 - [ ] 3.3 MANUAL: escena de prueba desechable (fuera del diff del paquete, igual que el arnés que
   M1 usó para validar `SpeechToTextBehaviour`) que dispara `Raise` manual sobre los dos canales y
   confirma que `SessionLogBehaviour` registra los turnos.
-- [ ] 3.4 Cablear en la escena real de M11 cuando exista (fuera de alcance de este cambio si M11
-  sigue sin escena — dejar anotado en `archive-report.md`).
+- [ ] 3.4 Cablear en la escena real de M11 cuando exista (fuera de alcance de este cambio; M11
+  sigue sin escena `.unity` commiteada al momento de este PR — dejar anotado en `archive-report.md`).
+
+> PR3 (3.1–3.2) razonado e implementado por el agente. Sin prueba EditMode automatizada para el
+> `MonoBehaviour` — mismo precedente que `SpeechToTextBehaviour` de M1, que tampoco la tiene: el
+> ciclo `OnEnable`/`OnDisable` y `Application.persistentDataPath` no son unit-testables sin
+> escena. **Verificación pendiente del usuario**: (a) que el proyecto compile sin errores tras
+> importar el nuevo sub-ensamblado, (b) Test Runner EditMode > Run All sigue en verde (no debería
+> cambiar el conteo, este PR no agrega pruebas nuevas), y (c) 3.3 — la escena de prueba manual —
+> cuando quieras validar el cableado end-to-end.
 
 ## Phase 4: Cierre (acciones del autor, cada PR)
 
