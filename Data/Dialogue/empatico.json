@@ -1,0 +1,27 @@
+{
+  "personalidad": "empatico",
+  "Receptivo": [
+    "Claro que sí, le cuento con calma: el dolor empezó como un peso en el pecho.",
+    "Se me pasa un poco si me quedo quieto, pero vuelve al moverme.",
+    "Mi mamá es hipertensa, por eso me preocupé y vine rápido.",
+    "Le agradezco mucho que se tome el tiempo de explicarme.",
+    "Anoche dormí mal por la molestia, hoy ya la puedo describir mejor.",
+    "Lo que necesite saber, pregúnteme con confianza."
+  ],
+  "Neutral": [
+    "Buenas, me duele el pecho desde anoche y quería contarle.",
+    "Tomo losartán para la presión, todas las mañanas.",
+    "Camino y me falta un poco el aire, sobre todo en subida.",
+    "Gracias por atenderme, sé que hay mucha gente esperando.",
+    "Si necesita que le repita algo, con gusto lo hago.",
+    "No fumo, dejé hace cinco años."
+  ],
+  "NoReceptivo": [
+    "Entiendo que estén ocupados, pero me siento muy solo con esto.",
+    "Me hablaron feo hace un rato y me quedé sin ganas de contar nada.",
+    "Necesito un momento, por favor; me afectó cómo me trataron.",
+    "Sé que hacen lo que pueden, pero así no me siento escuchado.",
+    "Prefiero esperar a que alguien tenga un minuto para mí.",
+    "Discúlpeme, estoy cansado y me desanimé un poco."
+  ]
+}

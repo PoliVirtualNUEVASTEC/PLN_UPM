@@ -206,26 +206,30 @@ por ser la rama compartida real del equipo.
   `null`; funciona con `PersonalityId.None` sin lanzar; `Receptivo` y `NoReceptivo` deben
   producir texto distinto. A diferencia de `IIntentClassifier`, **no se exige determinismo**: es
   una asimetría deliberada del contrato de M0.
-- **Estado actual**: **solo doble en `origin/main` todavía**, pero con plan concreto ya
-  especificado. `Runtime/Dialogue/` en `origin/main` únicamente contiene
-  `Fakes/ScriptedDialogueGenerator.cs` — un `switch` fijo sobre `Receptivity` con 3 plantillas de
-  texto codificadas (`"Claro, digame en que le ayudo"`, `"No tengo nada mas que hablar con
-  usted"`, `"Lo escucho"`). No hay implementación real todavía.
-  El cambio `openspec/changes/2026-09-09-m6-generador-markov/` (propuesto 2026-09-09) especifica
-  el reemplazo — `MarkovDialogueGenerator`, una cadena de Markov de palabras (bigramas) construida
-  a partir de un corpus semilla nuevo (`Data/Dialogue/<personalidad>.json`, uno por cada una de
-  las 4 personalidades de M5, con frases de ejemplo por estado de `Receptivity`), coherente con
-  la propuesta de trabajo de grado ("cadenas de Markov... para darle respuesta"). Este corpus
-  semilla es distinto del de M3: M3 etiqueta lo que dice el *usuario*; el de M6 son ejemplos de
-  lo que dice el *NPC*, y no existe todavía en ningún lado del repo — el propio cambio de M6 lo
-  crea. La primera entrega indexa el corpus por personalidad y receptividad únicamente
-  (`IntentResult` se acepta en la firma pero no condiciona el texto todavía, ver el cambio →
-  Out of Scope). El comentario ya existente en
+- **Estado actual**: **implementado en local, sin mergear todavía** (cambio
+  `openspec/changes/2026-09-09-m6-generador-markov/`). `Runtime/Dialogue/` tiene
+  `MarkovDialogueGenerator : IDialogueGenerator` (motor real) y `MarkovChainBuilder` (cadena de
+  Markov de palabras, bigramas / orden 2), más el doble `Fakes/ScriptedDialogueGenerator.cs` que
+  se mantiene **sin cambios** como implementación determinista de referencia. `Generate` elige el
+  bloque por `(PersonalityId, Receptivity)`, hace un paseo aleatorio sobre la cadena de ese
+  bloque y, si el paseo degenera, cae en un respaldo escalonado (reintento acotado → frase
+  semilla verbatim → frase fija) para no devolver texto vacío nunca. `EmotionTag`/`AnimationCue`
+  salen de una tabla fija por receptividad, no de la cadena. `IntentResult` se acepta en la firma
+  pero no condiciona el texto en esta primera entrega (ver el cambio → Out of Scope).
+- **Corpus semilla**: `Data/Dialogue/<personalidad>.json` — 4 archivos (`grosero`, `histerico`,
+  `introvertido`, `empatico`, los mismos 4 ids de M5) más un `README.md`; cada `.json` tiene 3
+  listas por estado de `Receptivity`, 6 frases por bloque (12 bloques, 72 frases). Es lo que dice
+  el *NPC*, distinto de `Data/Corpus/` de M3 (lo que dice el *usuario*). Ampliar el corpus es una
+  edición de datos: no toca ninguna clase. El comentario ya existente en
   `Tests/EditMode/Core/DialogueGeneratorContract.cs` ("el generador real usa Markov") anticipaba
-  exactamente este enfoque.
-- **Specs formales**: no existe `openspec/specs/dialogo-*` ni carpeta de cambio archivada
-  todavía — el cambio `2026-09-09-m6-generador-markov` crea la primera,
-  `openspec/specs/generador-dialogo-m6/spec.md`, cuando se mergee.
+  este enfoque.
+- **Pruebas**: 14 pruebas EditMode nuevas en verde — `MarkovChainBuilderTests` (6) y
+  `MarkovDialogueGeneratorTests` (8 = 5 del contrato `DialogueGeneratorContract` heredado + 3
+  propias) —, más las del doble, que siguen en verde. Ningún punto del código instancia
+  `MarkovDialogueGenerator` todavía: el cableado en escena real es de M11 (Harness).
+- **Specs formales**: `openspec/specs/generador-dialogo-m6/spec.md`, creada por el cambio
+  `2026-09-09-m6-generador-markov` (vive en `changes/.../specs/generador-dialogo-m6/spec.md`
+  hasta el archivo).
 
 ---
 
