@@ -332,24 +332,34 @@ por ser la rama compartida real del equipo.
 
 - **Carpeta**: `Runtime/SessionLog`.
 - **Dueño**: asignado (nombre no registrado en este documento).
-- **Qué hace (núcleo ya implementado; SQLite todavía planeado)**: al terminar una sesión de
-  entrenamiento, guarda un registro persistente de la conversación completa (lo que dijo el
-  usuario y lo que respondió el NPC), para exportar y revisar después. Se suscribe a los canales
-  ya existentes — `UtteranceChannel` (M1, voz del usuario) y el canal de respuesta del NPC (M6)
-  — sin necesidad de tocar el contrato de `NpcAi.Core`.
+- **Qué hace**: al terminar una sesión de entrenamiento, guarda un registro persistente de la
+  conversación completa (lo que dijo el usuario y lo que respondió el NPC) en SQLite local del
+  dispositivo, turno por turno, para exportar y revisar después. Se suscribe a los canales ya
+  existentes — `UtteranceChannel` (M1, voz del usuario) y `NpcReplyChannel` (M6, respuesta del
+  NPC) — sin tocar el contrato de `NpcAi.Core`.
 - **Contrato que expone**: ninguno en `Runtime/Core/Ports.cs` — `ISessionStore` es un seam
-  interno de `NpcAi.SessionLog`, no un puerto compartido de M0 (decisión ya tomada: al ser un
-  suscriptor puro de canales existentes, no hace falta un puerto nuevo).
-- **Estado actual**: **PR1 mergeado en `origin/main`** (PR #8,
-  "feat/m13-session-log-pr1", 2026-09-09): núcleo puro (`SessionTurn.cs`, `ISessionStore.cs`,
-  `SessionRecorder.cs`) y doble en memoria (`Fakes/InMemorySessionStore.cs`). Escritura
-  **turno por turno** ya implementada tal como se decidió (no acumula en memoria para volcar
-  recién al cerrar la sesión, evitando perder la conversación si la app crashea a mitad de una
-  sesión). **Pendiente (PR2/PR3 del mismo cambio, no iniciados)**: el adaptador real de
-  persistencia sobre SQLite embebido (`sqlite-net-pcl`, con el binario nativo resuelto vía UPM en
-  vez de vendorizado manual como M1 hizo con Vosk) y el sub-ensamblado Unity que cablea
-  `SessionRecorder` a los canales reales en una escena. Hasta que eso se mergee, M13 solo
-  funciona con el doble en memoria (no persiste entre sesiones de la app).
-- **Specs formales**: no existe todavía `openspec/specs/bitacora-sesion-m13` — la spec se archiva
-  al cerrar el último PR del cambio `openspec/changes/2026-09-07-bitacora-sesion-m13/`
-  (actualmente con PR1 completado y PR2/PR3 pendientes).
+  interno de `NpcAi.SessionLog`, no un puerto compartido de M0 (al ser un suscriptor puro de
+  canales existentes, no hizo falta un puerto nuevo).
+- **Estado actual**: **real e implementado, mergeado en `origin/main`** en 3 PR encadenados
+  (`feat/m13-session-log-pr1` PR #8, `pr2` PR #11, `pr3` PR #12; 2026-09-08 a 2026-09-10).
+  Núcleo puro (`SessionTurn.cs`, `ISessionStore.cs`, `SessionRecorder.cs`, `SessionExport.cs`) y
+  doble en memoria (`Fakes/InMemorySessionStore.cs`). Adaptador real
+  `Sqlite/SqliteSessionStore.cs` sobre `sqlite-net-pcl`, escribiendo cada turno confirmado en
+  disco de inmediato (sin transacción abierta), para no perder la sesión si la app se cierra a
+  mitad de un entrenamiento. Sub-ensamblado `NpcAi.SessionLog.Unity` con
+  `SessionLogBehaviour.cs`, que se suscribe por Inspector a los dos canales y expone
+  `IniciarSesion()`/`FinalizarSesion()`/`ExportarTextoPlano()` a la escena anfitriona — mismo
+  patrón núcleo-puro/adaptador que ya usa M4. **Desviación de diseño corregida en el camino**:
+  la propuesta original asumía que `sqlite-net-pcl` se declaraba como dependencia UPM en
+  `package.json`; no era cierto (es un paquete NuGet, no UPM), así que se vendorizó a mano —
+  DLL administrados y binarios nativos Windows x86_64 / Android arm64-v8a — mismo patrón que M1
+  usó con Vosk. De paso se detectó que el binario nativo por defecto de `sqlite-net-pcl` 1.9.172
+  trae una vulnerabilidad conocida de severidad alta (CVE-2025-6965); los binarios vendorizados
+  se forzaron a una versión parchada, verificada binariamente antes de vendorizar. 22 pruebas
+  EditMode nuevas en `NpcAi.SessionLog.Tests`, en verde. **Pendiente (no bloqueante)**: validar
+  el binario nativo en un dispositivo/build IL2CPP real (hoy solo verificado binariamente), una
+  escena de prueba manual que confirme el cableado end-to-end, y cablear
+  `SessionLogBehaviour` en la escena real de M11 cuando esa escena exista.
+- **Specs formales**: `openspec/specs/bitacora-sesion-m13/spec.md` — 6 requisitos con
+  trazabilidad completa a pruebas concretas (`SessionRecorderTests`, `SessionStoreContract`
+  heredada por `InMemorySessionStoreTests`/`SqliteSessionStoreTests`, `SessionExportTests`).

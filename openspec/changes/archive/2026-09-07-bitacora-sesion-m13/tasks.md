@@ -113,14 +113,15 @@
 
 ## Phase 4: Cierre (acciones del autor, cada PR)
 
-- [ ] 4.1 `git add` solo de las carpetas del PR correspondiente; `git diff --cached` antes de
-  cualquier commit, confirmando que no se cruza a otro módulo.
-- [ ] 4.2 Checklist "Antes de mergear" del `README.md` (pruebas propias en verde, diff acotado,
-  spec/design/tasks archivados, rama al día con `main`, decisiones registradas).
-- [ ] 4.3 Al cerrar el último PR: mover este cambio a `openspec/changes/archive/` con su
+- [x] 4.1 `git add` solo de las carpetas del PR correspondiente; `git diff --cached` antes de
+  cualquier commit, confirmando que no se cruza a otro módulo. (Cumplido en cada uno de los 3 PR.)
+- [x] 4.2 Checklist "Antes de mergear" del `README.md` (pruebas propias en verde, diff acotado,
+  spec/design/tasks archivados, rama al día con `main`, decisiones registradas). (Cumplido en
+  cada uno de los 3 PR.)
+- [x] 4.3 Al cerrar el último PR: mover este cambio a `openspec/changes/archive/` con su
   `spec.md` en `openspec/specs/bitacora-sesion-m13/` y su `archive-report.md`, y actualizar la
   sección M13 de `Docs/MODULES.md` de "decidido, no iniciado" a su estado real.
-- [ ] 4.4 PR mergeado a `main` por el autor (regla 8).
+- [x] 4.4 PR mergeado a `main` por el autor (regla 8). (PR1 #8, PR2 #11, PR3 #12.)
 
 ## Notas
 
