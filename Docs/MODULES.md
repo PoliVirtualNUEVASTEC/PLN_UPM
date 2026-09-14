@@ -336,7 +336,13 @@ por ser la rama compartida real del equipo.
   conversación completa (lo que dijo el usuario y lo que respondió el NPC) en SQLite local del
   dispositivo, turno por turno, para exportar y revisar después. Se suscribe a los canales ya
   existentes — `UtteranceChannel` (M1, voz del usuario) y `NpcReplyChannel` (M6, respuesta del
-  NPC) — sin tocar el contrato de `NpcAi.Core`.
+  NPC) — sin tocar el contrato de `NpcAi.Core`. Cada sesión se identifica por una etiqueta manual
+  (`IniciarSesion(string etiqueta)`) y **todas conviven indefinidamente** en la base — no hay
+  borrado al iniciar una sesión nueva —, consultables por separado
+  (`ListarSesiones()`/`ObtenerTurnosDeSesion(etiqueta)`). Si la app se cierra por un error a
+  mitad de una sesión, al reabrir **la retoma sola** (sin perder de vista dónde se quedó ni
+  pedirle a nadie que reescriba la etiqueta), siempre que esa sesión no se haya cerrado ya con
+  `FinalizarSesion()`.
 - **Contrato que expone**: ninguno en `Runtime/Core/Ports.cs` — `ISessionStore` es un seam
   interno de `NpcAi.SessionLog`, no un puerto compartido de M0 (al ser un suscriptor puro de
   canales existentes, no hizo falta un puerto nuevo).
@@ -356,10 +362,14 @@ por ser la rama compartida real del equipo.
   usó con Vosk. De paso se detectó que el binario nativo por defecto de `sqlite-net-pcl` 1.9.172
   trae una vulnerabilidad conocida de severidad alta (CVE-2025-6965); los binarios vendorizados
   se forzaron a una versión parchada, verificada binariamente antes de vendorizar. 22 pruebas
-  EditMode nuevas en `NpcAi.SessionLog.Tests`, en verde. **Pendiente (no bloqueante)**: validar
-  el binario nativo en un dispositivo/build IL2CPP real (hoy solo verificado binariamente), una
-  escena de prueba manual que confirme el cableado end-to-end, y cablear
-  `SessionLogBehaviour` en la escena real de M11 cuando esa escena exista.
-- **Specs formales**: `openspec/specs/bitacora-sesion-m13/spec.md` — 6 requisitos con
+  EditMode nuevas en `NpcAi.SessionLog.Tests`, en verde. **Ampliación 2026-09-14** (cambio SDD
+  separado, `historial-multi-sesion-m13`, motivada por una prueba real del usuario): historial
+  multi-sesión por etiqueta (antes cada `IniciarSesion` borraba todo) y reanudación automática
+  tras un cierre no limpio (`SessionRecorder.ReanudarUltimaSesion()`, gobernada por un flag
+  `Cerrada` por sesión para no retomar una que sí se cerró bien). **Pendiente (no bloqueante)**:
+  validar el binario nativo en un dispositivo/build IL2CPP real (hoy solo verificado
+  binariamente), y cablear `SessionLogBehaviour` en la escena real de M11 cuando esa escena
+  exista (sigue sin existir al 2026-09-14).
+- **Specs formales**: `openspec/specs/bitacora-sesion-m13/spec.md` — 9 requisitos con
   trazabilidad completa a pruebas concretas (`SessionRecorderTests`, `SessionStoreContract`
   heredada por `InMemorySessionStoreTests`/`SqliteSessionStoreTests`, `SessionExportTests`).
