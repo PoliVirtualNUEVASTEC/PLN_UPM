@@ -34,11 +34,15 @@ adelante sin sorpresas de versiones.
 python prepare_dataset.py
 ```
 
-Unifica `Data/Corpus/emergencia.json` + `Data/Corpus/juntas.json`, valida el
-esquema de cada entrada (`text`/`intent`/`tone`/`scenario`/`labeler`, con
-`intent`/`tone` miembros validos de `NpcAi.Core.Intent` / `NpcAi.Core.Tone`) y
-escribe el split en `Training/Nlu/data/` (`train.jsonl`, `val.jsonl`,
-`split_summary.json`).
+Carga `Data/Corpus/emergencia.json`, valida el esquema de cada entrada
+(`text`/`intent`/`tone`/`scenario`/`labeler`, con `intent`/`tone` miembros validos
+de `NpcAi.Core.Intent` / `NpcAi.Core.Tone`) y escribe el split en
+`Training/Nlu/data/` (`train.jsonl`, `val.jsonl`, `split_summary.json`).
+
+`Data/Corpus/juntas.json` queda excluido a proposito: el escenario de sala de
+juntas (toma de requerimientos) todavia no esta definido y su corpus actual modela
+una reunion de junta directiva. Se reincorpora editando `CORPUS_FILES` en
+`prepare_dataset.py` cuando exista el corpus que corresponde.
 
 El split se estratifica por la combinacion `intent x tone` **en la medida en que
 el tamano de cada clase lo permita**. Las clases con un solo ejemplo (hoy
