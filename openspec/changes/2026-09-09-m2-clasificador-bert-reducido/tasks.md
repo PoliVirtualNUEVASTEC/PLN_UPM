@@ -122,11 +122,17 @@
   pendiente CONFIRMAR en el Test Runner real (compuerta humana 2.7) que esto basta en la
   practica; si no basta, es motivo de volver a esta tarea antes de mergear, como pide el
   enunciado. -->
-- [ ] 2.7 MANUAL (Editor de Unity): confirmar que Sentis soporta todos los operadores del encoder
+- [x] 2.7 MANUAL (Editor de Unity): confirmar que Sentis soporta todos los operadores del encoder
   elegido, corriendo la batería de pruebas en el Test Runner real (no solo revisión de código) —
   este es el spike técnico ya planeado en el cronograma ("1.2 Spike técnico de Sentis y selección
   del stack"); si el encoder candidato falla aquí, volver a Fase 1 con otro candidato antes de
   continuar PR2.
+  <!-- compuerta humana (2026-09-14): confirmado por el usuario en Unity Editor Test Runner,
+  EditMode, rama feat/m2-pr2-bert-sentis — BertIntentClassifierTests aparece y pasa en verde
+  junto con el resto de la suite (368 tests). Sentis soporta los operadores de
+  distilbert-base-multilingual-cased sin fallas; queda descartado el riesgo de tener que volver
+  a Fase 1 con otro candidato. La mitigación de determinismo de la tarea 2.6 (BackendType.CPU)
+  queda confirmada en la práctica, no solo por diseño. -->
 - [x] 2.8 Confirmar que ningún otro punto del código pasa a instanciar `BertIntentClassifier`
   todavía de forma automática: la integración real en una escena de composición queda para M11
   (Harness) cuando exista, según `design.md` → Migration/Rollout.

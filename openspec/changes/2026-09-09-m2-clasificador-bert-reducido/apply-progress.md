@@ -308,9 +308,9 @@ honesta posible sin acceso a Unity Editor.
 
 ### Remaining Tasks (change-wide)
 
-- [ ] 2.7 — compuerta humana: correr el Test Runner real, confirmar/ajustar las 5 decisiones
+- [x] 2.7 — compuerta humana: correr el Test Runner real, confirmar/ajustar las 5 decisiones
   tecnicas de "Detalle tecnico de 2.5", y evaluar viabilidad on-device (Quest) del tamano del
-  modelo elegido.
+  modelo elegido. Ver "Compuerta humana 2.7 — resultado" al final de este documento.
 - [ ] Fase 3 (PR3): documentacion (`Docs/MODULES.md`, `PENDIENTE-AMPLIACION.md`).
 - [ ] Fase 4: cierre por PR (git add acotado por PR, checklist, commit LFS del `.onnx`,
   archivado del cambio).
@@ -332,6 +332,23 @@ honesta posible sin acceso a Unity Editor.
 ## Status
 
 PR1: Fase 0 (6/6) + Fase 1 (7/7, incluyendo 1.6/1.7 via compuerta humana del usuario).
-PR2: 7/8 tareas de Fase 2 completas (2.1-2.6, 2.8); 2.7 es la compuerta humana pendiente,
-explicitamente no intentada por el agente. Listo para verify de PR2 con esa salvedad
-explicita, y para que el usuario corra 2.7 en el Editor real.
+PR2: Fase 2 completa (8/8) — 2.7 confirmada por el usuario en el Editor real (ver
+"Compuerta humana 2.7 — resultado" abajo). Fase 3 (documentacion especifica de este cambio)
+y Fase 4 (cierre por PR/archivado) siguen pendientes.
+
+## Compuerta humana 2.7 — resultado
+
+- **Fecha**: 2026-09-14.
+- **Quien la corrio**: el usuario, en Unity Editor Test Runner (pestana EditMode), sobre la
+  rama `feat/m2-pr2-bert-sentis`.
+- **Resultado**: `BertIntentClassifierTests` aparece en el Test Runner y pasa en verde, junto
+  con el resto de la suite (368 tests en total reportados en verde).
+- **Que confirma esto**: Sentis 2.6.1 soporta todos los operadores del encoder elegido
+  (distilbert-base-multilingual-cased) — no hace falta volver a Fase 1 con otro candidato. La
+  mitigacion de determinismo de la tarea 2.6 (`BackendType.CPU` en el `Worker`, en vez de
+  `GPUCompute`) es suficiente en la practica, no solo por diseno: `Es_determinista_para_la_misma_entrada`
+  paso.
+- **Que NO confirma esto**: el gap de carga de modelo (`AssetDatabase`/`modelPath`, valido solo
+  dentro del Editor) sigue sin resolverse — no se probo un build real de Quest, solo el Editor.
+  Ese rediseno a `ModelAsset` por Inspector sigue pendiente y queda fuera del alcance de PR2
+  (ver Deviations arriba, hallazgo (b) de la tarea 2.5).
