@@ -1,1262 +1,624 @@
 [
-  {
-    "text": "¿Podemos revisar los números del trimestre? Quiero entender cómo vamos.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señor presidente, ¿me permite hacer una pregunta sobre el presupuesto?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que me expliquen por qué se aprobó eso sin consultarnos.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me pueden compartir el informe antes de que lo discutamos?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Podemos posponer esta decisión para la próxima reunión? No estamos listos.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Esto es inaceptable, llevamos tres meses sin resultados y nadie hace nada.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Basta de excusas! Necesitamos soluciones, no más vueltas.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me diga que todo está bien cuando los números no cuadran.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Quién es responsable de este desastre? Porque alguien tiene que explicar esto.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ya me tiene harto con las promesas vacías, necesito acción real.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo la presión que tenemos, es difícil tomar estas decisiones.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que el equipo está trabajando duro, pero necesitamos ver resultados.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Comprendo que hay restricciones, pero el tiempo no nos alcanza.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que uno se siente frustrado cuando las cosas no avanzan.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por la transparencia, sé que no es fácil mostrar estos números.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El informe dice que las ventas bajaron un quince por ciento este trimestre.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo datos que muestran que el mercado está cambiando más rápido de lo que pensábamos.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Nuestros competidores lanzaron un producto similar la semana pasada.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Revisé los números y tenemos un problema serio con el flujo de caja.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El cliente principal nos pidió una reunión para renegotiar el contrato.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Qué opinan sobre contratar a alguien externo para que nos ayude?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería mejor mudar la oficina a un lugar más central?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Y si compramos esa empresa que está en quiebra? Podría ser buena oportunidad.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Qué pasó con el proyecto del año pasado? Nunca nos dieron respuesta.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes creen que debemos invertir en inteligencia artificial?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Permítame interrumpir, tengo un dato importante que cambiaría todo.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, espérese, yo no estoy de acuerdo con lo que acaba de decir.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Espere, espere, antes de que vote le quiero mostrar otro dato.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Perdón que lo interrumpa, pero hay algo que no cuadra en esa propuesta.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese que yo no he terminado de presentar mi punto.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Nos podemos comprometer a una fecha firme de entrega?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señor gerente, ¿usted me puede aclarar ese punto del contrato?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que alguien me explique por qué el presupuesto se duplicó.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Podemos revisar el cronograma antes de aprobar el proyecto?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me permiten hacer una observación sobre el punto anterior?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Esto es un fraude! Los números que nos presentaron no son reales.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me vengan con cuentos, yo sé cómo funcionan estas cosas.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Llevamos hora y media y no hemos decidido nada, ¡esto es ridículo!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted se está dando cuenta de que estamos perdiendo dinero cada día?",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Basta de postergar, ¡tenemos que decidir ya!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que da impotencia ver cómo se dilapidan los recursos.",
-    "intent": "Empatia",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que es difícil para todos, pero no podemos seguir así.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que el equipo está agotado, necesitamos repriorizar.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Comprendo la posición de la gerencia, pero los empleados también sufren.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por reconocer el problema, eso es el primer paso para solucionarlo.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Los clientes proyectados para el próximo año suman dos mil millones de pesos.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo evidencia de que el proveedor nos está cobrando de más.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Los resultados de la encuesta de satisfacción muestran un cuarenta por ciento de descontento.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Revisé el contrato y hay una cláusula que nos protege en este caso.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El informe técnico dice que necesitamos invertir en infraestructura urgente.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Qué piensan sobre la propuesta del consultor externo?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No deberíamos contratar a más personal antes de lanzar el proyecto?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Y si hacemos una alianza con esa empresa que nos ofreció?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes se acuerdan del proyecto que propusimos el año pasado?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería mejor esperar a que mejore la economía del país?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe que lo interrumpa, pero hay un dato que cambia todo lo que estábamos discutiendo.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, espérese, yo no estoy de acuerdo con esa conclusión.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ay, espérese, que se me olvidó decir algo importante sobre el presupuesto.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese que yo le estaba contando otra cosa del mercado.",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Perdón, pero necesito interrumpirlo porque hay un error en esos números.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Podemos definir las responsabilidades antes de terminar la reunión?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señora directora, ¿usted me puede aclarar ese punto del informe?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que alguien me explique por qué el proyecto va tres meses de retraso.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me pueden enviar el resumen ejecutivo antes del viernes?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Podemos volver al punto tres? No quedó claro.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Esto es un desastre total! Nadie sabe qué está haciendo.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me diga que todo marcha bien cuando el morale del equipo está por los suelos.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Quién autorizó ese gasto? ¡Eso no pasó por ningún comité!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ya me tiene harto con las excusas, ¡necesitamos resultados!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me venga a decir que no hay plata cuando ustedes se subieron el sueldo.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que es un momento difícil para la empresa.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que la gerencia está haciendo lo que puede con los recursos que hay.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Comprendo que hay presión de arriba, pero los de abajo también sufrimos.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es frustrante ver cómo se pierden oportunidades por falta de decisión.",
-    "intent": "Empatia",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por escuchar nuestras preocupaciones, eso significa mucho.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El proyecto piloto mostró un aumento del veinte por ciento en productividad.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo datos que muestran que los clientes prefieren el modelo anterior.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El análisis de riesgo identificó tres factores críticos que debemos atender.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Revisé los contratos y tenemos una penalización si no cumplimos la fecha.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El benchmarking con la competencia nos muestra que vamos rezagados.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Qué opinan sobre tercerizar esa función? Varios países lo hacen así.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No deberíamos esperar a que cambie el gobierno para decidir esto?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Y si patrocinamos ese evento para ganar visibilidad?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes se acuerdan de lo que pasó con el otro proveedor?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería mejor contratar a un abogado antes de firmar eso?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Permítame interrumpir, necesito aclarar un punto antes de que sigamos.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, espérese, yo no estoy de acuerdo con lo que propone.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Espere, antes de que vote le quiero mostrar otro panorama.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe, pero hay algo que no cuadra en esa presentación.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese que yo no he terminado con mi análisis.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me pueden explicar por qué el costo se disparó de esa manera?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señor vicepresidente, ¿usted me puede aclarar la parte contractual?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que alguien me explique qué estamos votando exactamente.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Podemos diferir la decisión hasta tener más información?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me permiten hacer una propuesta alternativa antes de cerrar?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Esto es un caos! Nadie sabe ni qué está votando.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me venga con datos viejos, eso ya no sirve para esta discusión.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Quién respondió por el dinero que se invirtió en el proyecto fallido?",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ya basta de reuniones sin resultados, ¡esto es un circo!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me diga que es un plan estratégico cuando no tiene ni un solo objetivo medible.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que estamos en crisis, pero no podemos tomar decisiones desesperadas.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que es difícil para la dirección, pero los empleados necesitan respuestas.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Comprendo la frustración de todos, es un momento complicado.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que uno se siente impotente cuando las decisiones no dependen de uno.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por reconocer el problema, espero que ahora sí actuemos.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El informe de sostenibilidad muestra que redujimos emisiones en un treinta por ciento.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo una propuesta concreta con datos que podría funcionar.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El análisis de costo-beneficio muestra que invertir en tecnología nos ahorraría dinero.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Los datos de encuesta muestran que el setenta por ciento de empleados está descontento.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Revisé el mercado y hay una oportunidad que no estamos aprovechando.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Qué opinan sobre implementar metodología ágil en todo el equipo?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería mejor que cada uno presentara su parte por separado?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Y si nos asociamos con la universidad para el proyecto de investigación?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes creen que deberíamos tener un comité de ética?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería bueno contratar un psicólogo organizacional para el equipo?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe, pero necesito aclarar un punto antes de que sigamos discutiendo.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, espérese, esa conclusión se sacó sin revisar los datos completos.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ay, espérese, se me olvidó decir que tengo un dato nuevo.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese que yo le estaba contando otra cosa importante.",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Perdón que lo interrumpa, pero hay un error en la presentación.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Podemos definir los próximos pasos antes de cerrar la reunión?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señor director, ¿usted me puede confirmar si hay disponibilidad presupuestal?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que alguien me explique por qué no se ejecutó el plan anterior.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me pueden aclarar qué implicaciones legales tiene esta decisión?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Podemos volver al punto dos? No me quedó claro el alcance.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Esto es inaceptable! Llevamos meses sin avanzar en lo más mínimo.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me venga a decir que es un plan cuando no tiene ni cronograma.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Quién autorizó ese gasto? ¡Eso no pasó por el comité de presupuesto!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ya me tiene harto con las vueltas, ¡decidamos de una vez!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me diga que todo está bien cuando el equipo está desmoralizado.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que la situación es complicada, pero necesitamos ser honestos.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que la gerencia está bajo presión, pero los empleados también.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Comprendo que hay intereses encontrados, pero debemos priorizar la empresa.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que uno se siente tan pequeño cuando las decisiones grandes no dependen de uno.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por la oportunidad de expresarnos, eso no es común en estas reuniones.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El análisis financiero muestra que debemos recortar un quince por ciento de gastos fijos.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo datos de que el mercado está creciendo en un diez por ciento anual.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "La auditoría interna encontró irregularidades en tres departamentos.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Revisé los benchmarks y nuestros competidores están invirtiendo en innovación.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El informe de riesgos operativos identificó cinco vulnerabilidades críticas.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Qué opinan sobre implementar un sistema de gestión del conocimiento?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería mejor que hiciéramos una pausa y volviéramos mañana?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Y si creamos una filial para ese mercado nuevo?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes creen que debemos cambiar de asesoría legal?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería bueno hacer una capacitación antes de implementar el cambio?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Permítame interrumpir, tengo un dato que no puede ignorarse.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, espérese, esa propuesta no me convence y hay que revisarla con calma.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Espere, antes de que termine le quiero mostrar otra alternativa.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe, pero hay un error en esos números que necesito aclarar.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese, ¡todavía no he terminado y aquí se me escucha hasta el final!",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me pueden explicar por qué la utilidad bajó este trimestre?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señor gerente general, ¿usted me puede aclarar el nuevo plan estratégico?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que alguien me explique por qué no se cumplieron las metas del año anterior.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Podemos revisar el inventario antes de aprobar nuevas compras?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me permiten presentar una propuesta alternativa al plan original?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Esto es un escándalo! Estamos perdiendo clientes a diario y nadie hace nada.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me venga con explicaciones técnicas, necesito soluciones concretas.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Quién va a responder por este desastre administrativo?",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ya es la tercera reunión que hablamos de lo mismo y nada cambia.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me diga que es un plan de acción cuando no tiene ni un responsable asignado.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que la empresa está pasando por un mal momento.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que la directiva está tomando medidas, pero necesitamos ver resultados.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Comprendo que hay restricciones, pero los empleados necesitan certeza.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que la incertidumbre nos tiene a todos ansiosos y la productividad baja.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por la honestidad, no es fácil reconocer que las cosas no van bien.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El flujo de caja proyectado muestra que necesitamos financiamiento urgente.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo evidencia de que el proveedor incumplió el contrato de servicio.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El informe de productividad muestra que el equipo está por debajo del promedio del sector.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Revisé los números y tenemos un margen de utilidad del cinco por ciento, muy bajo.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El análisis competitivo muestra que necesitamos innovar o quedarnos atrás.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Qué opinan sobre crear una unidad de negocio separada para ese segmento?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería mejor que el próximo informe lo haga un auditor externo?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Y si empezamos con un proyecto piloto antes de escalar?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes creen que deberíamos invertir en capacitación este año?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No sería bueno que cada área presentara sus indicadores clave?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe que lo interrumpa, pero necesito aclarar un punto antes de que sigamos.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, espérese, yo no estoy de acuerdo con esa propuesta.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ay, espérese, se me olvidó decir que tengo un dato nuevo importante.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese que yo le estaba contando otra cosa crucial.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Perdón, pero hay un error en la presentación que necesito corregir.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "juntas",
-    "labeler": "Luis"
-  }
+  { "text": "Le cuento que voy a registrar cada equipo con su nombre y el año de fundación.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que un jugador solo puede pertenecer a un equipo durante el torneo.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le informo que el análisis completo se entrega la próxima semana.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Vamos a modelar el partido con dos equipos, uno local y uno visitante.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le comento que cada estadio va a quedar identificado por nombre, ciudad y capacidad.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Voy a registrar al árbitro con su código de licencia y su nombre.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entendí que un producto puede tener varios proveedores distintos.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le explico que el precio de compra se maneja por cada combinación de producto y proveedor.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Vamos a controlar el inventario por separado en cada sucursal.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le cuento que el cliente frecuente acumula puntos con cada compra.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entendí que la factura agrupa varios productos con su cantidad y subtotal.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le informo que la aplicación va a manejar tres rangos de edad para los estudiantes.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Vamos a registrar las restricciones alimentarias y alergias de cada niño.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le comento que los padres van a poder cambiar el menú de sus hijos.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entendí que los empleados tienen un veinte por ciento de descuento.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le explico que cada vuelo va a tener un aeropuerto de origen y uno de destino.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Vamos a registrar al tripulante con su rol específico en cada vuelo.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le cuento que el tiquete va a guardar el asiento, la clase y el precio final.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entendí que un pasajero puede viajar en muchos vuelos distintos.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le informo que esta reunión la vamos a grabar para no perder detalle.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Con mucho gusto le confirmo: cada jugador va a quedar con su documento, nombre y posición.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si me permite resumir, entendí que el partido siempre lo dirige un grupo de árbitros.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le agradezco la explicación; anoté que un árbitro puede pitar varios partidos del torneo.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con su permiso, le comento que vamos a guardar los goles y las tarjetas por jugador y partido.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le confirmo, muy amable, que el producto se identifica por código de barras, nombre y categoría.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si no le molesta, le resumo: el proveedor se identifica por NIT y razón social.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le cuento con gusto que vamos a manejar el precio de compra por cada pareja producto-proveedor.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con todo respeto le confirmo que cada sucursal va a tener su propio inventario.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le agradezco los datos; el cliente frecuente queda con documento, nombre y puntos.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si me permite, le explico que la factura va a llevar número, fecha, hora y valor total.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le confirmo, con su autorización, que los niños quedan agrupados en tres rangos de edad.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con mucho gusto le explico que vamos a guardar alergias y restricciones de cada estudiante.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le agradezco la aclaración: los padres van a poder ver y cambiar el menú de sus hijos.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si me permite resumir, los empleados tienen el veinte por ciento de descuento que usted mencionó.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con su permiso, le confirmo que cada avión queda identificado por matrícula, modelo y capacidad.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le agradezco el dato; cada vuelo va a registrar su aeropuerto de origen y de destino.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con mucho gusto le explico que el tripulante va a tener un rol distinto según el vuelo.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si no le molesta, le resumo: el pasajero se identifica por pasaporte o cédula y nacionalidad.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le confirmo, con su permiso, que el tiquete va a guardar el asiento y la clase de cabina.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le agradezco su tiempo; con esto ya tengo lo que necesitaba de esta parte del sistema.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Ya le dije que anoté lo del jugador y su equipo, no hace falta que me lo repita.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso ya me quedó claro: un estadio puede tener varios partidos, siga.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con lo que me dijo del árbitro me alcanza, no necesito más vueltas.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya anoté los goles y las tarjetas, no me lo explique de nuevo.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso del producto y el proveedor ya lo entendí, no es tan complicado.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con el precio de compra por combinación me quedó claro, avancemos.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya sé que cada sucursal maneja su propio inventario, eso no hay que repetirlo.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con los puntos del cliente frecuente ya tengo suficiente, siga con lo otro.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso de la factura y el subtotal ya quedó anotado, no me lo repita.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya entendí lo de los tres rangos de edad, no hace falta explicarlo de nuevo.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con las alergias y restricciones ya me alcanza, sigamos con lo que falta.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso del descuento del empleado ya lo tengo claro, no insista.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya anoté lo del origen y destino del vuelo, avancemos de una vez.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con el rol del tripulante ya me quedó claro, no hace falta repetirlo.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso del asiento y la clase ya lo tengo anotado, siga con lo que sigue.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya le dije que el pasajero va con pasaporte o cédula, no me lo repita.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con lo del jugador y su posición ya tengo suficiente, no siga dando vueltas.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso ya me quedó claro desde la primera vez que lo explicó.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya anoté todo lo del menú y la reserva, no hace falta más.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con esto ya tengo lo que necesito de esta parte, no perdamos más tiempo.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Sé que le costó explicarlo, pero me quedó clarísimo lo del jugador y su equipo.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Gracias por la paciencia; ya anoté cómo funciona lo del estadio y los partidos.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que es mucha información junta; me quedó claro lo del árbitro y sus roles.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro que se haya tomado el tiempo; ya tengo anotado lo de los goles y las tarjetas.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que no es fácil resumir todo el negocio; entendí lo del producto y el proveedor.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Gracias por explicarlo con calma; me quedó claro el precio por cada combinación.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que cada sucursal es un mundo aparte; ya anoté que el inventario es independiente.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le agradezco el detalle; me quedó claro cómo suman puntos sus clientes frecuentes.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que la parte de la factura es densa; ya tengo anotado cómo se arma con los productos.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Gracias por pensarlo bien; entendí los tres rangos de edad de los estudiantes.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro que se acordara de las alergias; ya quedó anotado para cada niño.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo lo importante que es para los padres; anoté que pueden cambiar el menú.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Gracias por mencionar el descuento; ya quedó claro que aplica a los empleados.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que la parte de vuelos tiene muchos detalles; entendí lo del origen y el destino.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le agradezco la claridad; anoté el rol de cada tripulante según el vuelo.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que hay mucho que cuidar con los pasajeros; ya tengo su identificación clara.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Gracias por explicarlo con ejemplos; me quedó claro lo del asiento y la clase.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que confía en que esto quede bien hecho, y ya tengo lo esencial anotado.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro mucho su tiempo hoy; con esto ya puedo avanzar con esta parte tranquilo.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que quiere que quede bien reflejado su negocio, y eso es justo lo que busco.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Espere, espere, deje anoto esto del jugador y el equipo antes de que se me olvide.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No sé si me va a alcanzar el tiempo, pero ya anoté lo del estadio y los partidos.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "A ver, a ver, lo del árbitro creo que lo anoté bien, sigamos rápido.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Tengo que anotar esto ya: goles, amarillas y rojas por jugador y partido, ¿va?", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Uy, esto del proveedor y el producto es más de lo que pensaba, ya casi lo tengo.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Deje anoto rápido el precio por combinación antes de que se me mezcle con otra cosa.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me alcanza el cuaderno, pero ya anoté que cada sucursal va aparte.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, ¿los puntos son por compra o por cliente? Ya, ya, creo que entendí.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Esto de la factura tiene muchas partes, deme un segundo que termine de anotar.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Tengo tres reuniones más hoy, pero ya anoté los rangos de edad, sigamos.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Uy, las alergias no me las puedo olvidar, ya las anoté, ¿algo más urgente?", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere que anote esto del menú antes de que se me pase, ya casi termino.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No sé si anoté bien el descuento, ¿era veinte por ciento? Ya, sigamos.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Esto de los vuelos tiene demasiados datos, deme un momento para ponerme al día.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "A ver, a ver, el rol del tripulante por vuelo, ya lo anoté, creo que está bien.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, ¿el pasajero va con pasaporte o cédula? Ya anoté las dos por si acaso.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Esto del asiento y la clase se me está enredando, deme un segundo más.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me queda mucho tiempo, pero ya tengo lo esencial de esta parte anotado.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Uy, se me está acumulando la información, deje organizo antes de seguir.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya, ya, con esto creo que tengo lo mínimo, pero puede que tenga que volver.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "¿Me podría contar cómo identifican hoy a cada equipo del torneo?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, cuénteme qué datos manejan de cada jugador.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de explicarme cómo se arma el calendario de partidos?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le pido el favor de contarme cómo asignan los árbitros a cada partido.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Me podría decir qué información registran del estadio?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si no es molestia, ¿me explica cómo llevan el rendimiento de cada jugador?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de contarme qué categorías de productos manejan?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le pido el favor de explicarme cómo funciona la relación con los proveedores.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Me podría contar cómo controlan el inventario en cada sucursal?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, cuénteme cómo funciona el programa de puntos para sus clientes.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de explicarme qué lleva una factura de venta?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le pido el favor de contarme los rangos de edad que va a manejar la aplicación.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Me podría decir qué datos necesitan registrar de cada estudiante?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, ¿me explica cómo funciona la reserva del almuerzo?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de contarme qué pueden hacer los padres en la aplicación?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le pido el favor de explicarme el proceso de registro con usuario y contraseña.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Me podría contar qué beneficio tienen los empleados al pagar anticipado?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, cuénteme cómo se compone la flota de aviones.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de explicarme qué servicios ofrece cada avión?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le pido el favor de contarme cómo asignan la tripulación a cada vuelo.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Me podría decir qué datos registran de cada pasajero?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, ¿me explica cómo se genera una reserva o tiquete?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de contarme la diferencia entre clase económica y ejecutiva?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le pido el favor de explicarme cómo definen si un jugador es local o visitante.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Me podría contar si un mismo jugador puede jugar para dos equipos?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, cuénteme si manejan devoluciones de productos.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de explicarme cómo deciden el precio de venta al público?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le pido el favor de contarme qué pasa si dos proveedores venden el mismo producto.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Me podría decir cómo identifican a un cliente frecuente en el sistema?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, ¿me explica qué pasa si un niño tiene varias alergias registradas?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de contarme si el menú cambia todos los días?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le pido el favor de explicarme cómo se calcula el pago por hijo.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Me podría contar si un tripulante puede trabajar en varios vuelos el mismo día?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, cuénteme qué pasa si un vuelo se cancela y ya hay tiquetes vendidos.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de resumirme, con calma, cómo se conecta todo lo que me contó?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Cuénteme cómo identifican a cada equipo del torneo.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame qué datos manejan de cada jugador.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme cómo se arma el calendario de partidos.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme cómo asignan los árbitros a cada partido.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame qué información registran del estadio.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme cómo llevan el rendimiento de cada jugador.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme qué categorías de productos manejan.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame cómo funciona la relación con los proveedores.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme cómo controlan el inventario en cada sucursal.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme cómo funciona el programa de puntos para los clientes.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame qué información lleva una factura de venta.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme los rangos de edad que va a manejar la aplicación.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme qué datos necesitan registrar de cada estudiante.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame cómo funciona la reserva del almuerzo.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme qué pueden hacer los padres en la aplicación.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme el proceso de registro con usuario y contraseña.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame qué beneficio tienen los empleados al pagar anticipado.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme cómo se compone la flota de aviones.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme qué servicios ofrece cada avión.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame cómo asignan la tripulación a cada vuelo.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme qué datos registran de cada pasajero.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme cómo se genera una reserva o tiquete.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame la diferencia entre clase económica y ejecutiva.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme cómo definen si un jugador es local o visitante.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame si un mismo jugador puede jugar para dos equipos.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme si manejan devoluciones de productos.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme cómo deciden el precio de venta al público.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame qué pasa si dos proveedores venden el mismo producto.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme cómo identifican a un cliente frecuente en el sistema.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Explíqueme qué pasa si un niño tiene varias alergias registradas.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Sé que esto de explicar el negocio no es fácil; cuénteme con calma cómo manejan los equipos.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que tiene mucho en la cabeza; ¿me puede contar, cuando pueda, cómo arman el calendario?", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Tómese su tiempo, no hay afán: ¿cómo asignan los árbitros a cada partido?", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que usted conoce esto mejor que nadie; ayúdeme a entender qué pasa con los goles y las tarjetas.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que puede sonar técnico lo que pregunto; cuénteme, a su manera, qué productos manejan.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No se preocupe si se enreda un poco; cuénteme cómo es la relación con sus proveedores.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que administrar varias sucursales es un trabajo grande; cuénteme cómo llevan el inventario.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con toda calma, cuénteme cómo funciona lo de los puntos para sus clientes.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que esto es su día a día y a veces cuesta explicarlo; ¿qué lleva una factura?", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que quiere que la aplicación quede bien para los niños; cuénteme los rangos de edad que maneja.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Tómese el tiempo que necesite para contarme las alergias que hay que tener en cuenta.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que es importante para los padres; cuénteme, con calma, qué pueden hacer en la app.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que pensó bien esto del registro; cuénteme cómo funciona paso a paso.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No hay problema si no lo tiene clarísimo; cuénteme cómo aplica el descuento a los empleados.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que la flota es compleja; cuénteme, sin afán, qué servicios trae cada avión.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que coordinar tripulaciones es difícil; ayúdeme a entender cómo las asignan.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Tómese su tiempo: cuénteme qué datos necesitan de cada pasajero.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que hay muchos casos distintos; cuénteme cómo manejan la reserva del tiquete.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que le importa que esto quede bien reflejado; cuénteme con calma la diferencia entre las clases de cabina.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No se apure, cuénteme lo que considere importante que aún no le haya preguntado.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Por favor, rápido, cuénteme cómo identifican a los equipos, que se nos acaba el tiempo.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya, por favor, qué datos manejan del jugador, que tengo otra reunión después.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, resúmame en dos minutos cómo arman el calendario de partidos.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito que me diga, por favor, y rápido, cómo asignan los árbitros.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, dígame de una vez qué categorías de productos manejan.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme ya, por favor, cómo es la relación con los proveedores, que voy corto de tiempo.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, explíqueme rápido cómo controlan el inventario por sucursal.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya, por favor, cómo funcionan los puntos de los clientes.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, resúmame qué lleva la factura, que se me acaba la hora.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito que me diga, por favor, los rangos de edad, rápido.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, dígame ya qué alergias hay que tener en cuenta.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cuénteme rápido, por favor, qué pueden hacer los padres en la aplicación.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, explíqueme ya cómo funciona el registro, que se nos va el tiempo.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya, por favor, cómo asignan la tripulación a los vuelos.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Por favor, y rápido, cuénteme qué datos necesitan del pasajero.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Dígame de una vez cómo identifican a los equipos, no dé más vueltas.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito los datos del jugador ya, no me haga perder el tiempo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Deje de explicar por las ramas y dígame cómo arman el calendario.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me venga con rodeos, dígame cómo asignan los árbitros.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste directo: ¿qué información registran del estadio?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me importa el detalle, dígame ya qué categorías de productos manejan.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Deje de dar tantas vueltas y dígame cómo funciona lo del proveedor.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga repetir la pregunta, ¿cómo controlan el inventario?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez cómo funcionan los puntos, no me enrede.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa la historia completa, dígame qué lleva la factura.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste concreto: ¿qué rangos de edad va a manejar la app?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga perder tiempo, dígame las alergias que hay que registrar.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Vaya al grano: ¿qué pueden hacer los padres en la aplicación?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya cómo funciona el registro, no me explique de más.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa el discurso, dígame el beneficio del empleado.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste rápido: ¿cómo se compone la flota de aviones?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me repita lo mismo, dígame qué servicios trae cada avión.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Vaya al punto: ¿cómo asignan la tripulación a los vuelos?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez qué datos registran del pasajero.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me dé más ejemplos, dígame cómo se genera el tiquete.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste sin rodeos: ¿cuál es la diferencia entre las clases de cabina?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga perder el tiempo con detalles, dígame si un jugador puede jugar en dos equipos.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya si manejan devoluciones, no se demore.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me explique la historia del negocio, dígame el precio de venta.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste directo: ¿qué pasa si dos proveedores venden lo mismo?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa cómo empezó el negocio, dígame cómo identifican al cliente frecuente.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez qué pasa si un niño tiene varias alergias.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me repita lo que ya dijo, dígame si el menú cambia todos los días.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste ya: ¿cómo se calcula el pago por hijo?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga perder tiempo, dígame si un tripulante trabaja varios vuelos el mismo día.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Vaya al grano de una vez: ¿qué pasa si se cancela un vuelo con tiquetes vendidos?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Deje de explicar tanto y resúmame en una frase cómo funciona todo esto.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me venga con que no sabe, alguien tiene que saber esos datos.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste ya, que no tengo toda la tarde para esta reunión.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa su opinión personal, dígame los datos concretos.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez el nombre y la posición del jugador, nada más.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me explique cómo se juega fútbol, dígame los datos del sistema.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste directo: ¿cuántos árbitros dirigen un partido?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga repetir: ¿el estadio puede tener varios partidos o no?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya si el producto tiene un solo proveedor o varios.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa la anécdota del negocio, dígame el dato que le pedí.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste concreto: ¿la sucursal maneja su propio inventario o no?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me dé la vuelta, dígame cómo suman puntos los clientes.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez qué campos lleva la factura, sin adornos.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me explique otra vez lo mismo, ya lo anoté.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste ya: ¿los tres rangos de edad son fijos o pueden cambiar?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa si es complicado, dígame las alergias igual.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez si los padres pueden cancelar una reserva.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga perder tiempo con el usuario y contraseña, vaya al dato.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste directo: ¿el descuento aplica a todos los empleados o solo a algunos?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me explique la aerolínea completa, dígame el dato del avión.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya cuántos pasajeros caben en el avión.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa la marca del avión, dígame los servicios que ofrece.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste concreto: ¿el tripulante tiene un rol fijo o cambia por vuelo?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga repetir la pregunta del pasaporte o la cédula.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez el precio final del tiquete, sin rodeos.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa la promoción, dígame el dato exacto que le pedí.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste ya: ¿un pasajero puede tener varios tiquetes al tiempo?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me dé más contexto, ya entendí, siga con lo que falta.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez si hay algo más que se me esté escapando.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga perder la tarde, resúmame lo que falta y ya.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste directo, que esta reunión ya se alargó demasiado.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interesa cómo lo hacían antes, dígame cómo lo quiere ahora.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya el dato exacto, no una aproximación.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me venga con que lo va a pensar, decida y dígamelo ya.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste concreto: ¿sí o no manejan ese caso en el sistema?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me repita la introducción, vaya directo al dato.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez quién más maneja esta información además de usted.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me haga perder tiempo buscando el papel, dígamelo de memoria.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Conteste ya, que necesito cerrar esta parte del levantamiento.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "¡Rápido, dígame cómo identifican al equipo, que se acaba la reunión!", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito el dato del jugador ya, no me alcanza el tiempo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya cómo arman el calendario, que tengo que salir en diez minutos.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿cómo asignan los árbitros? No puedo quedarme más tiempo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame de una vez qué productos manejan, que se me acumula todo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito saber ya lo del proveedor, no me da el tiempo para más.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿cómo es el inventario por sucursal? Se me va la hora.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya lo de los puntos, que tengo otra reunión encima.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito la factura completa ya, no me alcanza para tanto detalle.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿los rangos de edad? Que se me acaba el tiempo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya las alergias, por favor, que no quiero olvidarlas.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito saber ya qué hacen los padres en la app, rápido.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿cómo es el registro? Que no me alcanza el tiempo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya el descuento del empleado, que se me está yendo la hora.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito la flota completa ya, no tengo tiempo para explicaciones largas.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿qué servicios trae el avión? Que me tengo que ir.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya cómo asignan la tripulación, se acaba el tiempo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito el dato del pasajero ya, no puedo quedarme más.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿cómo se genera el tiquete? Que se me va la reunión.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya la diferencia entre clases, no me alcanza para más.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito saber ya si el jugador puede estar en dos equipos, rápido.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿manejan devoluciones o no? Que se acaba mi tiempo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya el precio de venta, no puedo quedarme más tiempo aquí.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito ya el dato del cliente frecuente, se me acumula todo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿el menú cambia diario? Que tengo que salir corriendo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya el pago por hijo, no me alcanza el tiempo para más.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito saber ya si el tripulante repite vuelo el mismo día, rápido.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Rápido, ¿qué pasa si se cancela el vuelo? Se me acaba la hora.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Dígame ya lo que falta, que no puedo quedarme ni un minuto más.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Necesito cerrar esto ya, por favor, dígame lo esencial rápido.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Sé que no es fácil resumir años de trabajo en una sola reunión.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que usted conoce este negocio mejor que nadie, yo solo lo voy a traducir a un sistema.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No se preocupe si no recuerda un dato exacto ahora, lo podemos confirmar después.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que administrar todo esto a mano debe ser agotador.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que le dé nervios mostrar cómo funciona por dentro el negocio.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro mucho que se haya sacado el tiempo para esta reunión.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que no es fácil hablar de lo que no está funcionando bien.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que quiera que este sistema le resuelva un dolor de cabeza real.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No hay problema si se le escapa algo, para eso estamos conversando con calma.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que este negocio lo construyó con mucho esfuerzo, se nota en cómo lo explica.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que le preocupe que el sistema no refleje bien cómo trabajan.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro que sea tan honesto sobre lo que hoy no funciona.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que es difícil pensar en todos los casos posibles de una vez.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que a veces uno mismo no tiene claro cómo explicó algo que hace todos los días.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No se sienta mal si algo suena caótico, para eso estamos ordenándolo juntos.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que confía en que esto le va a facilitar la vida, y ese es justo el objetivo.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que este proyecto es importante para usted y su equipo.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro la paciencia con tantas preguntas seguidas.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que no todos los días alguien le pregunta tan a fondo por su negocio.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que algunas cosas las hacen \"porque siempre se ha hecho así\", y está bien contarlo igual.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No se preocupe por lo técnico, cuénteme en sus propias palabras.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que a veces la información está repartida entre varias personas, y eso complica explicarlo.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que le cueste imaginar cómo se vería esto en una pantalla.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro que reconozca los puntos débiles del proceso actual.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que esta conversación puede sentirse como un examen, pero no lo es.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo su preocupación por los costos de un sistema nuevo.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No se preocupe si contradice algo que dijo antes, es normal ir afinando la idea.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que quiere que el sistema le sirva también a sus empleados, no solo a usted.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que hay presión por sacar esto adelante rápido.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro que me esté contando también lo que no le gusta de cómo trabajan hoy.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que a veces uno se frustra con lo manual y con lo que se pierde por ahí.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que quiera que sus clientes también salgan beneficiados con esto.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No se preocupe, vamos paso a paso, no hay que resolverlo todo hoy.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que confía en que este proyecto va a mejorar su día a día.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que le importa mucho la seguridad de la información de sus clientes.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro que me explique también los casos raros, esos son los que más ayudan.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que no es fácil delegar en un sistema algo que usted controla de memoria.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que quiere que esto quede bien hecho desde el principio.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No se preocupe si se repite un poco, prefiero que quede bien claro.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que este cambio también significa un esfuerzo de su parte, se lo agradezco.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo su cariño por este negocio, se nota en cada detalle que cuenta.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Valoro que sea tan clara explicando algo tan cotidiano para usted.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que puede sentirse expuesto contando los problemas del día a día, y lo entiendo.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que a veces la tecnología asusta un poco, vamos con calma.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Gracias por la confianza de contarme todo esto tan abiertamente.", "intent": "Empatia", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Comprendo perfectamente que resumir su negocio en una reunión no sea sencillo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Reconozco el esfuerzo que representa organizar toda esta información para mí.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que la operación diaria le deje poco tiempo para pensar en el sistema.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Agradezco que comparta con tanta franqueza los puntos débiles de su proceso.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Comprendo que haya aspectos del negocio que aún no tenga del todo documentados.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Respeto el conocimiento que tiene de su negocio; mi trabajo es traducirlo bien.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que un proyecto de este tipo genere cierta incertidumbre.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Agradezco su disposición a repasar los detalles con tanto cuidado.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Comprendo que sea difícil anticipar todos los casos posibles en una sola sesión.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Reconozco que administrar este negocio exige mucho de su tiempo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que le preocupe el costo de implementar un sistema nuevo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Agradezco que me explique también las excepciones, no solo la regla general.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Comprendo que algunas decisiones dependan de otras personas del equipo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Respeto que quiera revisar bien cada punto antes de confirmarlo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que la seguridad de los datos de sus clientes sea una prioridad para usted.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Agradezco su paciencia con las preguntas de seguimiento.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Comprendo que este cambio implique ajustar hábitos de trabajo ya establecidos.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Reconozco que no es fácil imaginar cómo se verá el sistema final.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo su interés en que esto beneficie también a sus empleados.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Agradezco que sea tan honesto sobre lo que no ha funcionado hasta ahora.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Comprendo que quiera avanzar con cautela en un proyecto tan importante.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Respeto su ritmo; podemos retomar cualquier punto que quede pendiente.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que confiar la información de su negocio a un sistema nuevo no es trivial.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Agradezco la claridad con la que describe procesos tan cotidianos para usted.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Comprendo la responsabilidad que siente por que esto quede bien hecho.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Es normal que resumir un negocio completo en una reunión sea difícil.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es entendible no tener cada dato exacto de memoria.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es común que la operación diaria deje poco tiempo para pensar en sistemas nuevos.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Tiene sentido que haya incertidumbre frente a un proyecto así.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es comprensible que algunos procesos no estén del todo documentados.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es razonable que le preocupe el costo de un sistema nuevo.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es esperable que la información esté repartida entre varias personas.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es normal contradecirse un poco mientras se piensa en voz alta.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es entendible que haya presión por sacar el proyecto adelante rápido.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es común que cueste imaginar cómo se vería el sistema terminado.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es comprensible priorizar la seguridad de los datos de los clientes.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Tiene sentido querer avanzar con cuidado en decisiones importantes.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es normal que cambiar de hábitos de trabajo tome tiempo.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es entendible que la parte técnica no sea el fuerte de todos.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es razonable querer que el sistema beneficie también a los empleados.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es común sentir algo de exposición al mostrar los problemas internos.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es comprensible que este proyecto genere expectativas altas.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es normal necesitar repasar un punto más de una vez.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es entendible que el negocio tenga casos que no siguen la regla general.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Es razonable que quiera revisar bien antes de confirmar cada dato.", "intent": "Empatia", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Sé que esto es mucho de una sola vez; deme un segundo para organizar lo que anoté.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que le cuesta resumir todo rápido; yo también voy corriendo con el tiempo.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que se siente presionado por el tiempo, igual que yo con esta agenda.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo su afán por avanzar; yo también tengo que cerrar esto pronto.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que es mucha información junta; deme un momento y seguimos ordenados.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que le preocupe olvidar algo; a mí también me pasa con tantos casos.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que el tiempo apremia para los dos; vamos a lo esencial y ya.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo su nerviosismo; yo igual ando corriendo entre reuniones hoy.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Sé que no alcanza el tiempo para explicarlo todo con calma, lo entiendo bien.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Entiendo que quiera terminar rápido; a mí también me urge cerrar esta parte.", "intent": "Empatia", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "¿Usted hace cuánto tiene este negocio?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Y cómo se le ocurrió meterse en esto?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Vive cerca de la oficina o le toca venir de lejos?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta el fútbol o prefiere otro deporte?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cómo estuvo el tráfico para llegar hasta acá?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Tiene hijos? Digo, por curiosidad.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ese cuadro de la oficina es suyo o lo compró?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted estudió administración o cayó en esto por accidente?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cuántos empleados tiene en total?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta el café que están sirviendo aquí?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Y este edificio es propio o alquilado?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted es de aquí de la ciudad?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cómo se llama su empresa de contadores?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ha pensado en jubilarse en algún momento?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta viajar? Pregunto porque el tema me interesa.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Este es su único negocio o tiene otros?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Su familia también trabaja en esto?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted maneja redes sociales para el negocio?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sabe si por aquí cerca hay dónde almorzar bien?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cuántos años lleva en este mismo local?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta más trabajar solo o en equipo?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted tiene mascota? Se ve que le gustan los animales.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ha tenido algún socio antes en el negocio?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le interesa la tecnología en general, aparte de esto?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Su oficina siempre fue así de grande?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cómo se llama el barrio donde vive?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted juega algún instrumento? Vi una guitarra por ahí.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Prefiere reuniones por la mañana o por la tarde?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta cocinar en su tiempo libre?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cuánto tiempo lleva usando esa marca de computador?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ha estado en otro país por trabajo?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta más el clima de acá o de otra ciudad?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cuántas horas trabaja al día normalmente?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sabe qué hora es? Se me quedó el reloj en la casa.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted maneja o le toca transporte público?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta la música que están poniendo aquí?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ha pensado en vender el negocio algún día?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Su equipo de trabajo lleva mucho tiempo con usted?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted cocina en la casa o come afuera casi siempre?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gustan más los perros o los gatos?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ese logo lo diseñó usted o se lo hicieron?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cuántas sucursales tiene, aparte de esta?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta leer? ¿Qué está leyendo ahora?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ha ido al gimnasio que abrieron cerca de aquí?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cuántos años tiene el negocio funcionando?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted vio las noticias de hoy?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gustan las plantas? Tiene varias en la oficina.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cómo celebran el aniversario de la empresa?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta el clima frío o el caliente?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted trabaja los fines de semana también?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ha probado el restaurante nuevo que abrieron cerca?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta más el carro o la moto para moverse?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Su empresa participa en ferias o eventos?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Sabe si hay parqueadero disponible por aquí?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cuántas tazas de café se toma al día?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Disculpe la curiosidad, ¿hace cuánto tiene este negocio?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si no es indiscreción, ¿cómo se le ocurrió empezar en esto?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdone que le pregunte, ¿vive cerca de la oficina?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con todo respeto, ¿le gusta el fútbol?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, ¿cómo estuvo el tráfico para llegar hoy?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si me permite la pregunta, ¿tiene hijos?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdone la curiosidad, ¿ese cuadro es suyo?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, ¿usted estudió administración?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si no le molesta, ¿cuántos empleados tiene en total?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con su permiso, ¿le gusta el café que sirven aquí?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdone que pregunte, ¿el edificio es propio o alquilado?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, ¿usted es de esta ciudad?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si me permite, ¿ha pensado en jubilarse algún día?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdone la indiscreción, ¿le gusta viajar?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con todo respeto, ¿este es su único negocio?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, ¿su familia también trabaja aquí?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Si no es molestia, ¿maneja usted las redes sociales del negocio?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdone que le pregunte, ¿sabe dónde se puede almorzar bien cerca?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con su permiso, ¿cuántos años lleva en este mismo local?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe la curiosidad, ¿prefiere trabajar solo o en equipo?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "¿Usted es de acá? Perdón, no, olvídelo, sigamos con lo del negocio.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta el fútbol? No, espere, eso no importa ahora, dígame lo del inventario.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ese cuadro es suyo? No, disculpe, la pregunta no viene al caso, sigamos.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cómo estuvo el tráfico? Ay, no, perdón, concentrémonos en el sistema.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Tiene hijos? No, espere, eso no es relevante ahora, volvamos al tema.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta el café? Perdón, se me fue la cabeza, sigamos con los datos.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Cuántos empleados tiene? No, eso ya me lo dijo, perdón, sigamos.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted estudió acá? Ay, disculpe, no viene al caso, continuemos.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta viajar? No, perdón, me distraje, volvamos al sistema.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Ese es su carro de afuera? No, olvídelo, sigamos con la reunión.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Su oficina siempre fue así? Perdón, no es el momento, continuemos.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta la música que suena? No, disculpe, sigamos con lo importante.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Usted juega algún deporte? Perdón, se me salió, volvamos al tema.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Vio las noticias hoy? No, olvídelo, sigamos con el levantamiento.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "¿Le gusta este barrio? Perdón, no viene al caso, continuemos rápido.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Qué bonita oficina tiene, se nota que le pone cariño a los detalles.", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Me encanta ese cuadro; ¿tiene alguna historia detrás?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Se nota que ama lo que hace, ¿de dónde le nace esa pasión?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Qué lindo que su familia esté involucrada en el negocio.", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Se le ve tranquilo pese a lo ocupado que debe estar; ¿cómo lo logra?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Qué bien que haya logrado sacar esto adelante solo; ¿cómo empezó todo?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Me cae muy bien su forma de explicar las cosas; ¿siempre fue así de claro?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Qué bonito ver un negocio que lleva tantos años funcionando.", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Se nota el cariño con el que trata a su equipo; ¿cómo los eligió?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Qué agradable la oficina, se siente un ambiente muy cálido acá.", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Pare, pare, eso no viene al caso, dígame el dato que necesito.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya, ya entendí, no siga con lo mismo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Deje de irse por las ramas, vuelva al punto.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No, no, corte ahí, eso no es lo que le pregunté.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, no me cuente la historia completa, vaya al dato.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Alto ahí, eso ya lo dijo, no lo repita.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Deje de explicar y escúcheme un segundo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me interrumpa mientras anoto esto.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya, ya, suficiente, con eso me alcanza.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare de hablar, que no estoy alcanzando a anotar.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso no, eso no, dígame concretamente el número.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Cállese un momento, que se me está enredando la idea.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No siga, no siga, ya sé para dónde va y no es eso.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Le corto ahí, esa parte no la necesito.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, no hablen los dos al tiempo, uno a la vez.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Suficiente, con lo que dijo ya tengo, pasemos al otro punto.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me eche el rodeo completo, sí o no y ya.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare, que se está desviando del tema otra vez.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya, ya, deje eso, tenemos poco tiempo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No termine esa frase, no viene al caso.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un segundo, deje de hablar que se me perdió el hilo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso me lo cuenta después, ahora lo importante es otra cosa.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No, mentiras, eso no es lo que había dicho antes, aclaremos.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Baje la voz y pare, así no podemos avanzar.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya me quedó claro, no hay que repetirlo tres veces.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Deténgase, esa pregunta se la hago yo, no al revés.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No siga hablando de eso, se nos va el tiempo de la reunión.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare el cuento, ¿sí o no? Eso es todo lo que necesito.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No, no, no, así no, déjeme resumir yo lo que entendí.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Ya, córtele, que tenemos que ver cuatro cosas más.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, suena el celular de alguien, no hable ahora.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Eso que dice no me sirve, deme un dato concreto.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare de justificarse y conteste lo que le pregunté.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me hable mientras reviso mis notas, espérese.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Suficiente charla, sigamos con el siguiente punto de la lista.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Un momento, déjeme anotar esto y seguimos.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, ¿ese dato es del año pasado o de este?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare ahí, ¿eso aplica a todos los casos o solo a algunos?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un segundo, ya vuelvo y me termina de contar.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Alto, déjeme escribir lo que dijo antes de que siga.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, ¿me repite el número que mencionó?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, que me está sonando el teléfono.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare, ese punto lo retomamos más adelante en la lista.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Déjeme interrumpirlo: ¿ese dato es obligatorio o es opcional?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un segundo, ¿podemos volver al ejemplo anterior?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, ¿me dijo que era por producto o por sucursal?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Corto un momento, tengo que revisar algo en mis notas.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, deje eso, primero cerremos este punto.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare, ¿de qué caso estamos hablando ahora?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, no terminé de anotar lo anterior.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un segundo, ¿eso pasa siempre o solo en ciertos casos?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Déjeme parar acá y confirmar un dato con usted.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, ¿usted es quien decide esto o hay alguien más?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, ahí sí, ¿y después qué pasa?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare, necesito confirmar algo que anoté antes.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, primero cerremos el punto anterior.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un segundo, déjeme revisar si ya tengo ese dato.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Corto ahí, ¿eso es lo más importante de esta parte?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, guarde esa idea y seguimos con la lista.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare, ¿ya me había contado esto antes?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Disculpe que lo interrumpa, pero necesito confirmar un dato primero.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdón, permítame anotar esto y ya seguimos.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con su permiso lo corto ahí: ¿ese dato aplica siempre?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, ¿me deja anotar antes de que continúe?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdone la interrupción, ¿ese caso es distinto a los demás?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, si es tan amable, ya retomamos su idea.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe que le corte, pero quiero confirmar algo antes de seguir.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdón, permítame confirmar ese número antes de avanzar.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con todo respeto, vamos por partes, un caso a la vez.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, ¿me permite hacerle una pregunta rápida sobre esto?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdón que me meta en su explicación, ¿eso es obligatorio o no?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un segundo, por favor, déjeme terminar de anotar.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, retomamos ese punto en un momento, ¿le parece?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdone, necesito ordenar mis notas antes de que siga.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con su permiso, lo detengo un momento para confirmar algo.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe la interrupción, ¿me repite ese último dato?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdón, ¿me aclara solo esa última parte?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, si me hace el favor, estoy anotando lo anterior.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, dejemos esa parte para el final y sigamos con esta.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdone que lo pare, ¿esto ya me lo había contado?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Con respeto, esa parte la revisamos con más calma después.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe, permítame confirmar un dato y seguimos.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Perdón, ¿me deja anotar esto antes de que se me olvide?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, por favor, necesito ordenar la información.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Disculpe que interrumpa, ¿ese dato es el mismo para todos los casos?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "juntas", "labeler": "Luis" },
+
+  { "text": "Espere, espere, no me hable ahora que estoy anotando.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare un segundo, pare, que me perdí en lo que escribía.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No, no, después me cuenta eso, ahora no puedo.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, un momento, se me está acumulando la información.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Deje, deje, déjeme pensar qué anotar primero.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, no siga, que si me habla se me olvida lo anterior.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare ahí, que tengo que revisar algo rápido antes de seguir.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No me cuente todo junto, una cosa a la vez, que me enredo.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere, espere, ¿qué fue lo que dijo? Repítame, rápido.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un segundo, no hable, déjeme ubicar dónde anoté eso.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare, pare, se me está yendo el tiempo de la reunión.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "No siga ahora, por favor, tengo la cabeza en otro caso.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Espere que anote esto o se me va, no me hable.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Un momento, deje de hablar, que no doy abasto con tantos datos.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" },
+  { "text": "Pare tantito, deje que organice lo que ya tengo.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "juntas", "labeler": "Luis" }
 ]
