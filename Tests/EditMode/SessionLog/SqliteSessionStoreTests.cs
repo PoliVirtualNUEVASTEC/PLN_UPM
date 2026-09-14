@@ -42,12 +42,12 @@ namespace NpcAi.SessionLog.Tests
         public void Un_turno_sobrevive_a_reabrir_el_archivo_sin_FinalizarSesion()
         {
             var primeraApertura = new SqliteSessionStore(_rutaArchivo);
-            primeraApertura.IniciarSesion();
+            primeraApertura.IniciarSesion("sesion-de-prueba");
             primeraApertura.RegistrarTurno(new SessionTurn(0, Hablante.Usuario, "hola", string.Empty, string.Empty));
             primeraApertura.Dispose(); // simula el cierre abrupto: nunca se llamo FinalizarSesion
 
             using var segundaApertura = new SqliteSessionStore(_rutaArchivo);
-            var turnos = segundaApertura.ObtenerTurnos();
+            var turnos = segundaApertura.ObtenerTurnosDeSesion("sesion-de-prueba");
 
             Assert.AreEqual(1, turnos.Count);
             Assert.AreEqual("hola", turnos[0].Texto);
