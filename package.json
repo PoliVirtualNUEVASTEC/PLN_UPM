@@ -7,6 +7,9 @@
   "author": {
     "name": "Jefferson Aristizabal Quiceno; Luis Miguel Canaveral Restrepo"
   },
+  "dependencies": {
+    "com.unity.ai.inference": "2.6.1"
+  },
   "keywords": [
     "npc",
     "ai",

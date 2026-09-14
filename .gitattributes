@@ -23,3 +23,8 @@
 Runtime/Speech/Plugins/**/*.so  filter=lfs diff=lfs merge=lfs -text
 Runtime/Speech/Plugins/**/*.dll filter=lfs diff=lfs merge=lfs -text
 Runtime/Speech/Plugins/**/*.bytes filter=lfs diff=lfs merge=lfs -text
+
+# Git LFS — modelo entrenado de M2 (encoder BERT reducido + cabezas Intent/Tone,
+# exportado por Training/Nlu/train.py; mismo precedente que M1 arriba:
+# openspec/changes/2026-09-09-m2-clasificador-bert-reducido/design.md AD5)
+Runtime/Nlu/Models/**/*.onnx filter=lfs diff=lfs merge=lfs -text

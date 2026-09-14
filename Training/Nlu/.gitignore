@@ -11,3 +11,7 @@ data/
 # desde Runtime/Nlu/Models/, no desde este directorio.
 *.onnx
 tokenizer/
+
+# Corridas de comparacion de candidatos del spike de Fase 1 (descartables, no se
+# versionan; el candidato elegido se copia aparte a Runtime/Nlu/Models/).
+candidates/
