@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using NpcAi.Core;
 using NpcAi.Core.Channels;
@@ -26,20 +27,38 @@ namespace NpcAi.SessionLog.Unity
         /// <summary>Refleja <see cref="SessionRecorder.SesionActiva"/>; falso mientras el componente esta deshabilitado.</summary>
         public bool SesionActiva => _recorder != null && _recorder.SesionActiva;
 
+        /// <summary>Etiqueta de la sesion activa (puede venir de un IniciarSesion explicito o de una reanudacion automatica tras un cierre no limpio); vacia si no hay sesion.</summary>
+        public string EtiquetaActiva => _recorder == null ? string.Empty : _recorder.EtiquetaActiva;
+
         /// <summary>Cablear desde el control de la escena anfitriona que arranca el entrenamiento.</summary>
-        public void IniciarSesion() => _recorder?.IniciarSesion();
+        public void IniciarSesion(string etiqueta) => _recorder?.IniciarSesion(etiqueta);
 
         /// <summary>Cablear desde el control de la escena anfitriona que cierra el entrenamiento.</summary>
         public void FinalizarSesion() => _recorder?.FinalizarSesion();
 
-        /// <summary>Exportacion a texto plano de lo persistido hasta ahora (AD8).</summary>
+        /// <summary>Exportacion a texto plano de la sesion activa hasta ahora (AD8).</summary>
         public string ExportarTextoPlano() => _store == null ? string.Empty : SessionExport.ExportarTextoPlano(_store);
+
+        /// <summary>Exportacion a texto plano de una sesion especifica, activa o pasada.</summary>
+        public string ExportarTextoPlano(string etiqueta) => _store == null ? string.Empty : SessionExport.ExportarTextoPlano(_store, etiqueta);
+
+        /// <summary>Catalogo de todas las sesiones conocidas, mas reciente primero.</summary>
+        public IReadOnlyList<SesionInfo> ListarSesiones() => _recorder == null ? new SesionInfo[0] : _recorder.ListarSesiones();
+
+        /// <summary>Turnos de una sesion especifica, activa o pasada.</summary>
+        public IReadOnlyList<SessionTurn> ObtenerTurnosDeSesion(string etiqueta) => _recorder == null ? new SessionTurn[0] : _recorder.ObtenerTurnosDeSesion(etiqueta);
 
         private void OnEnable()
         {
             var ruta = Path.Combine(Application.persistentDataPath, _nombreArchivo);
             _store = new SqliteSessionStore(ruta);
             _recorder = new SessionRecorder(_store);
+
+            // Si la app se cerro por un error a mitad de una sesion, la retomamos sola: no hace
+            // falta que la escena anfitriona vuelva a llamar IniciarSesion() con la etiqueta
+            // correcta para no perder de vista donde se quedo (aunque eso implique que los
+            // turnos nuevos queden concatenados con los de antes del cierre).
+            _recorder.ReanudarUltimaSesion();
 
             if (_canalDeUtterance != null) _canalDeUtterance.Subscribe(OnUtterance);
             if (_canalDeRespuesta != null) _canalDeRespuesta.Subscribe(OnNpcReply);

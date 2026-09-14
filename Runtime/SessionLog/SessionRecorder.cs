@@ -12,8 +12,9 @@ namespace NpcAi.SessionLog
     public sealed class SessionRecorder
     {
         private readonly ISessionStore _store;
-        private int  _siguienteSecuencia;
-        private bool _sesionActiva;
+        private int    _siguienteSecuencia;
+        private bool   _sesionActiva;
+        private string _etiquetaActiva;
 
         public SessionRecorder(ISessionStore store)
         {
@@ -23,12 +24,41 @@ namespace NpcAi.SessionLog
         /// <summary>Refleja si hay una sesion abierta. Falso hasta el primer <see cref="IniciarSesion"/>.</summary>
         public bool SesionActiva => _sesionActiva;
 
-        /// <summary>Abre una sesion nueva; reinicia la numeracion de secuencia.</summary>
-        public void IniciarSesion()
+        /// <summary>Etiqueta de la sesion activa; cadena vacia si no hay ninguna.</summary>
+        public string EtiquetaActiva => _sesionActiva ? _etiquetaActiva : string.Empty;
+
+        /// <summary>
+        /// Abre (o retoma) la sesion identificada por <paramref name="etiqueta"/>. Si la etiqueta
+        /// ya tenia turnos (se esta retomando, no arrancando de cero), la numeracion de secuencia
+        /// continua donde iba en vez de reiniciar en 0.
+        /// </summary>
+        public void IniciarSesion(string etiqueta)
         {
-            _store.IniciarSesion();
-            _siguienteSecuencia = 0;
+            etiqueta = EtiquetaSesion.Normalizar(etiqueta);
+
+            _store.IniciarSesion(etiqueta);
+            _siguienteSecuencia = _store.ObtenerTurnosDeSesion(etiqueta).Count;
+            _etiquetaActiva = etiqueta;
             _sesionActiva = true;
+        }
+
+        /// <summary>
+        /// Retoma automaticamente la sesion mas reciente conocida por el store, pero solo si
+        /// quedo interrumpida (nunca se llamo <see cref="FinalizarSesion"/> sobre ella). Si la
+        /// ultima sesion se cerro limpio, o nunca hubo ninguna, es no-op: quien use esto debe
+        /// llamar <see cref="IniciarSesion"/> con una etiqueta nueva para empezar. Devuelve si
+        /// efectivamente retomo algo.
+        /// </summary>
+        public bool ReanudarUltimaSesion()
+        {
+            var sesiones = _store.ListarSesiones();
+            if (sesiones.Count == 0) return false;
+
+            var ultima = sesiones[0]; // ListarSesiones ya viene mas reciente primero
+            if (ultima.Cerrada) return false;
+
+            IniciarSesion(ultima.Etiqueta);
+            return true;
         }
 
         /// <summary>
@@ -64,7 +94,13 @@ namespace NpcAi.SessionLog
             _sesionActiva = false;
         }
 
-        /// <summary>Turnos persistidos hasta ahora, en orden.</summary>
+        /// <summary>Turnos de la sesion activa, en orden.</summary>
         public IReadOnlyList<SessionTurn> ObtenerTurnos() => _store.ObtenerTurnos();
+
+        /// <summary>Catalogo de todas las sesiones conocidas, mas reciente primero.</summary>
+        public IReadOnlyList<SesionInfo> ListarSesiones() => _store.ListarSesiones();
+
+        /// <summary>Turnos de una sesion especifica (activa o pasada).</summary>
+        public IReadOnlyList<SessionTurn> ObtenerTurnosDeSesion(string etiqueta) => _store.ObtenerTurnosDeSesion(etiqueta);
     }
 }

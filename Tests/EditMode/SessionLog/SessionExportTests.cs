@@ -14,7 +14,7 @@ namespace NpcAi.SessionLog.Tests
         public void Exporta_cada_turno_persistido_en_orden_uno_por_linea()
         {
             var store = new InMemorySessionStore();
-            store.IniciarSesion();
+            store.IniciarSesion("sesion-a");
             store.RegistrarTurno(new SessionTurn(0, Hablante.Usuario, "hola", string.Empty, string.Empty));
             store.RegistrarTurno(new SessionTurn(1, Hablante.Npc, "digame en que le ayudo", "Neutral", "Idle"));
 
@@ -31,6 +31,20 @@ namespace NpcAi.SessionLog.Tests
             var texto = SessionExport.ExportarTextoPlano(store);
 
             Assert.AreEqual(string.Empty, texto);
+        }
+
+        [Test]
+        public void Exporta_una_sesion_pasada_sin_afectar_la_sesion_activa()
+        {
+            var store = new InMemorySessionStore();
+            store.IniciarSesion("sesion-a");
+            store.RegistrarTurno(new SessionTurn(0, Hablante.Usuario, "de la sesion a", string.Empty, string.Empty));
+            store.IniciarSesion("sesion-b");
+            store.RegistrarTurno(new SessionTurn(0, Hablante.Usuario, "de la sesion b", string.Empty, string.Empty));
+
+            var textoDeA = SessionExport.ExportarTextoPlano(store, "sesion-a");
+
+            Assert.AreEqual("Usuario: de la sesion a\n", textoDeA);
         }
     }
 }
