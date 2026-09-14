@@ -1,0 +1,85 @@
+{
+  "id": "caso-03",
+  "paciente": {
+    "edad": 34,
+    "acompanamiento": "sola",
+    "motivoConsulta": "Caida desde su propia altura hace 2 horas, golpe en la cabeza",
+    "sintomas": [
+      "Caida desde su propia altura estando sentada, hace 2 horas",
+      "Golpe en la cabeza con una piedra",
+      "Hematoma en la region temporo-parietal (sobre la oreja), radio aproximado de 4 cm (diametro aproximado de 8 cm), sin ruptura de piel",
+      "Dolor 7/10",
+      "Consciente y orientada en tiempo, espacio y persona",
+      "Sin perdida de la consciencia"
+    ],
+    "antecedentes": [],
+    "alergias": [],
+    "medicacionActual": [],
+    "signosVitales": {
+      "fcLpm": 102,
+      "taMmHg": "130/85",
+      "frRpm": 19,
+      "satO2Pct": 100,
+      "glasgow": "15/15",
+      "temperaturaC": null
+    }
+  },
+  "hechos": [
+    {
+      "campo": "inicio_sintoma",
+      "ejemplosDePregunta": ["desde cuando", "hace cuanto se cayo", "cuando fue el golpe"],
+      "respuesta": "Hace unas 2 horas, doctora."
+    },
+    {
+      "campo": "mecanismo_caida",
+      "ejemplosDePregunta": ["como se cayo", "que paso", "como fue la caida"],
+      "respuesta": "Estaba sentada y me cai desde mi propia altura, me golpee la cabeza con una piedra."
+    },
+    {
+      "campo": "perdida_consciencia",
+      "ejemplosDePregunta": ["perdio el conocimiento", "se desmayo", "quedo inconsciente"],
+      "respuesta": "No, en ningun momento perdi el conocimiento."
+    },
+    {
+      "campo": "orientacion",
+      "ejemplosDePregunta": ["sabe donde esta", "sabe que dia es", "sabe quien es usted"],
+      "respuesta": "Si, se donde estoy, que dia es y quien soy."
+    },
+    {
+      "campo": "hematoma",
+      "ejemplosDePregunta": ["tiene algun chichon", "hay hinchazon en la cabeza", "hematoma"],
+      "respuesta": "Si, tengo un hematoma al lado de la oreja, de un radio como de 4 centimetros, pero no se me rompio la piel."
+    },
+    {
+      "campo": "dolor",
+      "ejemplosDePregunta": ["cuanto le duele", "escala de dolor", "que tanto dolor siente"],
+      "respuesta": "El dolor esta como en un 7 de 10."
+    },
+    {
+      "campo": "antecedentes",
+      "ejemplosDePregunta": ["tiene antecedentes", "sufre de alguna enfermedad"],
+      "respuesta": "No, no tengo antecedentes."
+    },
+    {
+      "campo": "alergias",
+      "ejemplosDePregunta": ["es alergica", "alergica a algun medicamento", "tiene alergias"],
+      "respuesta": "No, no soy alergica a nada."
+    },
+    {
+      "campo": "acompanamiento",
+      "ejemplosDePregunta": ["viene sola", "quien la acompana", "vino con alguien"],
+      "respuesta": "Vengo sola."
+    }
+  ],
+  "clave": {
+    "triajeEsperado": "II",
+    "tiempoAtencion": "< 30 min",
+    "banderasRojas": [
+      "Ubicacion anatomica de alto riesgo: golpe en region temporo-parietal, zona del pterion, por donde transcurre la arteria meningea media (riesgo de hematoma epidural agudo)",
+      "Riesgo de deterioro tardio: las lesiones en region temporal pueden cursar con un intervalo lucido (periodo de conciencia normal, Glasgow 15/15) antes de un deterioro neurologico",
+      "Magnitud del hematoma: radio aproximado de 4 cm (diametro aproximado de 8 cm), evidencia de una fuerza de impacto significativa",
+      "Dolor severo (7/10) asociado a taquicardia leve (102 lpm) reactiva al trauma y al dolor"
+    ],
+    "cierreEsperado": "Explicar la clasificacion obtenida y que se la pasara a consultorio de urgencias para valoracion medica en menos de 30 minutos."
+  }
+}

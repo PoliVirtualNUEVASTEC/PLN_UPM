@@ -373,3 +373,33 @@ por ser la rama compartida real del equipo.
 - **Specs formales**: `openspec/specs/bitacora-sesion-m13/spec.md` — 9 requisitos con
   trazabilidad completa a pruebas concretas (`SessionRecorderTests`, `SessionStoreContract`
   heredada por `InMemorySessionStoreTests`/`SqliteSessionStoreTests`, `SessionExportTests`).
+
+---
+
+## M14 — Catálogo de casos clínicos
+
+- **Carpeta**: `Data/Cases`
+- **Dueño**: Nataly Álvarez
+- **Qué hace**: provee el caso clínico que un NPC-paciente "adquiere" al iniciar una sesión de
+  triaje — síntomas, antecedentes, alergias, signos vitales y motivo de consulta —, en JSON, un
+  archivo por caso (`id` == nombre de archivo, mismo patrón que M5). Es dato puro, sin código: el
+  tipo `ClinicalCase` que lo deserializa lo define M15. Cada archivo separa dos bloques: `paciente`
+  (lo que el NPC sabe y dice, incluida una tabla `hechos` de `{campo, ejemplosDePregunta[],
+  respuesta}` que M15 empareja contra lo que pregunta la enfermera) y `clave` (`triajeEsperado`,
+  `banderasRojas`, `cierreEsperado`) — dato de evaluación exclusivo de M9, que M15 tiene
+  contractualmente prohibido leer.
+- **Contrato que expone**: no es un puerto de código — es un esquema de datos, documentado en
+  `Data/Cases/README.md`. `clave.triajeEsperado` es una cadena romana (`"I"`–`"V"`), no un enum:
+  si M9 crea un enum `Triage`, mapea a esta cadena en su frontera.
+- **Estado actual**: 3 casos transcritos desde `Data/Cases/Casos_Medicos.md` (fuente narrativa,
+  movida desde la raíz del paquete), con 9 `hechos` cada uno (mínimo fijado: 8):
+  `caso-01` (Mariana, 38, cefalea de 2 meses, `triajeEsperado: "II"`), `caso-02` (María Rosa, 53,
+  odinofagia de 5 días, `triajeEsperado: "IV"`), `caso-03` (Sofía, 34, TEC leve,
+  `triajeEsperado: "II"`). El original en `Casos_Medicos.md` tenía ruido de OCR (números y una
+  palabra perdidos en la sección de banderas rojas del caso 3, umbral de fiebre no dado en el
+  caso 2); las asunciones tomadas al transcribir quedan documentadas en `Data/Cases/README.md` →
+  "Notas de transcripción", pendientes de revisión cruzada por el asesor o un segundo integrante
+  antes de darlas por definitivas. Ampliar el catálogo más allá de 3 casos es edición de datos
+  posterior, no reapertura de este cambio.
+- **Specs formales**: `openspec/specs/catalogo-casos-clinicos-m14/spec.md` se crea al archivar
+  este cambio SDD (`openspec/changes/2026-09-09-m14-catalogo-casos-clinicos/`).
