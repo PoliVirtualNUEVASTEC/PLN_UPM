@@ -94,13 +94,12 @@ se quedó (AD7, AD8 de `design.md`).
   segunda IniciarSesion reinicia limpio" por el nuevo comportamiento; agregar los requisitos
   nuevos (listar, consultar por etiqueta, reanudación automática) con sus escenarios y
   trazabilidad.
-- [ ] 4.2 `git add` solo de las rutas de este cambio; `git diff --cached` confirmando que no
+- [x] 4.2 `git add` solo de las rutas de este cambio; `git diff --cached` confirmando que no
   cruza a otro módulo.
-- [ ] 4.3 Checklist "Antes de mergear" del `README.md`.
-- [ ] 4.4 Al cerrar: mover este cambio a `openspec/changes/archive/`, con su propio
-  `archive-report.md` (sin `verify-report.md` propio si se hace por inspección, igual patrón
-  que M13 original).
-- [ ] 4.5 PR mergeado a `main` por el autor (regla 8).
+- [x] 4.3 Checklist "Antes de mergear" del `README.md`.
+- [x] 4.4 Al cerrar: mover este cambio a `openspec/changes/archive/`, con su propio
+  `archive-report.md` (sin `verify-report.md` propio, igual patrón que M13 original).
+- [x] 4.5 PR mergeado a `main` por el autor (regla 8). PR #14, mergeado 2026-09-14.
 
 > Fases 1-3 (código) razonadas e implementadas por el agente; RED/GREEN no se ejecutó en el
 > agente (sin CI/runner headless en este repo) — **verificación manual en Unity Editor
