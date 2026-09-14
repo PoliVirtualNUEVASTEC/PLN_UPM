@@ -116,25 +116,86 @@
 
 ## Phase 3: Motor Piper real (PR3)
 
-- [ ] 3.1 **Spike técnico de Piper** (equivalente a "1.2 Spike de Sentis" de M1): elegir el
+- [x] 3.1 **Spike técnico de Piper** (equivalente a "1.2 Spike de Sentis" de M1): elegir el
   mecanismo de embebido (`libpiper` / onnxruntime + `piper-phonemize` / proceso `piper` de
   escritorio) y una voz `es_*` candidata; medir tamaño, latencia y naturalidad. Registrar la
-  decisión en `design.md` (Open Questions) y en Engram.
-- [ ] 3.2 `.gitattributes`: regla LFS para `Runtime/Presentation/Plugins/**` antes de commitear
-  cualquier binario.
-- [ ] 3.3 `Runtime/Presentation/Plugins/` — binarios nativos por plataforma (`Windows/x86_64`,
+  decisión en `design.md` (Open Questions) y en Engram. **Resuelto 2026-09-14:** `libpiper` +
+  P/Invoke (GPL-3.0, aceptado explícitamente por el usuario — repo MIT original `rhasspy/piper`
+  archivado desde oct. 2025; el activo `OHF-Voice/piper1-gpl` es GPL-3.0 por embeber `espeak-ng`).
+  Voz candidata `es_MX-ald-medium` (63 MB), a confirmar de oído antes de empaquetar. Android
+  arm64 (Quest) queda **fuera** de este spike — sin binarios oficiales de `libpiper` ni camino sin
+  fricción para compilar `espeak-ng` en ARM; se trata como spike aparte de mayor riesgo, sin
+  bloquear el camino de escritorio. Ver Decisión 10 en `design.md`.
+- [x] 3.2 `.gitattributes`: regla LFS para `Runtime/Presentation/Plugins/**` antes de commitear
+  cualquier binario. **Hecho 2026-09-14:** reglas `*.so`/`*.dll`/`*.bytes` bajo
+  `Runtime/Presentation/Plugins/**`, mismo patrón que M1 (Vosk). `git-lfs` ya estaba inicializado
+  en el repo (confirmado con `git lfs env` + `git lfs ls-files` mostrando los binarios de M1).
+- [x] 3.3 `Runtime/Presentation/Plugins/` — binarios nativos por plataforma (`Windows/x86_64`,
   `Android/arm64-v8a`) + `Runtime/Presentation/Plugins/Voices/<idDeVoz>.bytes` (voz `.onnx` + `.json`
-  comprimidos) + licencias.
-- [ ] 3.4 `Runtime/Presentation/Model/VoiceProvisioner.cs` — descomprime `<idDeVoz>.bytes` a
+  comprimidos) + licencias. **Hecho 2026-09-14 (Windows únicamente, Android queda fuera — ver
+  Decisión 10):**
+  - `Windows/x86_64/{piper.dll, onnxruntime.dll, onnxruntime_providers_shared.dll}` — bajados
+    verificados del artefacto de CI de `NeverMorewd/PiperSharp` (build 2026-09-09).
+  - `EspeakNgData.bytes` — los 365 archivos de `espeak-ng-data/` comprimidos en un único `.bytes`
+    (zip con rutas `/`, construido a mano con `ZipArchive` para evitar el bug de
+    `Compress-Archive`/`ZipFile.CreateFromDirectory` en Windows que escribe `\` literal en las
+    entradas — rompería la extracción en Android). Mismo patrón que la voz (Decisión 2):
+    se extrae a `persistentDataPath` en el primer arranque, no se importa archivo por archivo.
+  - `Voices/es_MX-ald-medium.bytes` y `Voices/es_AR-daniela-high.bytes` — `.onnx` + `.onnx.json`
+    de cada voz, bajados de HuggingFace y comprimidos igual. MD5 de `es_MX-ald-medium.onnx`
+    verificado contra el manifiesto oficial (coincide).
+  - `LICENSE-piper-gpl-3.0.txt`, `LICENSE-onnxruntime-mit.txt`, `LICENSE-espeak-ng-gpl-3.0.txt`
+    (texto completo, mismo patrón que `LICENSE-vosk-apache-2.0.txt` de M1) +
+    `Voices/NOTICE.txt` (atribución de `daniela` y `ald`).
+  - Pendiente (no bloquea PR3 de escritorio): binarios Android arm64-v8a.
+- [x] 3.4 `Runtime/Presentation/Model/VoiceProvisioner.cs` — descomprime `<idDeVoz>.bytes` a
   `Application.persistentDataPath/NpcAi/Presentation/<idDeVoz>/` con centinela `.listo`, validación
   de traversal por entrada, `Resources.UnloadAsset` al terminar. (`ZipArchive` sobre `MemoryStream`,
-  no `ZipFile.ExtractToDirectory`.)
-- [ ] 3.5 `Runtime/Presentation/Piper/PiperInterop.cs` — P/Invoke al runtime elegido. `Runtime/Presentation/Piper/PiperSpeechSynthesizer.cs : ISpeechSynthesizer` — `EstaListo` tras aprovisionar; `Sintetizar` fonemiza + infiere + devuelve PCM mono `float[]` a `TasaDeMuestreo`.
-- [ ] 3.6 Cablear `NpcPresenterBehaviour` para usar `PiperSpeechSynthesizer` cuando la config tiene
-  `TextAsset` de voz, y `SilentSpeechSynthesizer` cuando no (degradación segura).
-- [ ] 3.7 Prueba manual: en el Editor de escritorio, `Play(new NpcReply("Buenas, ¿en qué le ayudo?", "neutral", "idle"))` produce audio audible en español; repetir 20 veces sin fugas ni bloqueo del hilo principal.
-- [ ] 3.8 Confirmar que ningún otro punto del código instancia `NpcPresenterBehaviour` de forma
-  automática: el cableado en la escena real es de M11.
+  no `ZipFile.ExtractToDirectory`.) **Hecho 2026-09-14:** espejo directo de
+  `NpcAi.Speech.Model.SpeechModelProvisioner` (M1) — mismo mecanismo, sin `UnityEngine`, genérico
+  (sirve tanto para una voz como para `EspeakNgData.bytes`, no hace falta una clase por tipo de
+  blob). `Resources.UnloadAsset` queda para quien llame (`NpcPresenterBehaviour`, tarea 3.6), igual
+  que `SpeechToTextBehaviour` en M1 — el provisioner se mantiene puro y probable en EditMode.
+  Prueba `Tests/EditMode/Presentation/VoiceProvisionerTests.cs` escrita (espejo de
+  `SpeechModelProvisionerTests`, 3 casos: extrae, idempotente, rechaza traversal) — pendiente
+  correr en Test Runner (compuerta humana).
+- [x] 3.5 `Runtime/Presentation/Piper/PiperInterop.cs` — P/Invoke al runtime elegido. `Runtime/Presentation/Piper/PiperSpeechSynthesizer.cs : ISpeechSynthesizer` — `EstaListo` tras aprovisionar; `Sintetizar` fonemiza + infiere + devuelve PCM mono `float[]` a `TasaDeMuestreo`. **Escrito 2026-09-14, sin compilar todavía (pendiente abrir Unity):**
+  firmas de `PiperInterop.cs` verificadas contra el `piper.h` real de `OHF-Voice/piper1-gpl`
+  (fetch directo, no de memoria) y contrastadas contra el wrapper .NET de referencia
+  `NeverMorewd/PiperSharp` — mayor confianza que la nota de riesgo original de `VoskInterop`.
+  `PiperSpeechSynthesizer` valida rutas ANTES de `piper_create` (si falta algo, `EstaListo`
+  queda en `false`, nunca lanza) porque libpiper puede tirar una excepción nativa que cruza
+  P/Invoke como `SEHException` y mata el proceso si la ruta es inválida — riesgo real
+  documentado en el propio `PiperVoice.ValidatePaths` de PiperSharp. `Velocidad` de la config se
+  invierte a `length_scale` de Piper (semántica opuesta). Recibe rutas ya aprovisionadas por
+  constructor: no depende de `VoiceProvisioner` (3.4, todavía sin escribir). **Falta:** abrir
+  Unity y confirmar que compila sin errores — ningún agente ejecuta Unity de forma autónoma
+  (regla del cambio); esto no es una compuerta humana "en verde", es la primera vez que este
+  código pasa por un compilador real. **Confirmado por el usuario el 2026-09-14: sin errores en
+  consola.**
+- [x] 3.6 Cablear `NpcPresenterBehaviour` para usar `PiperSpeechSynthesizer` cuando la config tiene
+  `TextAsset` de voz, y `SilentSpeechSynthesizer` cuando no (degradación segura). **Hecho
+  2026-09-14, sin compilar todavía (pendiente abrir Unity):** `Awake()` delega en
+  `CrearSintetizador(velocidad)` — si `_configuracion.VozEmpaquetada`/`IdDeVoz` faltan, devuelve
+  `SilentSpeechSynthesizer` (mismo camino que ya cubrían los tests existentes, sin cambios de
+  comportamiento ahí); si están, aprovisiona la voz y (si está asignado) los datos de espeak-ng
+  vía `VoiceProvisioner`, hace `Resources.UnloadAsset` de ambos `TextAsset` (igual que
+  `SpeechToTextBehaviour` en M1) y arma `PiperSpeechSynthesizer` con las rutas ya extraídas.
+  Se agregó `OnDestroy()` que libera el handle nativo (`(_sintetizador as IDisposable)?.Dispose()`)
+  — gap real que no existía antes porque `SilentSpeechSynthesizer` no tiene nada que liberar.
+  Se sumó el campo `PresentationSettingsAsset.DatosDeEspeak` (`TextAsset`, compartible entre
+  escenarios) — no estaba en el diseño original de PR2, hacía falta para que `NpcPresenterBehaviour`
+  tenga de dónde tomar `EspeakNgData.bytes`. **Falta:** abrir Unity y confirmar que compila +
+  correr `NpcAi.Presentation.Tests` para confirmar que los 32 tests existentes siguen en verde
+  (no debería cambiar ninguno, el camino Silent es el que ya cubrían). **Confirmado por el
+  usuario el 2026-09-14: compila y los 32 tests siguen en verde.**
+- [x] 3.7 Prueba manual: en el Editor de escritorio, `Play(new NpcReply("Buenas, ¿en qué le ayudo?", "neutral", "idle"))` produce audio audible en español; repetir 20 veces sin fugas ni bloqueo del hilo principal. **Confirmado por el usuario el 2026-09-14:** audio real en español con `es_MX-ald-medium` + `EspeakNgData.bytes` vía `VoiceProvisioner`, 20 repeticiones sin trabarse ni errores en consola.
+- [x] 3.8 Confirmar que ningún otro punto del código instancia `NpcPresenterBehaviour` de forma
+  automática: el cableado en la escena real es de M11. **Verificado 2026-09-14:** grep de
+  `NpcPresenterBehaviour` en todo el repo — solo aparece en su propia definición, sus propias
+  pruebas, comentarios de `NpcPresenter.cs`/`SilentSpeechSynthesizer.cs`, `Data/Presentation/README.md`
+  y los documentos de `openspec/changes/2026-09-10-m8-presentador-npc/`. Ninguna escena (`.unity`)
+  ni prefab del paquete lo referencia.
 
 > PR3 depende de PR2. El spike (3.1) puede empezar en paralelo a PR1/PR2.
 

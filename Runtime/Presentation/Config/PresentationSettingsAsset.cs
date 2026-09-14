@@ -29,11 +29,14 @@ namespace NpcAi.Presentation.Config
         [Tooltip("EmotionTag o AnimationCue de un NpcReply -> parámetro del Animator del rig anfitrión.")]
         public EntradaDeCue[] Cues = Array.Empty<EntradaDeCue>();
 
-        [Tooltip("Voz Piper empaquetada (.bytes). Se asigna en el PR3.")]
+        [Tooltip("Voz Piper empaquetada (.bytes: .onnx + .onnx.json comprimidos).")]
         public TextAsset VozEmpaquetada;
 
-        [Tooltip("Id de la voz empaquetada (carpeta de aprovisionamiento). Se usa en el PR3.")]
+        [Tooltip("Id de la voz empaquetada (carpeta de aprovisionamiento, y prefijo de sus archivos .onnx/.onnx.json).")]
         public string IdDeVoz = "";
+
+        [Tooltip("Datos de fonemización de espeak-ng empaquetados (Runtime/Presentation/Plugins/EspeakNgData.bytes). Compartido entre escenarios: el mismo asset se puede referenciar desde varios .asset de escenario.")]
+        public TextAsset DatosDeEspeak;
 
         /// <summary>
         /// <c>internal</c> (no <c>private</c>): Unity la invoca por reflexión sin importar la

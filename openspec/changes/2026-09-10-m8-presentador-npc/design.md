@@ -59,6 +59,12 @@ clone` y funciona), que es la propiedad que más vale en un trabajo de grado que
 Implementación: `ZipArchive` sobre `MemoryStream` (`System.IO.Compression`, presente en .NET
 Standard 2.0), con validación de traversal por entrada; `Resources.UnloadAsset` al terminar.
 
+**Addenda (2026-09-14, tarea 3.6):** el mismo mecanismo se reusa para `EspeakNgData.bytes`
+(fonemización, compartida entre voces). `PresentationSettingsAsset` ganó un campo
+`DatosDeEspeak : TextAsset` — no estaba en el diseño original de PR2 porque en ese momento no
+existía la necesidad de fonemizar; el mismo `TextAsset` se puede referenciar desde varios
+`.asset` de escenario sin duplicar los ~9 MB comprimidos.
+
 ### Decisión 3: topología de hilos — síntesis en un trabajador, reproducción en el principal
 
 **Elección.** `Play(reply)` valida y encola `reply` en una cola concurrente. Un hilo trabajador
@@ -141,6 +147,44 @@ nuevo, sin tocar `Runtime/Presentation/`.
 **Elección.** Cada verde de Test Runner es compuerta humana (como M1/M2/M4/M5/M6). PR1 y PR2 se
 validan en EditMode sin audio real. PR3 agrega una prueba manual: en el Editor de escritorio,
 `Play` de una frase produce audio audible en español.
+
+### Decisión 10 (spike Fase 3): motor Piper vendorizado vía `libpiper` (P/Invoke), aceptando GPL-3.0
+
+**Elección.** `PiperInterop.cs` hace `DllImport` sobre `libpiper` (API C de `OHF-Voice/piper1-gpl`:
+`piper_create` / `piper_synthesize_start` / `piper_synthesize_next` / `piper_free`), vendorizado en
+`Runtime/Presentation/Plugins/Windows/x86_64/` igual que Vosk en M1. Voces finales (confirmadas
+2026-09-14, ver Open Questions): `es_AR-daniela-high` (femenina, sala de triage) y
+`es_MX-ald-medium` (masculina, sala de juntas) — dato reemplazable sin tocar código (regla 7).
+
+**Alternativa descartada.** Invocar el binario CLI `piper.exe` de 2023 (MIT, repo `rhasspy/piper`
+ya archivado) como subproceso.
+
+**Razón.** El repo MIT original está archivado desde octubre de 2025, sin mantenimiento. El
+desarrollo activo (`OHF-Voice/piper1-gpl`) es GPL-3.0 porque embebe `espeak-ng` para fonemizar —
+a diferencia de Vosk (Apache-2.0), que fue lo que hizo trivial la Decisión 7 de M1. Se acepta
+GPL-3.0 para el binario nativo vendorizado del motor de síntesis (decisión de gobernanza del
+proyecto, confirmada explícitamente por el usuario, no solo técnica) a cambio de: una API C ya
+diseñada para embeber (sin gestionar subprocesos ni parsear stdout/WAV a mano), mantenimiento
+activo, y `PiperSharp` (.NET) como wrapper de referencia — `Native/NativeMethods.cs` trae los
+`DllImport` 1:1 contra `piper.h`, mapa directo para `PiperInterop.cs`. El binario MIT de 2023
+evitaba GPL pero está congelado y exige manejar un proceso externo — peor encaje con "no bloquear
+el hilo principal".
+
+**Corrección (2026-09-14):** `piper1-gpl` **no publica** un `libpiper.dll`/`.so` prebuilt en sus
+GitHub Releases (solo wheels de Python) — construirlo a mano exige CMake + un compilador C/C++
+(el build descarga `espeak-ng` y `onnxruntime` solo). En cambio, el CI de `PiperSharp`
+(`actions/artifacts` del repo, build del 2026-09-09, vigente) sí publica el bundle completo listo
+para usar: `runtimes/win-x64/native/piper.dll` (860 KB) + `onnxruntime.dll` (12,4 MB) +
+`onnxruntime_providers_shared.dll` + `espeak-ng-data/` (fonemización, incluye `es_dict`). Sin
+build local necesario para el target de escritorio. Ese mismo CI **no publica Android** (solo
+win-x64/linux-x64/linux-arm64/osx-arm64) — confirma que Android sigue siendo spike aparte. Un
+artefacto de CI no es un canal de distribución permanente (expira); una vez vendorizado en
+`Runtime/Presentation/Plugins/Windows/x86_64/` vía Git LFS, el proyecto deja de depender de él.
+
+**Fuera de esta decisión:** Android arm64 (Quest). No hay binarios oficiales de `libpiper` para
+Android y compilar `espeak-ng` para ARM tiene fricción documentada sin resolver
+(`piper-phonemize` issue #42). Se trata como spike aparte, de mayor riesgo, sin bloquear PR1/PR2
+ni el camino de escritorio de PR3 (ver Open Questions).
 
 ## Data Flow
 
@@ -252,16 +296,35 @@ commits deja `RecordingNpcPresenter` como única implementación, igual que hoy.
 
 ## Open Questions
 
-- [ ] **Mecanismo exacto de embebido de Piper**: `libpiper` como lib nativa, onnxruntime directo
-      + `piper-phonemize`, o el binario `piper` como proceso (solo escritorio, para desbloquear
-      PR3 antes que Android). Se decide en el spike de Fase 3, como el de Sentis en M1.
+- [x] **Mecanismo exacto de embebido de Piper**: resuelto en el spike de Fase 3 (2026-09-14) —
+      `libpiper` + P/Invoke, GPL-3.0 aceptado explícitamente por el usuario. Ver Decisión 10.
 - [ ] **`IMainThreadPump` duplicado vs promovido a `NpcAi.Core`**: hoy M1 tiene su propio
       `IMainThreadPump`. Copiarlo en M8 es lo que la regla 3 permite sin cambio de contrato;
       promoverlo a `NpcAi.Core` sería un cambio de M0 propio. Empezar copiando; consolidar si
       aparece un tercer consumidor.
-- [ ] **Una o dos voces** en la primera entrega — depende del tamaño de la voz Piper "medium" y
-      del presupuesto de build. Se mira en el spike.
+- [x] **Voces finales (dos escenarios, confirmadas 2026-09-14)**: `es_AR-daniela-high`
+      (femenina, confirmada por fuente externa) para la sala de **triage** (todos sus casos son
+      mujeres); `es_MX-ald-medium` (masculina, confirmada de oído por el usuario) para la sala de
+      **juntas**. No contradice la Decisión 7 (una voz por escenario, no varias dentro del mismo);
+      simplemente el primer entregable ya cubre dos escenarios en vez de uno. Licencia de datos a
+      citar en `Docs/`: `daniela` es CC BY-SA 4.0 (exige atribución + compartir igual); `ald` es
+      MIT según su `MODEL_CARD`. `es_ES-sharvard-medium` (speaker 1 femenina / speaker 0
+      masculina, CC BY 3.0) queda descartada por ahora, disponible si aparece un tercer escenario.
+- [x] **Voz personalizada (clonar a una compañera) — evaluada y diferida**: investigado
+      (2026-09-14) el fine-tuning de un checkpoint es_* de `piper1-gpl` con grabaciones propias.
+      Viable en teoría (5 min de audio mínimo, ~1 h para buen resultado, checkpoint en español ya
+      disponible en HF), pero el notebook de Colab gratuito para el pipeline actual está roto
+      (choque de versiones Python/PyTorch) y una estimación realista de punta a punta es 1-2
+      semanas part-time. El usuario decidió **diferir esto**: usar una voz pre-entrenada confirmada
+      ahora para no frenar PR3, y dejar la voz personalizada como mejora futura post-entrega.
 - [ ] **`Data/Npcs/*.json` (con `vozId`)**: ¿lo entrega M11 o es un micro-módulo aparte? Ya está
       en Open Questions del proposal de M11; M8 no lo bloquea (usa voz por defecto si falta).
 - [ ] **Lip-sync / visemas**: fuera de alcance; posible mejora si el rig del anfitrión expone
       blendshapes de visema.
+- [ ] **Build de `espeak-ng`/`libpiper` para Android arm64 (Quest)**: sin binarios oficiales ni
+      camino documentado sin fricción (`piper-phonemize` issue #42 sigue abierto). Spike aparte,
+      de mayor riesgo, antes de comprometer PR3 a soportar Android; el camino de escritorio no
+      queda bloqueado por esto.
+- [ ] **Licencia GPL-3.0 del binario vendorizado**: aceptada para este trabajo de grado (Decisión
+      10). Si el paquete se reutiliza fuera de un contexto académico, revisar de nuevo — GPL-3.0
+      es copyleft, a diferencia de Apache-2.0 (Vosk, M1).
