@@ -373,3 +373,94 @@ por ser la rama compartida real del equipo.
 - **Specs formales**: `openspec/specs/bitacora-sesion-m13/spec.md` — 9 requisitos con
   trazabilidad completa a pruebas concretas (`SessionRecorderTests`, `SessionStoreContract`
   heredada por `InMemorySessionStoreTests`/`SqliteSessionStoreTests`, `SessionExportTests`).
+
+---
+
+## M14 — Catálogo de casos clínicos
+
+- **Carpeta**: `Data/Cases/` (planeado; no existe todavía en el repo).
+- **Dueño**: no asignado en la propuesta (M15, su consumidor principal, es de Nataly).
+- **Qué hace (según la propuesta — ver Estado actual)**: define el caso clínico que cada NPC
+  "adquiere" en la simulación de triaje — síntomas, antecedentes, alergias, signos vitales y
+  motivo de consulta — como dato puro en `Data/Cases/`, un archivo JSON por caso. Sigue el
+  patrón de M3 (`Data/Corpus`) y M5 (`Data/Personalities`): "lo variable es dato, no código".
+  Cada archivo tendría dos bloques: `paciente` (lo que el NPC sabe y dice) y `hechos` (tabla
+  de recuperación pregunta→respuesta que consumiría M15), más un bloque `clave`
+  (`triajeEsperado`, `banderasRojas`, `cierreEsperado`) reservado para M9 y explícitamente
+  prohibido para M15. El nombre de archivo sería el `ClinicalCaseId`. Alimentaría a M15
+  (respuestas del paciente) y a M9 (progreso y veredicto del objetivo de triaje).
+- **Contrato/esquema que definiría**: no es un puerto de código — sería, como M3 y M5, un
+  esquema de datos versionado en `Data/Cases/README.md`. El tipo C# que deserializa ese
+  esquema (`ClinicalCase`) no lo define M14: lo definiría M15
+  (`2026-09-09-m15-respondedor-clinico`), igual que las pruebas de datos de M5 viven en la
+  carpeta de M4. El `readonly struct ClinicalCaseId` que M14 seguiría como convención de
+  nombres de archivo ya existe, pero pertenece a M0: lo agregó el cambio de contrato
+  `2026-09-09-m0-puerto-respuesta-clinica` (v2), no M14.
+- **Diseño / enfoque (de `design.md`, sin implementar todavía)**: un archivo JSON por caso,
+  con `id` == nombre de archivo (misma regla que M5, `grosero.asset` ↔
+  `personalityId: grosero`), para que M15 resuelva un `ClinicalCaseId` a un archivo sin
+  índice aparte. Los signos vitales serían un objeto de campos nombrados (`fcLpm`, `taMmHg`,
+  `frRpm`, `satO2Pct`, `glasgow`, `temperaturaC`), no texto libre, para que M9 pueda razonar
+  sobre ellos (p. ej. detectar una crisis hipertensiva) y M15 los pueda leer al responder. La
+  propuesta transcribe los 3 casos hoy narrados en `Casos_Medicos.md` (raíz del paquete) al
+  nuevo esquema y mueve ese archivo a `Data/Cases/Casos_Medicos.md` como fuente de
+  referencia. Fuera de alcance explícito: el cargador JSON→objeto, el enum `Triage` como
+  tipo de código, y ampliar el catálogo más allá de esos 3 casos.
+- **Estado actual — diseño completo, cero implementación**: `openspec/changes/2026-09-09-m14-catalogo-casos-clinicos/`
+  contiene únicamente `proposal.md`, `design.md` y `tasks.md`. **No existe `spec.md`, no
+  existe `apply-progress.md`, y no hay ningún archivo bajo `Data/Cases/`** — ni el
+  `README.md` del catálogo, ni `caso-01.json`/`caso-02.json`/`caso-03.json`, ni el
+  `Casos_Medicos.md` movido. `Casos_Medicos.md` sigue en la raíz del paquete, sin mover. La
+  única pieza que ya existe en el repo relacionada con este trabajo es el contrato de M0
+  (`ClinicalCaseId`, `IClinicalResponder`, `ClinicalResponse` en `Runtime/Core/`), que es un
+  cambio de contrato **separado y ya cerrado**, no una entrega de M14: M14 en sí no ha
+  producido ni dato ni código.
+- **Specs formales**: no existe `openspec/specs/catalogo-casos-clinicos-m14/spec.md`. Según
+  la propuesta, se crearía recién al archivar el cambio.
+
+---
+
+## M15 — Respondedor clínico
+
+- **Carpeta**: `Runtime/ClinicalResponse/` (planeado; no existe todavía en el repo).
+- **Dueño**: Nataly (reasignado; la propuesta original asignaba a Luis Miguel Cañaveral
+  Restrepo).
+- **Qué hace (según la propuesta — ver Estado actual)**: implementaría el puerto
+  `IClinicalResponder` para que el NPC responda como el paciente del caso clínico asignado,
+  usando la tabla de `hechos` de M14. Cuando la enfermera dice algo que empareja con una
+  entrada de esa tabla, devolvería la `respuesta` en primera persona envuelta en un
+  `NpcReply`, con un matiz de personalidad; cuando nada empareja, devolvería
+  `ClinicalResponse.NoAplica` (`Handled == false`) y el turno lo tomaría M6. Es un módulo
+  enrutador, no una envoltura de M6: M6 no se toca.
+- **Puerto que implementaría**: `IClinicalResponder` — ya congelado en `Runtime/Core/Ports.cs`
+  (junto con el DTO `ClinicalResponse` y `ClinicalCaseId`) desde el cambio de contrato v2
+  `2026-09-09-m0-puerto-respuesta-clinica`, con su propia base de pruebas de contrato
+  (`ClinicalResponderContract`). M15 **no modifica ese contrato**: lo consumiría e
+  implementaría por primera vez de verdad, igual que `BertIntentClassifier` hace con
+  `IIntentClassifier` en M2.
+- **Diseño / enfoque (de `design.md`, sin implementar todavía)**: un ensamblado nuevo
+  `NpcAi.ClinicalResponse` que referenciaría solo `NpcAi.Core`. Recuperación por tabla de
+  hechos, no por modelo: `ClinicalFactMatcher` normalizaría el texto de la enfermera
+  (minúsculas, sin tildes/signos) y buscaría el `campo` cuyos `ejemplosDePregunta` mejor
+  cubran la pregunta; en empate, gana el de menor índice en la lista (determinismo). El dato
+  debería sobrevivir textual: `Reply.Text` contendría siempre la `respuesta` del caso como
+  subcadena intacta, con a lo sumo un prefijo/sufijo fijo por personalidad (p. ej. `grosero`
+  antepone "Ya le dije, "). `ClinicalCase` (el POCO que carga el JSON de M14) no incluiría el
+  bloque `clave` en absoluto — lo hace estructuralmente imposible de filtrar, en vez de
+  confiar en que el código simplemente no lo lea. La obtención de los bytes de
+  `Data/Cases/` quedaría inyectada por constructor (`Func<ClinicalCaseId,string>`), decidida
+  por M11, para mantener el núcleo probable sin Unity. Fuera de alcance explícito: cambiar el
+  puerto, redefinir el esquema de M14, el enrutado clínico/social (decisión de M11), y usar
+  `Receptivity` en la respuesta.
+- **Estado actual — diseño completo, cero implementación**: `openspec/changes/2026-09-09-m15-respondedor-clinico/`
+  contiene únicamente `proposal.md`, `design.md` y `tasks.md`. **No existe `spec.md`, no
+  existe `apply-progress.md`, y no hay ningún archivo bajo `Runtime/ClinicalResponse/`
+  ni bajo `Tests/EditMode/ClinicalResponse/`** — ni el `.asmdef`, ni `ClinicalCase.cs`,
+  `ClinicalCaseLoader.cs`, `ClinicalFactMatcher.cs`, `ClinicalResponder.cs`, ni el doble
+  `Fakes/ScriptedClinicalResponder.cs`. `IClinicalResponder` sigue sin ninguna implementación
+  real en el repo — únicamente su base de pruebas de contrato existe (heredada de M0), sin
+  una clase concreta que la extienda todavía. M15 depende explícitamente de que M14 se
+  mergee primero (necesita el esquema y los 3 `Data/Cases/caso-*.json` reales para
+  `ClinicalCasesDataTests`), y M14 tampoco existe aún — ver M14 arriba.
+- **Specs formales**: no existe `openspec/specs/respondedor-clinico-m15/spec.md`. Según la
+  propuesta, se archivaría al cerrar el cambio.
