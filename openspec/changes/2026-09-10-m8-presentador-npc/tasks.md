@@ -201,16 +201,24 @@
 
 ## Phase 4: Spec formal y documentación (PR4)
 
-- [ ] 4.1 `openspec/changes/2026-09-10-m8-presentador-npc/specs/presentador-npc-m8/spec.md` —
+- [x] 4.1 `openspec/changes/2026-09-10-m8-presentador-npc/specs/presentador-npc-m8/spec.md` —
   primera spec formal de M8, trazando los requisitos ya fijados por `NpcPresenterContract.cs` +
   las garantías nuevas (texto vacío no sintetiza, cue desconocido no lanza, suscripción sin fugas,
   síntesis fuera del hilo principal) a las pruebas EditMode. Mismo patrón que `reconocimiento-voz-m1`
-  y `generador-dialogo-m6`.
-- [ ] 4.2 `Docs/MODULES.md` sección M8: reemplazar "solo doble" por el estado real (presentador
-  por capas, TTS Piper on-device, config por escenario, integración pendiente de M11).
-- [ ] 4.3 Revisar que el diff acumulado respeta los `Success Criteria` de `proposal.md` (ninguna
+  y `generador-dialogo-m6`. **Hecho 2026-09-14:** 9 Requirements + Scenarios (nombres de prueba
+  verificados contra el código real, no de memoria) + tabla de trazabilidad al estilo de
+  `generador-dialogo-m6`. El motor Piper real queda fuera de los Requirements formales (no
+  automatizable en EditMode sin el binario nativo, mismo criterio que `reconocimiento-voz-m1` con
+  Vosk) — se documenta en el Purpose y se traza a la prueba manual de 3.7.
+- [x] 4.2 `Docs/MODULES.md` sección M8: reemplazar "solo doble" por el estado real (presentador
+  por capas, TTS Piper on-device, config por escenario, integración pendiente de M11). **Hecho
+  2026-09-14.**
+- [x] 4.3 Revisar que el diff acumulado respeta los `Success Criteria` de `proposal.md` (ninguna
   carpeta fuera de `Runtime/Presentation/`, `Data/Presentation/`, `Tests/EditMode/Presentation/`,
-  `Docs/`, `openspec/`, `.gitattributes`).
+  `Docs/`, `openspec/`, `.gitattributes`). **Verificado 2026-09-14:** `git diff --name-only`
+  contra los 3 commits de M8 (`85233c3`, `a8c7446`, `d7f0de7`) más lo pendiente de la Fase 4 — sin
+  una sola ruta fuera de esas carpetas. Los 7 checkboxes de `Success Criteria` en `proposal.md`
+  quedan marcados con evidencia.
 
 ## Phase 5: Cierre (acciones del autor, cada PR)
 

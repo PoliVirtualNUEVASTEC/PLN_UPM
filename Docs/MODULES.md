@@ -255,11 +255,22 @@ por ser la rama compartida real del equipo.
 - **Qué hace** (según el contrato — ver Estado actual): reproduce la respuesta del NPC como voz
   sintetizada y animación.
 - **Contrato que expone**: `INpcPresenter` — solo `Play(NpcReply)`.
-- **Estado actual**: **solo doble**. `Runtime/Presentation/` en `origin/main` únicamente contiene
-  `Fakes/RecordingNpcPresenter.cs` — no sintetiza voz ni anima nada, solo registra en una lista
-  cada `NpcReply` que le pasaron (`Played`, `HasPlayed`, `Last`) para que una prueba pueda
-  verificar sobre eso.
-- **Specs formales**: no existe.
+- **Estado actual**: **implementado en local, sin mergear todavía** (cambio
+  `openspec/changes/2026-09-10-m8-presentador-npc/`). Presentador por capas:
+  `NpcPresenter : INpcPresenter` (núcleo, sin `UnityEngine` de escena) despacha la síntesis fuera
+  del hilo principal y entrega el resultado por una bomba al hilo principal, donde
+  `NpcPresenterBehaviour : MonoBehaviour` reproduce el PCM en un `AudioSource` y dispara
+  `IAnimationDriver` sobre un `Animator` de escena. La síntesis de voz es TTS **Piper on-device**
+  (`PiperSpeechSynthesizer` vía P/Invoke a `libpiper`, motor GPL-3.0 aceptado explícitamente —
+  ver `design.md`, Decisión 10): sin voz configurada, degrada de forma segura a
+  `Fakes/SilentSpeechSynthesizer.cs` (que se mantiene como doble determinista de referencia, igual
+  que `Fakes/RecordingNpcPresenter.cs`). La configuración (voces, cues de animación, tasa de
+  muestreo, velocidad) es dato por escenario (`PresentationSettingsAsset`, `Data/Presentation/`),
+  no código. Dos voces vendorizadas con género confirmado: `es_AR-daniela-high` (femenina, sala de
+  triage) y `es_MX-ald-medium` (masculina, sala de juntas). Integración con la escena real
+  (instanciar `NpcPresenterBehaviour`, cablear el rig del anfitrión) queda pendiente de M11.
+- **Specs formales**: `openspec/changes/2026-09-10-m8-presentador-npc/specs/presentador-npc-m8/spec.md`
+  (pendiente de promover a `openspec/specs/` al archivar el cambio).
 
 ---
 
