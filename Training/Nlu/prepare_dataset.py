@@ -1,10 +1,10 @@
 """Carga, valida y divide el corpus de M3 para entrenar el clasificador de M2.
 
-Unifica Data/Corpus/emergencia.json + Data/Corpus/juntas.json, valida el esquema
-de cada entrada y produce un split train/validacion estratificado por la
-combinacion intent x tone en la medida en que el tamano de cada clase lo permita.
-Las clases con un solo ejemplo (hoy Tone.Empatico) no se pueden estratificar: caen
-enteras a train y se avisa por stderr, sin abortar.
+Carga Data/Corpus/emergencia.json y Data/Corpus/juntas.json (ver CORPUS_FILES), valida
+el esquema de cada entrada y produce un split train/validacion estratificado por la
+combinacion intent x tone en la medida en que el tamano de cada clase lo permita. Las
+clases con un solo ejemplo (si las hubiera) no se pueden estratificar: caen enteras a
+train y se avisa por stderr, sin abortar.
 
 Uso:
     python prepare_dataset.py [--corpus-dir DIR] [--out-dir DIR]
@@ -34,6 +34,9 @@ INTENT_MEMBERS = (
 )
 TONE_MEMBERS = ("Neutral", "Respetuoso", "Agresivo", "Empatico", "Ansioso")
 REQUIRED_KEYS = ("text", "intent", "tone", "scenario", "labeler")
+# emergencia.json (triaje, voz del enfermero) y juntas.json (levantamiento de
+# requerimientos, voz del analista) ya estan reescritos con volumen y balance de tono
+# resueltos (ver Data/Corpus/PENDIENTE-AMPLIACION.md).
 CORPUS_FILES = ("emergencia.json", "juntas.json")
 
 
@@ -158,7 +161,7 @@ def main() -> None:
     train, val = _clean(train), _clean(val)
     write_outputs(args.out_dir, train, val)
 
-    print(f"corpus unificado: {len(entries)} entradas ({', '.join(CORPUS_FILES)})")
+    print(f"corpus: {len(entries)} entradas ({', '.join(CORPUS_FILES)})")
     print(f"split: train={len(train)}  val={len(val)}  (val_fraction={args.val_fraction}, seed={args.seed})")
     print(f"intent train: {_dist(train, 'intent')}")
     print(f"intent val:   {_dist(val, 'intent')}")
