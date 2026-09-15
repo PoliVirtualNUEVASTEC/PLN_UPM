@@ -3,6 +3,7 @@
     "rootNamespace": "NpcAi.Presentation.Tests",
     "references": [
         "NpcAi.Core",
+        "NpcAi.Core.Channels",
         "NpcAi.Core.Tests",
         "NpcAi.Presentation",
         "UnityEngine.TestRunner",
