@@ -421,45 +421,56 @@ por ser la rama compartida real del equipo.
 
 ## M15 — Respondedor clínico
 
-- **Carpeta**: `Runtime/ClinicalResponse/` (planeado; no existe todavía en el repo).
-- **Dueño**: Nataly (reasignado; la propuesta original asignaba a Luis Miguel Cañaveral
-  Restrepo).
-- **Qué hace (según la propuesta — ver Estado actual)**: implementaría el puerto
-  `IClinicalResponder` para que el NPC responda como el paciente del caso clínico asignado,
-  usando la tabla de `hechos` de M14. Cuando la enfermera dice algo que empareja con una
-  entrada de esa tabla, devolvería la `respuesta` en primera persona envuelta en un
-  `NpcReply`, con un matiz de personalidad; cuando nada empareja, devolvería
-  `ClinicalResponse.NoAplica` (`Handled == false`) y el turno lo tomaría M6. Es un módulo
-  enrutador, no una envoltura de M6: M6 no se toca.
-- **Puerto que implementaría**: `IClinicalResponder` — ya congelado en `Runtime/Core/Ports.cs`
-  (junto con el DTO `ClinicalResponse` y `ClinicalCaseId`) desde el cambio de contrato v2
-  `2026-09-09-m0-puerto-respuesta-clinica`, con su propia base de pruebas de contrato
-  (`ClinicalResponderContract`). M15 **no modifica ese contrato**: lo consumiría e
-  implementaría por primera vez de verdad, igual que `BertIntentClassifier` hace con
+- **Carpeta**: `Runtime/ClinicalResponse/`
+- **Dueño**: Nataly Álvarez (reasignado; la propuesta original asignaba a Luis Miguel
+  Cañaveral Restrepo).
+- **Qué hace**: implementa el puerto `IClinicalResponder` para que el NPC responda como el
+  paciente del caso clínico asignado, usando la tabla de `hechos` de M14. Cuando la enfermera
+  dice algo que empareja con una entrada de esa tabla, devuelve la `respuesta` en primera
+  persona envuelta en un `NpcReply`, con un matiz de personalidad; cuando nada empareja,
+  devuelve `ClinicalResponse.NoAplica` (`Handled == false`) y el turno lo toma M6. Es un
+  módulo enrutador, no una envoltura de M6: M6 no se tocó.
+- **Puerto que consume**: `IClinicalResponder` — congelado en `Runtime/Core/Ports.cs` desde
+  el cambio de contrato v2 `2026-09-09-m0-puerto-respuesta-clinica`, con su propia base de
+  pruebas de contrato (`ClinicalResponderContract`). M15 no modifica ese contrato: lo
+  implementa por primera vez de verdad, igual que `BertIntentClassifier` hace con
   `IIntentClassifier` en M2.
-- **Diseño / enfoque (de `design.md`, sin implementar todavía)**: un ensamblado nuevo
-  `NpcAi.ClinicalResponse` que referenciaría solo `NpcAi.Core`. Recuperación por tabla de
-  hechos, no por modelo: `ClinicalFactMatcher` normalizaría el texto de la enfermera
-  (minúsculas, sin tildes/signos) y buscaría el `campo` cuyos `ejemplosDePregunta` mejor
-  cubran la pregunta; en empate, gana el de menor índice en la lista (determinismo). El dato
-  debería sobrevivir textual: `Reply.Text` contendría siempre la `respuesta` del caso como
-  subcadena intacta, con a lo sumo un prefijo/sufijo fijo por personalidad (p. ej. `grosero`
-  antepone "Ya le dije, "). `ClinicalCase` (el POCO que carga el JSON de M14) no incluiría el
-  bloque `clave` en absoluto — lo hace estructuralmente imposible de filtrar, en vez de
-  confiar en que el código simplemente no lo lea. La obtención de los bytes de
-  `Data/Cases/` quedaría inyectada por constructor (`Func<ClinicalCaseId,string>`), decidida
-  por M11, para mantener el núcleo probable sin Unity. Fuera de alcance explícito: cambiar el
-  puerto, redefinir el esquema de M14, el enrutado clínico/social (decisión de M11), y usar
-  `Receptivity` en la respuesta.
-- **Estado actual — diseño completo, cero implementación**: `openspec/changes/2026-09-09-m15-respondedor-clinico/`
-  contiene únicamente `proposal.md`, `design.md` y `tasks.md`. **No existe `spec.md`, no
-  existe `apply-progress.md`, y no hay ningún archivo bajo `Runtime/ClinicalResponse/`
-  ni bajo `Tests/EditMode/ClinicalResponse/`** — ni el `.asmdef`, ni `ClinicalCase.cs`,
-  `ClinicalCaseLoader.cs`, `ClinicalFactMatcher.cs`, `ClinicalResponder.cs`, ni el doble
-  `Fakes/ScriptedClinicalResponder.cs`. `IClinicalResponder` sigue sin ninguna implementación
-  real en el repo — únicamente su base de pruebas de contrato existe (heredada de M0), sin
-  una clase concreta que la extienda todavía. M15 depende de que M14 esté en `main`
-  (necesita el esquema y los 3 `Data/Cases/caso-*.json` reales para
-  `ClinicalCasesDataTests`) — ver M14 arriba, ya real a partir de este mismo commit.
-- **Specs formales**: no existe `openspec/specs/respondedor-clinico-m15/spec.md`. Según la
-  propuesta, se archivaría al cerrar el cambio.
+- **Estado actual — real e implementado, mergeado en `origin/main`** en 2 PR (PR1: núcleo +
+  doble; PR2: adaptador real, 2026-09-15):
+  - `ClinicalCase.cs`: POCO (`Paciente`, `SignosVitales`, `Hecho`) — **sin** `Clave`, así que
+    es estructuralmente imposible que `triajeEsperado`/`banderasRojas` lleguen a filtrarse a
+    una respuesta.
+  - `ClinicalCaseLoader.cs`: JSON → `ClinicalCase` con `JsonUtility`. Motivó un ajuste chico
+    de datos en M14 (`temperaturaC` de número a texto, PR aparte): `JsonUtility` no soporta
+    `null` en un campo numérico.
+  - `ClinicalFactMatcher.cs`: normaliza el texto de la enfermera (minúsculas, sin tildes,
+    sin signos) y busca el primer `campo` cuyos `ejemplosDePregunta` quedan totalmente
+    cubiertos por las palabras de la pregunta; el empate lo resuelve el orden de la lista
+    (menor índice gana, por construcción del recorrido).
+  - `ClinicalResponder.cs`: adaptador real. Constructor recibe
+    `Func<ClinicalCaseId,string> cargarJson` (de dónde salen los bytes de `Data/Cases/` en
+    cada plataforma lo decide quien lo inyecte — M11 — no este tipo). Matiz de personalidad
+    por prefijo fijo (`grosero` → "Ya le dije, "; `empatico` → "Claro, doctora. "; `histerico`
+    → "¡Ay, doctora! ", decisión tomada en esta entrega, no estaba en la propuesta original;
+    `introvertido`/`None`/desconocida → sin matiz); la `respuesta` del caso siempre sobrevive
+    intacta como subcadena. `EmotionTag`/`AnimationCue` de tabla fija por `campo`.
+  - `Fakes/ScriptedClinicalResponder.cs`: doble determinista con 3 hechos embebidos, sin leer
+    `Data/Cases/`; reconoce los mismos 3 ids del catálogo real (`caso-01`/`02`/`03`) como
+    "casos existentes" — cualquier otro id (incluido `"no-existe"`) deja `IsReady` en `false`,
+    para que la batería heredada de `ClinicalResponderContract` pase igual contra el doble.
+  - **Choque de nombres resuelto**: el namespace del módulo (`NpcAi.ClinicalResponse`) choca
+    con el nombre del propio DTO (`NpcAi.Core.ClinicalResponse`) — mismo problema que
+    `Core.Receptivity` en M4, misma solución: calificar como `Core.ClinicalResponse` dentro
+    del módulo.
+  - 23 pruebas EditMode nuevas en `NpcAi.ClinicalResponse.Tests`, en verde (419/419 en el
+    proyecto completo): `ClinicalFactMatcherTests`, `ClinicalCasesDataTests` (valida los 3
+    `Data/Cases/caso-*.json` reales de M14 contra el esquema), `ScriptedClinicalResponderTests`
+    y `ClinicalResponderTests` (ambas heredan `ClinicalResponderContract` completo), más
+    subcadena intacta, saludo no manejado, sin matiz para `None`/`introvertido`, y
+    determinismo en 1000 llamadas para las 4 personalidades.
+  - **Pendiente (no bloqueante)**: cablear `ClinicalResponder` en la escena real de M11
+    cuando esa escena exista (sigue sin existir al 2026-09-15) — quién decide "clínico vs.
+    social" y de dónde salen los bytes de `Data/Cases/` en el Quest es decisión de M11, no
+    de M15.
+- **Specs formales**: `openspec/specs/respondedor-clinico-m15/spec.md` se crea al archivar
+  este cambio SDD.
