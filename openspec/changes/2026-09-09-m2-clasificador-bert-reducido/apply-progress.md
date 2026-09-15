@@ -404,6 +404,19 @@ se escribio razonando sobre la API real (`ModelAsset`/`TextAsset`/`ModelLoader.L
 ahora invocada desde argumentos en vez de desde una ruta resuelta internamente), y **no fue
 ejecutado por el agente** — no hay acceso a Unity Editor en este entorno.
 
+**Correccion post-batch (2026-09-15)**: el usuario corrio el Test Runner real y obtuvo 3 errores
+de compilacion en `Tests/EditMode/Nlu/BertIntentClassifierTests.cs` (`CS0234`/`CS0246`,
+`Unity.InferenceEngine`/`ModelAsset` no resueltos). Causa real: `Tests/EditMode/Nlu/
+NpcAi.Nlu.Tests.asmdef` nunca referencio el assembly `Unity.InferenceEngine` — no hacia falta
+antes porque el test viejo solo pasaba un `string`; el test nuevo usa `ModelAsset` directo y
+necesita la referencia. `Runtime/Nlu/NpcAi.Nlu.asmdef` si la tenia (agregada en el batch
+original de PR2), pero el asmdef de Tests es un modulo de compilacion separado y no la hereda.
+Corregido agregando `"Unity.InferenceEngine"` a `references` en `NpcAi.Nlu.Tests.asmdef`
+(`AssetDatabase`/`TextAsset`/`UnityEngine` ya resolvian bien, por eso el error solo mencionaba
+`InferenceEngine`/`ModelAsset` y no esos otros tres). Este es exactamente el tipo de error que
+solo un compilador real detecta — ningun agente sin acceso al Editor podia haberlo visto por
+inspeccion de codigo.
+
 **Remaining Tasks (obligatorio, no omitir)**
 
 - [ ] **Un humano debe re-correr el Test Runner de Unity (EditMode) en esta rama
