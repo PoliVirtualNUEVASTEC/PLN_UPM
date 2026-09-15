@@ -41,16 +41,19 @@ namespace NpcAi.ClinicalResponse.Fakes
             _caseId = caseId;
         }
 
-        public ClinicalResponse Respond(Utterance nurseUtterance, IntentResult intent)
+        // "Core." es obligatorio aqui: el namespace del propio modulo (NpcAi.ClinicalResponse)
+        // choca con el nombre del DTO (NpcAi.Core.ClinicalResponse) — mismo problema y misma
+        // solucion que Core.Receptivity en NpcAi.Receptivity (M4).
+        public Core.ClinicalResponse Respond(Utterance nurseUtterance, IntentResult intent)
         {
-            if (!IsReady) return ClinicalResponse.NoAplica;
+            if (!IsReady) return Core.ClinicalResponse.NoAplica;
 
             var normalizado = ClinicalFactMatcher.Normalizar(nurseUtterance.Text);
             var indice = ClinicalFactMatcher.Match(normalizado, HechosEmbebidos);
 
             return indice < 0
-                ? ClinicalResponse.NoAplica
-                : new ClinicalResponse(true, new NpcReply(HechosEmbebidos[indice].Respuesta, "neutral", "idle"));
+                ? Core.ClinicalResponse.NoAplica
+                : new Core.ClinicalResponse(true, new NpcReply(HechosEmbebidos[indice].Respuesta, "neutral", "idle"));
         }
     }
 }
