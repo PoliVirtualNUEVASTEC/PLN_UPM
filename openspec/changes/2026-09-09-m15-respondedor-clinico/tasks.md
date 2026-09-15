@@ -77,26 +77,38 @@
 
 ## Phase 2: `ClinicalResponder` real (PR2)
 
-- [ ] 2.1 RED: `ClinicalResponderTests : ClinicalResponderContract` — `CreateSubject()`
-  construye `new ClinicalResponder(id => jsonDePrueba)` y hace `AssignCase`. Añadir pruebas
-  propias de M15: la `respuesta` del caso aparece como subcadena intacta del `Reply.Text`;
-  un saludo devuelve `Handled == false`; `PersonalityId.None` no agrega matiz.
-- [ ] 2.2 GREEN: `ClinicalResponder.cs` — constructor `Func<ClinicalCaseId,string> cargarJson`;
-  `AssignCase` carga y valida (id desconocido / JSON inválido ⇒ `IsReady == false`, sin
-  lanzar); `Respond` normaliza, empareja con `ClinicalFactMatcher`, arma el `NpcReply` con
-  matiz de personalidad (prefijo/sufijo fijo; `None` sin matiz) y `EmotionTag`/`AnimationCue`
-  de tabla fija. Determinista.
-- [ ] 2.3 Verificar la batería heredada completa de `ClinicalResponderContract`
+- [x] 2.1 `ClinicalResponderTests : ClinicalResponderContract` — `CreateSubject()`
+  construye `new ClinicalResponder(cargarJson)` donde `cargarJson` solo resuelve `"caso-01"`
+  (cualquier otro id, incluido `"no-existe"`, devuelve `null` — necesario para que
+  `AssignCase_con_caso_desconocido_no_lanza_y_deja_no_listo` siga pasando). Pruebas propias:
+  la `respuesta` aparece como subcadena intacta; un saludo devuelve `Handled == false`;
+  `PersonalityId.None` e `"introvertido"` no agregan matiz.
+- [x] 2.2 `ClinicalResponder.cs` — constructor `Func<ClinicalCaseId,string> cargarJson` (puede
+  ser `null`: `AssignCase` lo protege, nunca lanza pase lo que pase); `AssignCase` carga y
+  valida (id desconocido / delegado nulo / JSON inválido ⇒ `IsReady == false`, sin lanzar);
+  `Respond` normaliza, empareja con `ClinicalFactMatcher`, arma el `NpcReply` con matiz de
+  personalidad (`grosero` → "Ya le dije, "; `empatico` → "Claro, doctora. "; `histerico` →
+  "¡Ay, doctora! " — decisión tomada en esta entrega, no estaba en `proposal.md`;
+  `introvertido`/`None`/desconocida → sin matiz) y `EmotionTag`/`AnimationCue` de tabla fija
+  por `campo` (`dolor`→`dolor`/`gesto_dolor`, `mareo`→`mareo`/`gesto_mareo`, resto →
+  `neutral`/`idle`). Determinista.
+- [x] 2.3 Verificar la batería heredada completa de `ClinicalResponderContract`
   (`Reporta_si_esta_listo_sin_lanzar`, `Sin_caso_asignado_Respond_devuelve_NoAplica`,
   `Respond_no_lanza_en_ningun_estado`,
   `Cuando_responde_el_texto_no_es_vacio_y_los_tags_no_son_nulos`,
   `Es_determinista_en_Handled_y_en_el_texto_para_la_misma_entrada`,
   `AssignCase_es_idempotente_con_el_mismo_par`,
   `AssignCase_con_caso_desconocido_no_lanza_y_deja_no_listo`).
-- [ ] 2.4 Prueba manual dedicada: 1000 llamadas a `Respond` con la misma entrada para las 4
-  personalidades → 0 variaciones en `Handled` ni en `Reply.Text`.
-- [ ] 2.5 Confirmar que ningún otro punto del código instancia `ClinicalResponder`
-  automáticamente: la integración en escena es de M11 (`2026-09-09-m11-armado-sesion`).
+- [x] 2.4 Automatizada en vez de manual (más fuerte, mismo costo):
+  `Mil_llamadas_con_la_misma_entrada_no_varian_para_ninguna_personalidad` en
+  `ClinicalResponderTests` — 1000 llamadas a `Respond` con la misma entrada para las 4
+  personalidades → 0 variaciones en `Handled` ni en `Reply.Text`. **Pendiente del usuario en
+  Unity** (Test Runner, junto con el resto de PR2).
+- [x] 2.5 Confirmado por inspección: solo `ClinicalResponderTests`/`ClinicalCasesDataTests`
+  instancian `ClinicalResponder`, y solo con datos de prueba embebidos o `Data/Cases/` vía
+  `ClinicalCaseLoader` desde las pruebas de datos. Ningún `Runtime/` fuera de
+  `ClinicalResponse/` lo referencia — la integración en escena sigue siendo de M11
+  (`2026-09-09-m11-armado-sesion`), que todavía no existe como escena.
 
 ## Phase 3: Documentación y cierre (último PR)
 
