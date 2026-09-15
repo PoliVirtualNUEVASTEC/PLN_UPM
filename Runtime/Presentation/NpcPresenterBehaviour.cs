@@ -1,8 +1,12 @@
+using System;
+using System.IO;
 using System.Threading.Tasks;
 using NpcAi.Core;
 using NpcAi.Core.Channels;
 using NpcAi.Presentation.Config;
 using NpcAi.Presentation.Fakes;
+using NpcAi.Presentation.Model;
+using NpcAi.Presentation.Piper;
 using NpcAi.Presentation.Threading;
 using UnityEngine;
 
@@ -33,8 +37,12 @@ namespace NpcAi.Presentation
         [SerializeField] private string _vozId;
 
         private NpcPresenter _presenter;
+        private ISpeechSynthesizer _sintetizador;
         private QueuedMainThreadPump _bomba;
         private int _tasaDeMuestreo = 22050;
+
+        /// <summary>Id fijo de carpeta para los datos de espeak-ng aprovisionados (compartido entre voces).</summary>
+        private const string IdDeDatosDeEspeak = "espeak-ng-data";
 
         /// <summary>Cuántos <c>NpcReply</c> llegaron por el canal (observabilidad de prueba).</summary>
         internal int RepliesRecibidos { get; private set; }
@@ -44,17 +52,55 @@ namespace NpcAi.Presentation
             var config = _configuracion != null ? _configuracion.ToSettings() : new PresentationSettings();
             _tasaDeMuestreo = config.TasaDeMuestreo;
 
-            // PR2: síntesis silenciosa. PR3: PiperSpeechSynthesizer cuando la config trae voz.
-            var sintetizador = new SilentSpeechSynthesizer();
-            var animacion    = new AnimatorDriver(_animator, config.Cues);
+            _sintetizador = CrearSintetizador(config.Velocidad);
+            var animacion = new AnimatorDriver(_animator, config.Cues);
             _bomba = new QueuedMainThreadPump();
 
             _presenter = new NpcPresenter(
-                sintetizador, animacion, _bomba,
+                _sintetizador, animacion, _bomba,
                 vozId: config.ResolverIdDeVoz(_vozId),
                 tasaDeMuestreo: _tasaDeMuestreo,
                 despacharSintesis: trabajo => Task.Run(trabajo),
                 reproducirAudio: ReproducirEnAudioSource);
+        }
+
+        /// <summary>
+        /// <see cref="PiperSpeechSynthesizer"/> si la config trae una voz Piper empaquetada
+        /// (<see cref="PresentationSettingsAsset.VozEmpaquetada"/> + <c>IdDeVoz</c>);
+        /// <see cref="SilentSpeechSynthesizer"/> (degradación segura) si no — mismo criterio que
+        /// el resto de M8, nunca lanzar por falta de config (tasks.md 3.6). Aprovisiona la voz y,
+        /// si la config la trae, los datos de espeak-ng (<see cref="VoiceProvisioner"/>,
+        /// tasks.md 3.4) antes de construir el sintetizador real.
+        /// </summary>
+        private ISpeechSynthesizer CrearSintetizador(float velocidad)
+        {
+            if (_configuracion == null
+                || _configuracion.VozEmpaquetada == null
+                || string.IsNullOrEmpty(_configuracion.IdDeVoz))
+                return new SilentSpeechSynthesizer();
+
+            var raiz = Path.Combine(Application.persistentDataPath, "NpcAi", "Presentation");
+
+            var rutaDeLaVoz = VoiceProvisioner.Aprovisionar(_configuracion.VozEmpaquetada.bytes, _configuracion.IdDeVoz, raiz);
+            Resources.UnloadAsset(_configuracion.VozEmpaquetada); // design.md Decision 2, igual que M1
+
+            string rutaDeEspeakData = null;
+            if (_configuracion.DatosDeEspeak != null)
+            {
+                rutaDeEspeakData = VoiceProvisioner.Aprovisionar(_configuracion.DatosDeEspeak.bytes, IdDeDatosDeEspeak, raiz);
+                Resources.UnloadAsset(_configuracion.DatosDeEspeak);
+            }
+
+            var rutaDelModelo = Path.Combine(rutaDeLaVoz, _configuracion.IdDeVoz + ".onnx");
+            var rutaDeConfigDeVoz = Path.Combine(rutaDeLaVoz, _configuracion.IdDeVoz + ".onnx.json");
+
+            return new PiperSpeechSynthesizer(rutaDelModelo, rutaDeConfigDeVoz, rutaDeEspeakData, velocidad);
+        }
+
+        /// <summary>Libera el handle nativo de Piper si el sintetizador construido lo tiene (SilentSpeechSynthesizer no implementa IDisposable: no-op).</summary>
+        private void OnDestroy()
+        {
+            (_sintetizador as IDisposable)?.Dispose();
         }
 
         private void OnEnable()
