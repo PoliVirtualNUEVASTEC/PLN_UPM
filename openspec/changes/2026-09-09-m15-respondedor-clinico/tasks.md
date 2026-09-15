@@ -92,7 +92,9 @@
   `introvertido`/`None`/desconocida → sin matiz) y `EmotionTag`/`AnimationCue` de tabla fija
   por `campo` (`dolor`→`dolor`/`gesto_dolor`, `mareo`→`mareo`/`gesto_mareo`, resto →
   `neutral`/`idle`). Determinista.
-- [x] 2.3 Verificar la batería heredada completa de `ClinicalResponderContract`
+- [x] 2.3 (confirmado en verde por el usuario 2026-09-15: 23/23 en
+  `NpcAi.ClinicalResponse.Tests.dll`, 419/419 en el proyecto completo) Verificar la
+  batería heredada completa de `ClinicalResponderContract`
   (`Reporta_si_esta_listo_sin_lanzar`, `Sin_caso_asignado_Respond_devuelve_NoAplica`,
   `Respond_no_lanza_en_ningun_estado`,
   `Cuando_responde_el_texto_no_es_vacio_y_los_tags_no_son_nulos`,
@@ -102,8 +104,8 @@
 - [x] 2.4 Automatizada en vez de manual (más fuerte, mismo costo):
   `Mil_llamadas_con_la_misma_entrada_no_varian_para_ninguna_personalidad` en
   `ClinicalResponderTests` — 1000 llamadas a `Respond` con la misma entrada para las 4
-  personalidades → 0 variaciones en `Handled` ni en `Reply.Text`. **Pendiente del usuario en
-  Unity** (Test Runner, junto con el resto de PR2).
+  personalidades → 0 variaciones en `Handled` ni en `Reply.Text`. Confirmado en verde
+  2026-09-15.
 - [x] 2.5 Confirmado por inspección: solo `ClinicalResponderTests`/`ClinicalCasesDataTests`
   instancian `ClinicalResponder`, y solo con datos de prueba embebidos o `Data/Cases/` vía
   `ClinicalCaseLoader` desde las pruebas de datos. Ningún `Runtime/` fuera de
