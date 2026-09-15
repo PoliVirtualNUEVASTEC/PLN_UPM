@@ -80,7 +80,9 @@ Sin cambios en `NpcAi.Core`. Superficie nueva, interna a `NpcAi.Nlu`:
 // Runtime/Nlu/BertIntentClassifier.cs
 public sealed class BertIntentClassifier : IIntentClassifier
 {
-    public BertIntentClassifier(string modelPath); // carga el .onnx vía Sentis
+    // Corregido (tasks.md 2.9): referencias de asset serializadas, no una ruta de archivo —
+    // el constructor original (`string modelPath`) solo funcionaba dentro del Editor.
+    public BertIntentClassifier(ModelAsset modelo, TextAsset tokenizadorJson);
     public bool IsReady { get; }                    // false hasta que el modelo termine de cargar
     public IntentResult Classify(string text);       // igual firma que hoy
 }
@@ -102,6 +104,17 @@ métricas se ejecutan aparte, en Python, y no forman parte del Test Runner.
 Sin migración de datos ni de contrato. `BertIntentClassifier` es una implementación nueva del
 mismo puerto: se integra reemplazando el punto donde hoy se instancia `NluIntentClassifier` en
 cualquier composición real (M11 Harness cuando exista su escena), sin tocar la interfaz.
+
+Carga de modelo y tokenizador (corregido, tasks.md 2.9): `BertIntentClassifier` resuelve por sí
+mismo el `.onnx` y el `tokenizer.json` a través de referencias de asset ya serializadas
+(`ModelAsset`/`TextAsset`) — no hay ningún mecanismo de carga pendiente que M11 deba resolver.
+El único trabajo de M11 es *proveer* esas dos referencias al construir el clasificador (por
+ejemplo, campos `[SerializeField]` en el `MonoBehaviour` de composición, o `Resources.Load` si
+se prefiere carga diferida) — nunca corregir cómo se cargan, porque eso ya lo resuelve M2. Una
+versión anterior de este documento dejaba esa corrección deferida a "el wiring de M11"; eso era
+incorrecto: M11 solo puede pasar lo que el constructor de M2 acepta, así que si el constructor
+sólo aceptaba una ruta de archivo, ningún código de composición de M11 podía hacerlo funcionar
+en un build real. La corrección debía vivir dentro de la propia clase de M2, y así quedó.
 
 Rollback: revertir los commits de este cambio deja `NluIntentClassifier` (reglas por palabra
 clave) como implementación real, igual que hoy.

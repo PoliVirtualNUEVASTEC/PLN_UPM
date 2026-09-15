@@ -5,6 +5,7 @@
         "NpcAi.Core",
         "NpcAi.Core.Tests",
         "NpcAi.Nlu",
+        "Unity.InferenceEngine",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

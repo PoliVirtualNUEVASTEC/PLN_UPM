@@ -57,22 +57,25 @@
 - [x] 1.5 Crear `Training/Nlu/README.md`: cómo instalar dependencias, cómo correr
   `prepare_dataset.py` → `train.py`, qué encoders probar, cómo leer las métricas impresas, dónde
   queda el `.onnx` resultante.
-- [ ] 1.6 Correr el pipeline una vez de punta a punta sobre el corpus actual (30/intención/
+- [x] 1.6 Correr el pipeline una vez de punta a punta sobre el corpus actual (30/intención/
   escenario) como prueba de humo del pipeline mismo — **no** como entrega de un modelo de
   producción; documentar en el resultado que la precisión en clases con pocos ejemplos
   (`Tone.Empatico` sobre todo) será baja hasta que `Data/Corpus/PENDIENTE-AMPLIACION.md` se
   resuelva.
-  <!-- COMPUERTA HUMANA (apply PR1, 2026-09-09): requiere GPU + descarga del encoder desde
-  Hugging Face; ningun agente entrena de forma autonoma. prepare_dataset.py ya se corrio de
-  verdad sobre el corpus real (361 entradas -> train 287 / val 74, estratificado por
-  intent x tone, con degradacion avisada para las 3 clases singleton incluida Empatia||Empatico).
-  Falta la corrida de train.py de punta a punta. -->
-- [ ] 1.7 Confirmar reproducibilidad (Success Criteria de `proposal.md`): correr `train.py` dos
+  <!-- COMPUERTA HUMANA (usuario, 2026-09-14): corrida de punta a punta para 4 candidatos de
+  encoder sobre el corpus YA ampliado (1200 entradas / 100 por intencion, no el corpus de 30/
+  intencion original de esta tarea — desviacion positiva, ver apply-progress.md "Batch: apply
+  PR2"). Elegido distilbert-base-multilingual-cased (mejor accuracy/F1 en Intent y Tone de los
+  4 candidatos). Ninguno de los 3 candidatos "grandes" cae en el rango ~20-60M de proposal.md;
+  queda pendiente de confirmar en el spike de Sentis (tarea 2.7) si esto es aceptable on-device. -->
+- [x] 1.7 Confirmar reproducibilidad (Success Criteria de `proposal.md`): correr `train.py` dos
   veces sobre el mismo corpus y comparar que el modelo resultante da el mismo `Intent`/`Tone`
   para un conjunto fijo de frases de prueba.
-  <!-- COMPUERTA HUMANA (apply PR1, 2026-09-09): train.py imprime el bloque "Chequeo de
-  reproducibilidad" con Intent/Tone para 6 frases fijas del dominio (REPRO_PHRASES) y usa
-  semilla fija (--seed 42); la persona corre train.py dos veces y hace diff de ese bloque. -->
+  <!-- COMPUERTA HUMANA (usuario, 2026-09-14): train.py corrido dos veces con
+  sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 --seed 42 sobre el mismo corpus;
+  curva de loss por epoca, ambos classification_report y el bloque "Chequeo de
+  reproducibilidad" (6 REPRO_PHRASES) salieron byte-identicos en ambas corridas. Determinismo
+  confirmado. -->
 
 
 > PR1 es Python puro, fuera de Unity: no requiere Test Runner ni Unity Editor para validarse,
@@ -80,33 +83,90 @@
 
 ## Phase 2: `BertIntentClassifier` real + wiring Sentis (PR2)
 
-- [ ] 2.1 Agregar `com.unity.ai.inference` (Sentis) a `dependencies` en `package.json` — hoy solo
+- [x] 2.1 Agregar `com.unity.ai.inference` (Sentis) a `dependencies` en `package.json` — hoy solo
   existe como palabra suelta en `keywords`, no como dependencia real.
-- [ ] 2.2 Agregar la regla LFS para `Runtime/Nlu/Models/**/*.onnx` en `.gitattributes`, siguiendo
+- [x] 2.2 Agregar la regla LFS para `Runtime/Nlu/Models/**/*.onnx` en `.gitattributes`, siguiendo
   el precedente ya usado para los binarios de Vosk de M1. Confirmar con `git lfs track` que la
   regla queda activa antes de commitear el primer `.onnx`.
-- [ ] 2.3 Copiar el `.onnx` producido por PR1 (Fase 1) a `Runtime/Nlu/Models/
+  <!-- apply PR2 (2026-09-14): confirmado con `git lfs track` — "runtime/nlu/models/**/*.onnx"
+  listado como patron activo, junto a los 3 patrones de M1. -->
+- [x] 2.3 Copiar el `.onnx` producido por PR1 (Fase 1) a `Runtime/Nlu/Models/
   intent-tone-classifier.onnx` y commitearlo vía LFS.
-- [ ] 2.4 RED: `Tests/EditMode/Nlu/BertIntentClassifierTests.cs : IntentClassifierContract` —
+  <!-- apply PR2 (2026-09-14): copiado el candidato elegido (distilbert-base-multilingual-cased,
+  Training/Nlu/candidates/distilbert.onnx + distilbert-tokenizer/), reemplazando el contenido
+  MiniLM que habia quedado (por error, de una corrida anterior) en Runtime/Nlu/Models/. El commit
+  via LFS queda para Fase 4 (accion del autor), como indica la nota de la tarea. -->
+- [x] 2.4 RED: `Tests/EditMode/Nlu/BertIntentClassifierTests.cs : IntentClassifierContract` —
   `CreateSubject()` carga el `.onnx` commiteado vía Sentis.
-- [ ] 2.5 GREEN: Crear `Runtime/Nlu/BertIntentClassifier.cs` implementando `IIntentClassifier`
+- [x] 2.5 GREEN: Crear `Runtime/Nlu/BertIntentClassifier.cs` implementando `IIntentClassifier`
   (constructor recibe `modelPath`; `IsReady` falso hasta terminar de cargar; `Classify(text)` con
   la misma firma que hoy) hasta pasar la batería heredada completa
   (`Reporta_si_esta_listo_sin_lanzar`, `Texto_vacio_devuelve_Desconocida_y_no_lanza`,
   `La_confianza_siempre_esta_entre_cero_y_uno`, `La_latencia_nunca_es_negativa`,
   `Es_determinista_para_la_misma_entrada`, `Nunca_lanza_con_entradas_raras`,
   `Classify_no_lanza_en_ningun_estado`, `Un_clasificador_no_listo_devuelve_Unknown`).
-- [ ] 2.6 Prestar atención específica a `Es_determinista_para_la_misma_entrada`: si la inferencia
+  <!-- apply PR2 (2026-09-14): implementado usando el Tokenizer HuggingFace incluido en
+  com.unity.ai.inference 2.6.1 (Unity.InferenceEngine.Tokenization.Parsers.HuggingFace.
+  HuggingFaceParser, parsea tokenizer.json directo, sin reimplementar WordPiece a mano). NO
+  ejecutado en el Test Runner real por el agente (sin acceso al Editor) — pendiente de la
+  compuerta humana 2.7. Ver Deviations en apply-progress.md ("Batch: apply PR2") por dos
+  hallazgos tecnicos relevantes: (a) Sentis no expone los metadata_props del ONNX en su API de
+  runtime (se uso el orden de indice directo, ya alineado 1:1 con Enums.cs); (b) la carga de un
+  .onnx crudo por ruta de archivo solo funciona dentro del Editor via AssetDatabase — fuera del
+  Editor (build real) esta pendiente de resolver en el wiring de M11. -->
+- [x] 2.6 Prestar atención específica a `Es_determinista_para_la_misma_entrada`: si la inferencia
   de Sentis introduce no-determinismo (orden de reducción en GPU, por ejemplo), esta prueba lo
   detecta — resolverlo antes de mergear, no documentar la falla como aceptable.
-- [ ] 2.7 MANUAL (Editor de Unity): confirmar que Sentis soporta todos los operadores del encoder
+  <!-- apply PR2 (2026-09-14): mitigado por diseno usando BackendType.CPU (no GPUCompute) en el
+  Worker, precisamente para evitar el riesgo de orden de reduccion no determinista en GPU. Sigue
+  pendiente CONFIRMAR en el Test Runner real (compuerta humana 2.7) que esto basta en la
+  practica; si no basta, es motivo de volver a esta tarea antes de mergear, como pide el
+  enunciado. -->
+- [x] 2.7 MANUAL (Editor de Unity): confirmar que Sentis soporta todos los operadores del encoder
   elegido, corriendo la batería de pruebas en el Test Runner real (no solo revisión de código) —
   este es el spike técnico ya planeado en el cronograma ("1.2 Spike técnico de Sentis y selección
   del stack"); si el encoder candidato falla aquí, volver a Fase 1 con otro candidato antes de
   continuar PR2.
-- [ ] 2.8 Confirmar que ningún otro punto del código pasa a instanciar `BertIntentClassifier`
+  <!-- compuerta humana (2026-09-14): confirmado por el usuario en Unity Editor Test Runner,
+  EditMode, rama feat/m2-pr2-bert-sentis — BertIntentClassifierTests aparece y pasa en verde
+  junto con el resto de la suite (368 tests). Sentis soporta los operadores de
+  distilbert-base-multilingual-cased sin fallas; queda descartado el riesgo de tener que volver
+  a Fase 1 con otro candidato. La mitigación de determinismo de la tarea 2.6 (BackendType.CPU)
+  queda confirmada en la práctica, no solo por diseño. -->
+- [x] 2.8 Confirmar que ningún otro punto del código pasa a instanciar `BertIntentClassifier`
   todavía de forma automática: la integración real en una escena de composición queda para M11
   (Harness) cuando exista, según `design.md` → Migration/Rollout.
+  <!-- apply PR2 (2026-09-14): `rg BertIntentClassifier` en el repo solo encuentra la clase
+  misma, su prueba, y menciones en documentos OpenSpec (proposal/design/spec/tasks de este
+  cambio y de M6/M15, que solo la referencian en prosa). Cero wiring real. -->
+- [x] 2.9 Corregir el constructor de `BertIntentClassifier` de `string modelPath` a
+  `ModelAsset modelo, TextAsset tokenizadorJson`: la tarea 2.5 original dejó un gap real, no
+  cosmético — el camino de carga solo funcionaba dentro del Editor (`AssetDatabase` para el
+  `.onnx`, `File.ReadAllText` para el `tokenizer.json`), y ninguna de las dos APIs existe en un
+  build de jugador real (Quest). `design.md` → Migration/Rollout diferiría incorrectamente esta
+  corrección al "wiring de M11"; eso es un error de asignación de responsabilidad: M11 solo
+  puede pasar lo que el constructor de M2 acepta, así que si el constructor solo aceptaba una
+  ruta de archivo, ningún código de composición de M11 podía resolverlo en un build real. La
+  corrección debía vivir dentro de la propia clase de M2.
+  <!-- apply PR2 (2026-09-14, continuación): constructor cambiado a
+  `BertIntentClassifier(ModelAsset modelo, TextAsset tokenizadorJson)`. `CargarModelo` ahora es
+  `modelo != null ? ModelLoader.Load(modelo) : null` (sin `#if UNITY_EDITOR`, sin
+  `AssetDatabase`, sin fallback a `ModelLoader.Load(string)`). `CargarTokenizador` ahora es
+  `HuggingFaceParser.GetDefault().Parse(tokenizadorJson.text)` cuando `tokenizadorJson != null`
+  (sin `File.Exists`/`File.ReadAllText`/`Path.Combine`). `Tests/EditMode/Nlu/
+  BertIntentClassifierTests.cs` actualizado: `CreateSubject()` resuelve el `.onnx` y el
+  `tokenizer.json` commiteados vía `AssetDatabase.LoadAssetAtPath<ModelAsset>`/
+  `<TextAsset>` (uso correcto aquí — código de prueba siempre corre en el Editor) y los pasa al
+  nuevo constructor; la prueba de "ruta inexistente" se reemplazó por
+  `Un_modelo_o_tokenizador_nulo_deja_el_clasificador_no_listo_y_no_lanza` (casos `null,null` /
+  `modelo,null` / `null,tokenizador`), mismo comportamiento esperado que antes
+  (`IsReady` falso, `Classify` devuelve `Unknown`, nunca lanza).
+
+  CONFIRMADO en el Test Runner real (2026-09-15, ver apply-progress.md "Compuerta humana del
+  constructor nuevo — resultado"): `BertIntentClassifierTests` paso en verde con el constructor
+  `ModelAsset`/`TextAsset`. En el camino se encontro y corrigio un gap real de asmdef
+  (`Tests/EditMode/Nlu/NpcAi.Nlu.Tests.asmdef` no referenciaba `Unity.InferenceEngine`,
+  commit `d67572a`) — exactamente el tipo de error que solo un compilador real detecta. -->
 
 > PR2 depende del `.onnx` de PR1. No requiere reentrenar dentro de PR2 — solo consume el artefacto
 > ya producido.
