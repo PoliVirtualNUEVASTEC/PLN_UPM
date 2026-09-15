@@ -181,20 +181,23 @@ no se toca. Revertir los commits de este cambio deja M8 en el estado "solo doble
 
 ## Success Criteria
 
-- [ ] `NpcPresenter` pasa exactamente la misma batería `NpcPresenterContract` que
+- [x] `NpcPresenter` pasa exactamente la misma batería `NpcPresenterContract` que
       `RecordingNpcPresenter`, sin modificar la clase base.
-- [ ] `Play(default)` y `Play` con `Text` vacío o solo espacios NO invocan al `ISpeechSynthesizer`
+- [x] `Play(default)` y `Play` con `Text` vacío o solo espacios NO invocan al `ISpeechSynthesizer`
       y NO lanzan.
-- [ ] `Play` con un `EmotionTag`/`AnimationCue` fuera del mapa de la config NO lanza (no-op de
+- [x] `Play` con un `EmotionTag`/`AnimationCue` fuera del mapa de la config NO lanza (no-op de
       animación) y el `Text` igual se sintetiza.
-- [ ] `NpcPresenterBehaviour` se suscribe al `NpcReplyChannel` en `OnEnable` y se desuscribe en
+- [x] `NpcPresenterBehaviour` se suscribe al `NpcReplyChannel` en `OnEnable` y se desuscribe en
       `OnDisable`; una prueba lo verifica sin fugas.
-- [ ] La síntesis ocurre fuera del hilo principal; la entrega al `AudioSource` ocurre en el hilo
+- [x] La síntesis ocurre fuera del hilo principal; la entrega al `AudioSource` ocurre en el hilo
       principal a través de la bomba.
-- [ ] Con Piper real: `Play(new NpcReply("Buenas, ¿en qué le ayudo?", ...))` produce audio
-      audible en español en el Editor de escritorio.
-- [ ] `openspec/specs/presentador-npc-m8/spec.md` existe y traza cada requisito a una prueba
-      EditMode en verde.
+- [x] Con Piper real: `Play(new NpcReply("Buenas, ¿en qué le ayudo?", ...))` produce audio
+      audible en español en el Editor de escritorio. Confirmado por el usuario el 2026-09-14
+      (20 repeticiones sin fugas ni bloqueo del hilo principal).
+- [x] `openspec/specs/presentador-npc-m8/spec.md` existe y traza cada requisito a una prueba
+      EditMode en verde. (Ruta real de este cambio:
+      `openspec/changes/2026-09-10-m8-presentador-npc/specs/presentador-npc-m8/spec.md`,
+      pendiente de promover a `openspec/specs/` al archivar — tasks.md 5.3.)
 - [ ] `Docs/MODULES.md` (sección M8) deja de decir "solo doble".
 - [ ] El diff no toca `Runtime/Core/`, `Runtime/CoreChannels/`, ni ninguna carpeta fuera de
       `Runtime/Presentation/`, `Data/Presentation/`, `Tests/EditMode/Presentation/`, `Docs/`,
