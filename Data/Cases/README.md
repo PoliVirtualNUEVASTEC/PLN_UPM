@@ -40,7 +40,7 @@ Así M15 resuelve un `ClinicalCaseId` a un archivo sin índice aparte (misma reg
       "frRpm": 23,
       "satO2Pct": 94,
       "glasgow": "15/15",
-      "temperaturaC": null
+      "temperaturaC": "36.4"
     }
   },
   "hechos": [
@@ -76,7 +76,7 @@ Campo por campo:
 | `paciente.signosVitales.frRpm` | int | frecuencia respiratoria, rpm |
 | `paciente.signosVitales.satO2Pct` | int | saturación de oxígeno, % |
 | `paciente.signosVitales.glasgow` | string | `"15/15"` |
-| `paciente.signosVitales.temperaturaC` | number \| null | `null` si el caso no la reporta |
+| `paciente.signosVitales.temperaturaC` | string \| null | `"36.4"` (texto, igual que `taMmHg`/`glasgow`); `null` si el caso no la reporta. Texto y no número a propósito: `JsonUtility` (usado por M15 y por M6) no soporta `null` en un campo numérico |
 | `hechos` | array, mínimo 8 | tabla de recuperación, ver abajo |
 | `hechos[].campo` | string | clave estable, p. ej. `"alergias"` |
 | `hechos[].ejemplosDePregunta` | string[], mínimo 2 | frases con las que la enfermera podría preguntar esto |
