@@ -139,6 +139,33 @@
   <!-- apply PR2 (2026-09-14): `rg BertIntentClassifier` en el repo solo encuentra la clase
   misma, su prueba, y menciones en documentos OpenSpec (proposal/design/spec/tasks de este
   cambio y de M6/M15, que solo la referencian en prosa). Cero wiring real. -->
+- [x] 2.9 Corregir el constructor de `BertIntentClassifier` de `string modelPath` a
+  `ModelAsset modelo, TextAsset tokenizadorJson`: la tarea 2.5 original dejó un gap real, no
+  cosmético — el camino de carga solo funcionaba dentro del Editor (`AssetDatabase` para el
+  `.onnx`, `File.ReadAllText` para el `tokenizer.json`), y ninguna de las dos APIs existe en un
+  build de jugador real (Quest). `design.md` → Migration/Rollout diferiría incorrectamente esta
+  corrección al "wiring de M11"; eso es un error de asignación de responsabilidad: M11 solo
+  puede pasar lo que el constructor de M2 acepta, así que si el constructor solo aceptaba una
+  ruta de archivo, ningún código de composición de M11 podía resolverlo en un build real. La
+  corrección debía vivir dentro de la propia clase de M2.
+  <!-- apply PR2 (2026-09-14, continuación): constructor cambiado a
+  `BertIntentClassifier(ModelAsset modelo, TextAsset tokenizadorJson)`. `CargarModelo` ahora es
+  `modelo != null ? ModelLoader.Load(modelo) : null` (sin `#if UNITY_EDITOR`, sin
+  `AssetDatabase`, sin fallback a `ModelLoader.Load(string)`). `CargarTokenizador` ahora es
+  `HuggingFaceParser.GetDefault().Parse(tokenizadorJson.text)` cuando `tokenizadorJson != null`
+  (sin `File.Exists`/`File.ReadAllText`/`Path.Combine`). `Tests/EditMode/Nlu/
+  BertIntentClassifierTests.cs` actualizado: `CreateSubject()` resuelve el `.onnx` y el
+  `tokenizer.json` commiteados vía `AssetDatabase.LoadAssetAtPath<ModelAsset>`/
+  `<TextAsset>` (uso correcto aquí — código de prueba siempre corre en el Editor) y los pasa al
+  nuevo constructor; la prueba de "ruta inexistente" se reemplazó por
+  `Un_modelo_o_tokenizador_nulo_deja_el_clasificador_no_listo_y_no_lanza` (casos `null,null` /
+  `modelo,null` / `null,tokenizador`), mismo comportamiento esperado que antes
+  (`IsReady` falso, `Classify` devuelve `Unknown`, nunca lanza). **NO confirmado en el Test
+  Runner real todavía** — es una compuerta humana nueva y distinta de la ya confirmada en la
+  tarea 2.7 (esa confirmación fue sobre el constructor VIEJO basado en `modelPath`; al cambiar
+  la firma, la batería completa (`IntentClassifierContract` + las pruebas propias de esta
+  clase, 368 tests en total según 2.7) debe volver a correrse en verde antes de considerar esta
+  tarea totalmente validada). -->
 
 > PR2 depende del `.onnx` de PR1. No requiere reentrenar dentro de PR2 — solo consume el artefacto
 > ya producido.

@@ -352,3 +352,68 @@ y Fase 4 (cierre por PR/archivado) siguen pendientes.
   dentro del Editor) sigue sin resolverse — no se probo un build real de Quest, solo el Editor.
   Ese rediseno a `ModelAsset` por Inspector sigue pendiente y queda fuera del alcance de PR2
   (ver Deviations arriba, hallazgo (b) de la tarea 2.5).
+
+---
+
+### Batch: apply PR2 — ModelAsset fix (2026-09-14, continuation)
+
+**Que cambio y por que**: correccion del constructor de `BertIntentClassifier`, de
+`string modelPath` a `ModelAsset modelo, TextAsset tokenizadorJson`. Esto **no es una
+capacidad nueva** — es una correccion sobre la interfaz que el propio `design.md` de este
+cambio ya habia fijado en su seccion "Interfaces / Contracts" (tarea 2.5 original). El gap era
+real, no cosmetico: la version anterior solo funcionaba dentro del Editor porque `CargarModelo`
+usaba `UnityEditor.AssetDatabase.LoadAssetAtPath` (Editor-only, no existe en un build de
+jugador) y `CargarTokenizador` usaba `File.Exists`/`File.ReadAllText` contra una ruta de
+paquete Unity (`Packages/com.poli.npc-ai/...`), que tampoco resuelve dentro de un Player
+compilado (Quest). La compuerta humana 2.7 (confirmada el 2026-09-14, ver seccion anterior)
+solo probo el camino Editor — nunca probo un build real, asi que nunca pudo haber detectado
+este gap. El usuario (autor de M2) pidio explicitamente continuar con el rediseno a
+`ModelAsset` para que un build real de Quest pueda cargar el modelo.
+
+**Por que "wiring de M11" era el lugar equivocado para diferir esto**: la version anterior de
+`design.md` -> Migration/Rollout decia que la integracion real (incluyendo, implicitamente,
+resolver el gap de carga fuera del Editor) quedaba para "M11 Harness cuando exista". Eso es un
+error de asignacion de responsabilidad, no una decision valida de alcance: M11 solo puede
+*componer* — pasarle al constructor de `BertIntentClassifier` lo que ese constructor acepte.
+Si el constructor solo aceptaba un `string modelPath`, ningun codigo de composicion que M11
+pudiera escribir habria logrado que la carga funcionara en un build real, porque el problema no
+esta en como se *invoca* el constructor sino en como el constructor *carga* sus dependencias
+internamente. La correccion tenia que vivir dentro de la propia clase de M2, y asi quedo:
+`CargarModelo` ahora es una sola linea (`modelo != null ? ModelLoader.Load(modelo) : null`, sin
+`#if UNITY_EDITOR` ni `AssetDatabase`) y `CargarTokenizador` parsea directo desde
+`tokenizadorJson.text` (sin ningun acceso a sistema de archivos). `design.md` se actualizo para
+reflejar esto: el trabajo de M11 pasa a ser exclusivamente *proveer* las dos referencias de
+asset (por ejemplo via `[SerializeField]` o `Resources.Load`), nunca resolver un mecanismo de
+carga.
+
+**Files Changed (este batch)**
+
+| File | Action | What |
+|---|---|---|
+| `Runtime/Nlu/BertIntentClassifier.cs` | Modified | Constructor `string modelPath` -> `ModelAsset modelo, TextAsset tokenizadorJson`; `CargarModelo`/`CargarTokenizador` reescritos sin Editor-only APIs ni File IO; removidos `using System.IO;` y `using UnityEditor;` (guardado); agregado `using UnityEngine;` (para `TextAsset`); doc comment de "Carga del modelo" reescrito para reflejar el diseno resuelto; constantes `CarpetaTokenizador`/`ArchivoTokenizador` eliminadas (ya no se arma ninguna ruta) |
+| `Tests/EditMode/Nlu/BertIntentClassifierTests.cs` | Modified | `CreateSubject()` resuelve `ModelAsset`/`TextAsset` via `AssetDatabase.LoadAssetAtPath` (uso correcto y confinado a codigo de prueba) y los pasa al nuevo constructor; prueba `Una_ruta_de_modelo_inexistente_deja_el_clasificador_no_listo_y_no_lanza` reemplazada por `Un_modelo_o_tokenizador_nulo_deja_el_clasificador_no_listo_y_no_lanza` (casos `null,null` / `modelo,null` / `null,tokenizador`); agregadas referencias `Unity.InferenceEngine`, `UnityEditor`, `UnityEngine` |
+| `openspec/.../design.md` | Modified | Snippet de `## Interfaces / Contracts` actualizado a la nueva firma; `## Migration / Rollout` corregido: ya no diere la carga a "wiring de M11" |
+| `openspec/.../tasks.md` | Modified | Nueva tarea `2.9` bajo Fase 2, documentando esta correccion con la misma convencion de comentario HTML inline que 2.2-2.8 |
+| `openspec/.../apply-progress.md` | Modified | Esta seccion |
+
+**TDD**: RED no aplico en el sentido estricto de "escribir una prueba que falle antes que el
+codigo" porque esto es una correccion de una firma existente, no una capacidad nueva desde
+cero — pero se siguio el mismo criterio de honestidad que en el resto de este batch: el codigo
+se escribio razonando sobre la API real (`ModelAsset`/`TextAsset`/`ModelLoader.Load`/
+`HuggingFaceParser`, misma API ya usada y confirmada en produccion en la tarea 2.7, solo que
+ahora invocada desde argumentos en vez de desde una ruta resuelta internamente), y **no fue
+ejecutado por el agente** — no hay acceso a Unity Editor en este entorno.
+
+**Remaining Tasks (obligatorio, no omitir)**
+
+- [ ] **Un humano debe re-correr el Test Runner de Unity (EditMode) en esta rama
+  (`feat/m2-pr2-bert-sentis`) para confirmar que `BertIntentClassifierTests` y el resto de la
+  bateria de `IntentClassifierContract` siguen pasando en verde con el nuevo constructor.** Esta
+  es una compuerta humana DISTINTA de la ya confirmada en la tarea 2.7: esa confirmacion fue
+  sobre el constructor VIEJO (`string modelPath`); la firma cambio, asi que ese verde anterior
+  ya no es evidencia valida para el constructor nuevo. Ningun agente puede afirmar que las
+  pruebas pasan sin esta confirmacion.
+- [ ] Fase 3 (PR3): documentacion (`Docs/MODULES.md`, `PENDIENTE-AMPLIACION.md`) — sin cambios
+  por este batch.
+- [ ] Fase 4: cierre por PR (git add acotado por PR, checklist, commit LFS del `.onnx`,
+  archivado del cambio) — sin cambios por este batch.

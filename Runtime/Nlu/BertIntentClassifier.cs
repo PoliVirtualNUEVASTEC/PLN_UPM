@@ -1,13 +1,10 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using NpcAi.Core;
 using Unity.InferenceEngine;
 using Unity.InferenceEngine.Tokenization;
 using Unity.InferenceEngine.Tokenization.Parsers.HuggingFace;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using UnityEngine;
 
 namespace NpcAi.Nlu
 {
@@ -38,16 +35,18 @@ namespace NpcAi.Nlu
     /// </para>
     ///
     /// <para>
-    /// <b>Carga del modelo</b>: Sentis no ofrece un conversor ONNX-&gt;<see cref="Model"/> en
-    /// tiempo de ejecucion fuera del Editor (el unico importador vive en
-    /// <c>Editor/ONNX/ONNXModelConverter.cs</c>, Editor-only). Dentro del Editor — el
-    /// contexto real de <c>Tests/EditMode</c> — el <c>.onnx</c> commiteado ya fue importado
-    /// automaticamente por Unity a un <see cref="ModelAsset"/> nativo, y esta clase lo carga
-    /// via <c>AssetDatabase</c>. Fuera del Editor (build de jugador, wiring real de M11) esta
-    /// via de carga por ruta de archivo queda pendiente — ver Deviations en
-    /// <c>apply-progress.md</c> de este cambio: la integracion real necesitara exponer el
-    /// <see cref="ModelAsset"/> ya importado (referencia serializada o Resources), no una
-    /// ruta de archivo cruda.
+    /// <b>Carga del modelo (corregido, ver tasks.md 2.9)</b>: la primera version de esta clase
+    /// recibia un <c>string modelPath</c> y solo funcionaba dentro del Editor, via
+    /// <c>UnityEditor.AssetDatabase.LoadAssetAtPath</c> para el <c>.onnx</c> y
+    /// <c>File.ReadAllText</c> para el tokenizador — ninguna de las dos APIs existe en un
+    /// build de jugador real (Quest). El diseno corregido recibe directamente las referencias
+    /// de asset ya serializadas: <see cref="ModelAsset"/> (que Unity importa automaticamente
+    /// del <c>.onnx</c> commiteado, dentro y fuera del Editor) y <see cref="TextAsset"/> (el
+    /// <c>tokenizer.json</c> commiteado como texto). Ambos tipos son referencias de asset que
+    /// el pipeline de build de Unity empaqueta tal cual dentro del Player — via Inspector,
+    /// <c>Resources</c> o Addressables — sin ninguna dependencia de Editor ni de sistema de
+    /// archivos en tiempo de ejecucion. Quien componga esta clase (M11) solo necesita proveer
+    /// esas dos referencias; no hay ningun mecanismo de carga que M11 deba resolver.
     /// </para>
     /// </summary>
     public sealed class BertIntentClassifier : IIntentClassifier, IDisposable
@@ -56,8 +55,6 @@ namespace NpcAi.Nlu
         private const string NombreEntradaMascara = "attention_mask";
         private const string NombreSalidaIntent = "intent_probs";
         private const string NombreSalidaTone = "tone_probs";
-        private const string CarpetaTokenizador = "tokenizer";
-        private const string ArchivoTokenizador = "tokenizer.json";
 
         private static readonly int CantidadDeIntenciones = Enum.GetValues(typeof(Intent)).Length;
         private static readonly int CantidadDeTonos = Enum.GetValues(typeof(Tone)).Length;
@@ -66,23 +63,31 @@ namespace NpcAi.Nlu
         private readonly ITokenizer _tokenizador;
         private bool _disposed;
 
-        /// <param name="modelPath">
-        /// Ruta al <c>.onnx</c> entrenado (por ejemplo,
-        /// <c>"Packages/com.poli.npc-ai/Runtime/Nlu/Models/intent-tone-classifier.onnx"</c>).
-        /// El tokenizador se busca en la carpeta hermana <c>tokenizer/tokenizer.json</c>, la
-        /// misma convencion que deja <c>Training/Nlu/train.py</c> al exportar. Nunca lanza: si
-        /// el modelo o el tokenizador no cargan, <see cref="IsReady"/> queda en <c>false</c>.
+        /// <param name="modelo">
+        /// Referencia serializada al <see cref="ModelAsset"/> importado del <c>.onnx</c>
+        /// entrenado (por ejemplo, <c>Runtime/Nlu/Models/intent-tone-classifier.onnx</c>). Se
+        /// asigna por Inspector, <c>Resources</c> o Addressables — nunca por ruta de archivo.
         /// </param>
-        public BertIntentClassifier(string modelPath)
+        /// <param name="tokenizadorJson">
+        /// Referencia serializada al <see cref="TextAsset"/> del <c>tokenizer.json</c> que
+        /// <c>Training/Nlu/train.py</c> exporta junto al modelo. Se parsea directo desde
+        /// <c>tokenizadorJson.text</c>, sin tocar el sistema de archivos.
+        /// </param>
+        /// <remarks>
+        /// Nunca lanza: si <paramref name="modelo"/> o <paramref name="tokenizadorJson"/> son
+        /// <c>null</c>, o si la carga falla por cualquier otro motivo, <see cref="IsReady"/>
+        /// queda en <c>false</c>.
+        /// </remarks>
+        public BertIntentClassifier(ModelAsset modelo, TextAsset tokenizadorJson)
         {
             try
             {
-                var modelo = CargarModelo(modelPath);
-                var tokenizador = CargarTokenizador(modelPath);
+                var modeloCargado = CargarModelo(modelo);
+                var tokenizador = CargarTokenizador(tokenizadorJson);
 
-                if (modelo != null && tokenizador != null)
+                if (modeloCargado != null && tokenizador != null)
                 {
-                    _worker = new Worker(modelo, BackendType.CPU); // CPU, no GPU: de-riesga el
+                    _worker = new Worker(modeloCargado, BackendType.CPU); // CPU, no GPU: de-riesga el
                     // determinismo de Es_determinista_para_la_misma_entrada (tasks.md 2.6) —
                     // el orden de reduccion en GPUCompute no esta garantizado entre corridas.
                     _tokenizador = tokenizador;
@@ -190,38 +195,14 @@ namespace NpcAi.Nlu
         private static Tone ATone(int indice) =>
             indice >= 0 && indice < CantidadDeTonos ? (Tone)indice : Tone.Neutral;
 
-        private static Model CargarModelo(string modelPath)
-        {
-            if (string.IsNullOrWhiteSpace(modelPath))
-                return null;
+        // Carga directa desde la referencia de asset ya serializada (tasks.md 2.9): ni
+        // AssetDatabase ni ninguna otra API Editor-only, funciona igual en Editor y en Player.
+        private static Model CargarModelo(ModelAsset modelo) =>
+            modelo != null ? ModelLoader.Load(modelo) : null;
 
-#if UNITY_EDITOR
-            // Camino real de Tests/EditMode: el .onnx commiteado ya fue importado por Unity a
-            // un ModelAsset nativo (Editor/ONNX/ONNXModelConverter, Editor-only en el paquete
-            // instalado) en el momento en que se agrego al proyecto.
-            var modelAsset = AssetDatabase.LoadAssetAtPath<ModelAsset>(modelPath);
-            if (modelAsset != null)
-                return ModelLoader.Load(modelAsset);
-#endif
-            // Fuera del Editor, ModelLoader.Load(string) solo lee el formato binario propio
-            // de Sentis (.sentis), no ONNX crudo. Se deja como via de respaldo para cuando la
-            // integracion real (M11) provea un .sentis pre-convertido en esa ruta.
-            return File.Exists(modelPath) ? ModelLoader.Load(modelPath) : null;
-        }
-
-        private static ITokenizer CargarTokenizador(string modelPath)
-        {
-            if (string.IsNullOrWhiteSpace(modelPath))
-                return null;
-
-            var carpetaDelModelo = Path.GetDirectoryName(modelPath) ?? string.Empty;
-            var rutaTokenizador = Path.Combine(carpetaDelModelo, CarpetaTokenizador, ArchivoTokenizador);
-
-            if (!File.Exists(rutaTokenizador))
-                return null;
-
-            var json = File.ReadAllText(rutaTokenizador, System.Text.Encoding.UTF8);
-            return HuggingFaceParser.GetDefault().Parse(json);
-        }
+        // Idem: el TextAsset ya trae el contenido de tokenizer.json embebido por el pipeline
+        // de build de Unity, sin tocar el sistema de archivos en tiempo de ejecucion.
+        private static ITokenizer CargarTokenizador(TextAsset tokenizadorJson) =>
+            tokenizadorJson != null ? HuggingFaceParser.GetDefault().Parse(tokenizadorJson.text) : null;
     }
 }
