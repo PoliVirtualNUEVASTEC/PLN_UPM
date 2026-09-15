@@ -19,54 +19,61 @@
 
 ## Phase 0: Guardrails (leer antes de escribir)
 
-- [ ] 0.1 **Dependencias mergeadas**: `2026-09-09-m0-puerto-respuesta-clinica` (define
+- [x] 0.1 **Dependencias mergeadas**: `2026-09-09-m0-puerto-respuesta-clinica` (define
   `IClinicalResponder`, `ClinicalResponse`, `ClinicalCaseId`, `ClinicalResponderContract`)
   y `2026-09-09-m14-catalogo-casos-clinicos` (define el esquema y los 3 JSON). Si alguno no
-  está en `main`, M15 no arranca — parar y avisar.
-- [ ] 0.2 Frontera de escritura PR1: `Runtime/ClinicalResponse/` (menos `ClinicalResponder.cs`)
+  está en `main`, M15 no arranca — parar y avisar. Confirmados en `main` (M14 mergeado
+  2026-09-15, PR #20; el ajuste de `temperaturaC` a texto también mergeado, PR aparte por
+  ser cambio de datos de M14, no de M15).
+- [x] 0.2 Frontera de escritura PR1: `Runtime/ClinicalResponse/` (menos `ClinicalResponder.cs`)
   y `Tests/EditMode/ClinicalResponse/`. Frontera PR2: `Runtime/ClinicalResponse/ClinicalResponder.cs`
   y `Tests/EditMode/ClinicalResponse/ClinicalResponderTests.cs`. Más `Docs/MODULES.md` en el
   último PR.
-- [ ] 0.3 **Cero cambio en `NpcAi.Core`.** `IClinicalResponder`, `ClinicalResponse`,
+- [x] 0.3 **Cero cambio en `NpcAi.Core`.** `IClinicalResponder`, `ClinicalResponse`,
   `ClinicalCaseId`, `NpcReply` no cambian una firma. Si M15 necesita otra firma del puerto,
   parar y avisar — es cambio de contrato v3, otro alcance.
-- [ ] 0.4 `Tests/EditMode/Core/ClinicalResponderContract.cs` no se modifica:
+- [x] 0.4 `Tests/EditMode/Core/ClinicalResponderContract.cs` no se modifica:
   `ClinicalResponderTests` y `ScriptedClinicalResponderTests` **heredan**, no editan.
-- [ ] 0.5 `NpcAi.ClinicalResponse.asmdef` referencia **solo `NpcAi.Core`**. No
+- [x] 0.5 `NpcAi.ClinicalResponse.asmdef` referencia **solo `NpcAi.Core`**. No
   `NpcAi.Core.Channels`, no `NpcAi.Nlu`, no `NpcAi.Dialogue`. Si hace falta algo de otro
   módulo, usar su doble o es cambio de contrato.
-- [ ] 0.6 Este módulo es de IA (M15): `/sdd-ff` no aplica — cada PR pasa por propuesta →
+- [x] 0.6 Este módulo es de IA (M15): `/sdd-ff` no aplica — cada PR pasa por propuesta →
   diseño → tareas → revisión humana.
-- [ ] 0.7 No editar `Data/Cases/*.json` desde este cambio (son de M14). Si un caso necesita
+- [x] 0.7 No editar `Data/Cases/*.json` desde este cambio (son de M14). Si un caso necesita
   un campo nuevo, se arregla en el cambio de M14 antes de archivar cualquiera de los dos.
+  (El ajuste de `temperaturaC` se hizo como fix aparte de M14, no desde aquí.)
 
 ## Phase 1: Núcleo — tipo, cargador, emparejador, doble (PR1)
 
-- [ ] 1.1 Crear `NpcAi.ClinicalResponse.asmdef` (`references: ["NpcAi.Core"]`,
+- [x] 1.1 Crear `NpcAi.ClinicalResponse.asmdef` (`references: ["NpcAi.Core"]`,
   `rootNamespace: "NpcAi.ClinicalResponse"`).
-- [ ] 1.2 Crear `ClinicalCase.cs`: POCO con `Paciente` y `Hechos` (lista de `Hecho`).
+- [x] 1.2 Crear `ClinicalCase.cs`: POCO con `Paciente` y `Hechos` (lista de `Hecho`).
   **Sin** `Clave`. Namespace `NpcAi.ClinicalResponse`.
-- [ ] 1.3 Spike de deserialización: probar `JsonUtility` contra `Data/Cases/caso-01.json`
-  real. Si no soporta el esquema (arrays anidados, `temperaturaC: null`), decidir entre
-  Newtonsoft (declarar `com.unity.nuget.newtonsoft-json` en `package.json`) o un mini-parser.
-  Registrar la decisión en `design.md` → Open Questions.
-- [ ] 1.4 RED: `ClinicalFactMatcherTests.cs` — normalización (minúsculas, sin tildes, sin
-  signos); "¿desde cuándo le empezó el dolor?" → campo `inicio_sintoma` del caso 1;
+- [x] 1.3 Spike de deserialización: probar `JsonUtility` contra `Data/Cases/caso-01.json`
+  real. Decisión: `JsonUtility`, con `temperaturaC` movido a texto en M14 (ver
+  `design.md` → Open Questions, resuelto).
+- [x] 1.4 `ClinicalFactMatcherTests.cs` — normalización (minúsculas, sin tildes, sin
+  signos); "¿desde cuándo le empezó el dolor?" → campo `inicio_sintoma`;
   "buenos días, ¿cómo se siente?" → `-1`; empate por menor índice.
-- [ ] 1.5 GREEN: `ClinicalFactMatcher.cs` — `Normalizar` + `Match` determinista (orden
+- [x] 1.5 `ClinicalFactMatcher.cs` — `Normalizar` + `Match` determinista (orden
   explícito, sin `Random`, sin depender de orden de `Dictionary`).
-- [ ] 1.6 RED: `ClinicalCasesDataTests.cs` — carga los 3 `Data/Cases/caso-*.json`; valida
+- [x] 1.6 `ClinicalCasesDataTests.cs` — carga los 3 `Data/Cases/caso-*.json`; valida
   esquema, `id` == nombre de archivo, `triajeEsperado` ∈ {`I`..`V`}, `signosVitales` con
   los 6 campos, `hechos` ≥ mínimo (8), cada `hecho` con ≥ 2 `ejemplosDePregunta`; y que
   ninguna `respuesta` contiene el `triajeEsperado` ni una `banderaRoja` del caso.
-- [ ] 1.7 GREEN: `ClinicalCaseLoader.cs` — `TryParse` que satisface `ClinicalCasesDataTests`
+- [x] 1.7 `ClinicalCaseLoader.cs` — `TryParse` que satisface `ClinicalCasesDataTests`
   y no mapea `clave`.
-- [ ] 1.8 Crear `Fakes/ScriptedClinicalResponder.cs` (doble): 3–4 hechos embebidos, sin
-  carga de archivo; `IsReady == true` tras `AssignCase` con id no `None`; determinista.
-- [ ] 1.9 RED/GREEN: `ScriptedClinicalResponderTests : ClinicalResponderContract` —
-  `CreateSubject()` devuelve el doble tras `AssignCase`. Pasa la batería heredada.
-- [ ] 1.10 MANUAL (Editor de Unity): Test Runner → EditMode, verde en `ClinicalFactMatcherTests`,
-  `ClinicalCasesDataTests`, `ScriptedClinicalResponderTests`.
+- [x] 1.8 Crear `Fakes/ScriptedClinicalResponder.cs` (doble): 3 hechos embebidos, sin
+  carga de archivo; `IsReady == true` tras `AssignCase` con un id conocido
+  (`caso-01`/`caso-02`/`caso-03`, no cualquier id no-`None` — necesario para que
+  `AssignCase_con_caso_desconocido_no_lanza_y_deja_no_listo` de la base compartida pase
+  también contra el doble); determinista.
+- [x] 1.9 `ScriptedClinicalResponderTests : ClinicalResponderContract` —
+  `CreateSubject()` devuelve el doble (la base ya hace `AssignCase(caso-01, ...)` sola).
+  Pasa la batería heredada + 2 pruebas propias (id desconocido, saludo no manejado).
+- [x] 1.10 MANUAL (Editor de Unity): Test Runner → EditMode, verde en `ClinicalFactMatcherTests`,
+  `ClinicalCasesDataTests`, `ScriptedClinicalResponderTests`. Confirmado por el usuario
+  2026-09-15 (Run All en verde, tras corregir el choque de namespace `ClinicalResponse`).
 
 ## Phase 2: `ClinicalResponder` real (PR2)
 

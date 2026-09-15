@@ -112,11 +112,25 @@ implementación real.
 
 ## Open Questions
 
-- [ ] ¿`ClinicalCaseLoader` usa `JsonUtility` (limitado con arrays anidados y `null`),
-      Newtonsoft (`com.unity.nuget.newtonsoft-json`, hay que declararlo), o un mini-parser?
-      Se resuelve en el spike de PR1 probando `JsonUtility` contra el esquema real de M14.
-- [ ] ¿El umbral de "cuántas palabras de la pregunta deben cubrir un `ejemploDePregunta`"
-      para contar como coincidencia? Arrancar en "todas las palabras de contenido de algún
-      `ejemploDePregunta` aparecen en la pregunta" y ajustar con `ClinicalFactMatcherTests`.
+- [x] ¿`ClinicalCaseLoader` usa `JsonUtility`, Newtonsoft, o un mini-parser? **Resuelto:
+      `JsonUtility`.** El spike de PR1 encontró un solo punto de fricción real: `JsonUtility`
+      no soporta `null` en un campo numérico (`signosVitales.temperaturaC` es `null` en 2 de
+      los 3 casos). Se resolvió en M14 (no en M15): `temperaturaC` pasa de `number|null` a
+      `string|null` en el esquema — mismo tratamiento que `taMmHg`/`glasgow`, que ya eran
+      texto por su formato compuesto (ver `Data/Cases/README.md` → tabla de campos). Con eso,
+      el resto del esquema (arrays anidados de `hechos`, arrays de `string`) deserializa sin
+      problema. Se descartó Newtonsoft por agregar una dependencia nueva sin necesidad; se
+      descartó el mini-parser por ser trabajo no justificado una vez resuelto el único punto
+      de fricción. Costo aceptado: `NpcAi.ClinicalResponse.asmdef` queda con
+      `noEngineReferences: false` (necesita `UnityEngine.JsonUtility`), a diferencia de
+      `NpcAi.Receptivity`. Los tipos de dato (`ClinicalCase`, `Paciente`, `SignosVitales`,
+      `Hecho`) siguen siendo POCOs sin usar `UnityEngine`; solo `ClinicalCaseLoader.cs` toca
+      el motor.
+- [x] ¿El umbral de "cuántas palabras de la pregunta deben cubrir un `ejemploDePregunta`"
+      para contar como coincidencia? **Resuelto**: se implementó tal cual la propuesta —
+      "todas las palabras de contenido de algún `ejemploDePregunta` aparecen en la pregunta"
+      (subconjunto de palabras, sin filtrar stopwords), sin necesidad de ajustar el umbral;
+      `ClinicalFactMatcherTests` cubre coincidencia, no-coincidencia y el empate de AD8.
 - [ ] ¿La estrategia de carga real (`Resources/` vs. ruta de `Packages/`) la fija M11 o la
       documenta M15 como recomendación? Propuesta: M11 la fija; M15 solo expone el `Func`.
+      Sigue abierta: no bloquea PR1 (el núcleo prueba con JSON de prueba en memoria).
