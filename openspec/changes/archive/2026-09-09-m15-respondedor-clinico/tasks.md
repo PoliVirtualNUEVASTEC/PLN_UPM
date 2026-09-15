@@ -114,24 +114,26 @@
 
 ## Phase 3: Documentación y cierre (último PR)
 
-- [ ] 3.1 Agregar la sección **M15 — Respondedor clínico** a `Docs/MODULES.md`: carpeta,
-  dueño (Luis), qué hace, contrato que consume (`IClinicalResponder`), técnica (tabla de
-  hechos, determinista), doble, dependencia de M14, estado real.
-- [ ] 3.2 Revisar que el diff acumulado respeta los `Success Criteria` de `proposal.md`
-  (ninguna carpeta fuera de `Runtime/ClinicalResponse/`, `Tests/EditMode/ClinicalResponse/`,
-  `Docs/`, `openspec/`; y `package.json` solo si el spike de 1.3 obligó a Newtonsoft).
+- [x] 3.1 Agregar la sección **M15 — Respondedor clínico** a `Docs/MODULES.md`: carpeta,
+  dueño (Nataly Álvarez, reasignado), qué hace, contrato que consume (`IClinicalResponder`),
+  técnica (tabla de hechos, determinista), doble, dependencia de M14, estado real.
+- [x] 3.2 Revisado: el diff acumulado de PR1+PR2 solo toca `Runtime/ClinicalResponse/` y
+  `Tests/EditMode/ClinicalResponse/` (más `openspec/` y `Docs/MODULES.md` en este PR3). Sin
+  `package.json`: el spike de 1.3 no obligó a Newtonsoft (se resolvió con `JsonUtility` +
+  ajuste de datos en M14).
 
 ## Phase 4: Cierre (acciones del autor, cada PR)
 
-- [ ] 4.1 `git add` solo de las carpetas del PR; `git diff --cached` antes de commitear.
-- [ ] 4.2 Checklist "Antes de mergear" del `README.md` (pruebas propias en verde incluida
+- [x] 4.1 `git add` solo de las carpetas del PR; `git diff --cached` antes de commitear.
+- [x] 4.2 Checklist "Antes de mergear" del `README.md` (pruebas propias en verde incluida
   la de contrato, diff acotado, spec/design/tasks archivados, rama al día con `main`).
-- [ ] 4.3 Al cerrar el último PR: mover el cambio a `openspec/changes/archive/`, crear
+- [x] 4.3 Al cerrar el último PR: mover el cambio a `openspec/changes/archive/`, crear
   `openspec/specs/respondedor-clinico-m15/spec.md` (satisface `respuesta-clinica-m0`;
   requisitos propios: respuesta desde la tabla de hechos, nunca inventa, `clave` no se
   filtra, matiz no altera el dato; trazabilidad a las pruebas), `archive-report.md`.
-- [ ] 4.4 PR mergeado a `main` por el autor (regla 8).
-- [ ] 4.5 Registrar en el documento de contexto y en Engram (regla 10).
+- [ ] 4.4 PR mergeado a `main` por el autor (regla 8). **Pendiente: este PR3.**
+- [ ] 4.5 Registrar en el documento de contexto y en Engram (regla 10). No aplica para este
+  agente: sin acceso a Engram/`gentle-ai` en este entorno.
 
 ## Notas
 
