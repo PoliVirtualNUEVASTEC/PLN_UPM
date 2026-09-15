@@ -71,8 +71,9 @@
 - [x] 1.9 `ScriptedClinicalResponderTests : ClinicalResponderContract` —
   `CreateSubject()` devuelve el doble (la base ya hace `AssignCase(caso-01, ...)` sola).
   Pasa la batería heredada + 2 pruebas propias (id desconocido, saludo no manejado).
-- [ ] 1.10 MANUAL (Editor de Unity): Test Runner → EditMode, verde en `ClinicalFactMatcherTests`,
-  `ClinicalCasesDataTests`, `ScriptedClinicalResponderTests`. **Pendiente del usuario.**
+- [x] 1.10 MANUAL (Editor de Unity): Test Runner → EditMode, verde en `ClinicalFactMatcherTests`,
+  `ClinicalCasesDataTests`, `ScriptedClinicalResponderTests`. Confirmado por el usuario
+  2026-09-15 (Run All en verde, tras corregir el choque de namespace `ClinicalResponse`).
 
 ## Phase 2: `ClinicalResponder` real (PR2)
 
