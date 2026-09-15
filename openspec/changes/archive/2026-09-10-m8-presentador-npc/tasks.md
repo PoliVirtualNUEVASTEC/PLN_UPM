@@ -222,12 +222,23 @@
 
 ## Phase 5: Cierre (acciones del autor, cada PR)
 
-- [ ] 5.1 `git add` solo de las carpetas del PR; `git diff --cached` antes de cualquier commit.
-- [ ] 5.2 Checklist "Antes de mergear" del `README.md` (pruebas propias en verde, diff acotado,
-  rama al día con `main`, decisiones a Engram y al documento de contexto).
-- [ ] 5.3 Al cerrar el último PR: `verify-report.md` + mover el cambio a `openspec/changes/archive/`
+- [x] 5.1 `git add` solo de las carpetas del PR; `git diff --cached` antes de cualquier commit.
+  Verificado por la tarea 4.3: cada uno de los 4 commits del cambio quedó acotado a
+  `Runtime/Presentation/`, `Data/Presentation/`, `Tests/EditMode/Presentation/`, `Docs/`,
+  `openspec/` y `.gitattributes` — sin una sola ruta fuera de ese alcance.
+- [x] 5.2 Checklist "Antes de mergear" del `README.md` (pruebas propias en verde, diff acotado,
+  rama al día con `main`, decisiones a Engram y al documento de contexto). **2026-09-15:** las 4
+  ramas (`feat/m8-presentador-{nucleo,envoltura,piper,spec}`) se abrieron como PR #21/#25/#23/#24
+  contra `main` y mergearon sin conflictos (`mergeStateStatus: CLEAN` antes de cada merge).
+- [x] 5.3 Al cerrar el último PR: `verify-report.md` + mover el cambio a `openspec/changes/archive/`
   con su `archive-report.md`; promover la spec a `openspec/specs/presentador-npc-m8/spec.md`.
-- [ ] 5.4 PR(s) mergeado(s) a `main` por el autor (regla 8).
+  **2026-09-15:** `verify-report.md` (PASS WITH WARNINGS, 0 CRITICAL) + `archive-report.md`
+  escritos; cambio movido a `openspec/changes/archive/2026-09-10-m8-presentador-npc/`; spec
+  promovida a `openspec/specs/presentador-npc-m8/spec.md` (idéntica byte a byte, verificado).
+- [x] 5.4 PR(s) mergeado(s) a `main` por el autor (regla 8). **2026-09-15:** los 4 PR de la cadena
+  se mergearon a `main` (`c6cbab0`, `562986b`, `894f3d6`, `b116a7b`). PR #22 (envoltura) quedó
+  cerrado sin mergear — GitHub no reapunta la base de un PR downstream más de un nivel en una
+  cadena stacked al borrar la rama previa; se reemplazó por #25 contra `main` directo.
 
 ## Notas
 

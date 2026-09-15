@@ -198,10 +198,12 @@ no se toca. Revertir los commits de este cambio deja M8 en el estado "solo doble
       EditMode en verde. (Ruta real de este cambio:
       `openspec/changes/2026-09-10-m8-presentador-npc/specs/presentador-npc-m8/spec.md`,
       pendiente de promover a `openspec/specs/` al archivar — tasks.md 5.3.)
-- [ ] `Docs/MODULES.md` (sección M8) deja de decir "solo doble".
-- [ ] El diff no toca `Runtime/Core/`, `Runtime/CoreChannels/`, ni ninguna carpeta fuera de
+- [x] `Docs/MODULES.md` (sección M8) deja de decir "solo doble". (Actualizado 2026-09-15:
+      refleja merged state en `origin/main`, 4 PRs archivadas, 32 tests verdes, audio real
+      confirmado.)
+- [x] El diff no toca `Runtime/Core/`, `Runtime/CoreChannels/`, ni ninguna carpeta fuera de
       `Runtime/Presentation/`, `Data/Presentation/`, `Tests/EditMode/Presentation/`, `Docs/`,
-      `openspec/` y `.gitattributes`.
+      `openspec/` y `.gitattributes`. (Verificado por Write-Boundary Audit en verify-report.md.)
 
 ## Decisiones del usuario (confirmadas 2026-09-10)
 
