@@ -1,0 +1,13 @@
+# Dependencias del pipeline de entrenamiento offline de M2 (Training/Nlu/).
+# Versiones fijadas a proposito (no rangos abiertos): el jurado exige que el
+# modelo se pueda re-derivar; un rango abierto rompe esa reproducibilidad.
+# Solo se usa para entrenar y exportar el .onnx; el runtime de Unity no las toca.
+
+torch==2.5.1                # framework de entrenamiento; el encoder se congela y solo se entrenan las dos cabezas
+transformers==4.46.3        # carga del encoder BERT reducido pre-entrenado (MiniLM / DistilBERT / TinyBERT)
+tokenizers==0.20.3          # tokenizador rapido que acompana a transformers (fijado para reproducibilidad)
+sentencepiece==0.2.0        # requerido por varios encoders multilingues (p. ej. MiniLM multilingue)
+onnx==1.17.0               # construccion y serializacion del grafo ONNX exportado
+onnxruntime==1.20.1        # verificacion del .onnx exportado y chequeo de reproducibilidad (tarea 1.7)
+scikit-learn==1.5.2        # split train/validacion estratificado y precision por clase
+numpy==1.26.4             # dependencia numerica comun a torch, onnx y scikit-learn

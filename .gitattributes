@@ -23,3 +23,9 @@
 Runtime/Speech/Plugins/**/*.so  filter=lfs diff=lfs merge=lfs -text
 Runtime/Speech/Plugins/**/*.dll filter=lfs diff=lfs merge=lfs -text
 Runtime/Speech/Plugins/**/*.bytes filter=lfs diff=lfs merge=lfs -text
+
+# Git LFS — binarios vendorizados de M8 (motor libpiper + voces Piper, Decisión 10:
+# openspec/changes/2026-09-10-m8-presentador-npc/design.md)
+Runtime/Presentation/Plugins/**/*.so  filter=lfs diff=lfs merge=lfs -text
+Runtime/Presentation/Plugins/**/*.dll filter=lfs diff=lfs merge=lfs -text
+Runtime/Presentation/Plugins/**/*.bytes filter=lfs diff=lfs merge=lfs -text

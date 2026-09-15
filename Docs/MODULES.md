@@ -255,11 +255,24 @@ por ser la rama compartida real del equipo.
 - **Qué hace** (según el contrato — ver Estado actual): reproduce la respuesta del NPC como voz
   sintetizada y animación.
 - **Contrato que expone**: `INpcPresenter` — solo `Play(NpcReply)`.
-- **Estado actual**: **solo doble**. `Runtime/Presentation/` en `origin/main` únicamente contiene
-  `Fakes/RecordingNpcPresenter.cs` — no sintetiza voz ni anima nada, solo registra en una lista
-  cada `NpcReply` que le pasaron (`Played`, `HasPlayed`, `Last`) para que una prueba pueda
-  verificar sobre eso.
-- **Specs formales**: no existe.
+- **Estado actual**: **real e implementado, mergeado en `origin/main`** (4 PRs encadenados,
+  mergeados 2026-09-15: PR #21 `c6cbab0` nucleó, PR #25 `562986b` envoltura, PR #23 `894f3d6`
+  motor Piper, PR #24 `b116a7b` spec/docs). Presentador por capas:
+  `NpcPresenter : INpcPresenter` (núcleo, sin `UnityEngine` de escena) despacha la síntesis fuera
+  del hilo principal y entrega el resultado por una bomba al hilo principal, donde
+  `NpcPresenterBehaviour : MonoBehaviour` reproduce el PCM en un `AudioSource` y dispara
+  `IAnimationDriver` sobre un `Animator` de escena. La síntesis de voz es TTS **Piper on-device**
+  (`PiperSpeechSynthesizer` vía P/Invoke a `libpiper`, motor GPL-3.0 aceptado explícitamente).
+  Sin voz configurada, degrada de forma segura a `Fakes/SilentSpeechSynthesizer.cs` (que se
+  mantiene como doble determinista de referencia, igual que `Fakes/RecordingNpcPresenter.cs`).
+  La configuración (voces, cues de animación, tasa de muestreo, velocidad) es dato por escenario
+  (`PresentationSettingsAsset`, `Data/Presentation/`), no código. Dos voces vendorizadas:
+  `es_AR-daniela-high` (femenina) y `es_MX-ald-medium` (masculina). 32 pruebas EditMode en verde,
+  prueba manual de audio confirmada por el usuario (20 repeticiones sin fugas, 2026-09-14).
+  Integración con la escena real (instanciar `NpcPresenterBehaviour`, cablear el rig del anfitrión)
+  queda pendiente de M11.
+- **Specs formales**: `openspec/specs/presentador-npc-m8/spec.md` (promovida desde
+  `openspec/changes/2026-09-10-m8-presentador-npc/specs/` al archivar el cambio).
 
 ---
 
@@ -403,3 +416,50 @@ por ser la rama compartida real del equipo.
   posterior, no reapertura de este cambio.
 - **Specs formales**: `openspec/specs/catalogo-casos-clinicos-m14/spec.md` se crea al archivar
   este cambio SDD (`openspec/changes/2026-09-09-m14-catalogo-casos-clinicos/`).
+
+---
+
+## M15 — Respondedor clínico
+
+- **Carpeta**: `Runtime/ClinicalResponse/` (planeado; no existe todavía en el repo).
+- **Dueño**: Nataly (reasignado; la propuesta original asignaba a Luis Miguel Cañaveral
+  Restrepo).
+- **Qué hace (según la propuesta — ver Estado actual)**: implementaría el puerto
+  `IClinicalResponder` para que el NPC responda como el paciente del caso clínico asignado,
+  usando la tabla de `hechos` de M14. Cuando la enfermera dice algo que empareja con una
+  entrada de esa tabla, devolvería la `respuesta` en primera persona envuelta en un
+  `NpcReply`, con un matiz de personalidad; cuando nada empareja, devolvería
+  `ClinicalResponse.NoAplica` (`Handled == false`) y el turno lo tomaría M6. Es un módulo
+  enrutador, no una envoltura de M6: M6 no se toca.
+- **Puerto que implementaría**: `IClinicalResponder` — ya congelado en `Runtime/Core/Ports.cs`
+  (junto con el DTO `ClinicalResponse` y `ClinicalCaseId`) desde el cambio de contrato v2
+  `2026-09-09-m0-puerto-respuesta-clinica`, con su propia base de pruebas de contrato
+  (`ClinicalResponderContract`). M15 **no modifica ese contrato**: lo consumiría e
+  implementaría por primera vez de verdad, igual que `BertIntentClassifier` hace con
+  `IIntentClassifier` en M2.
+- **Diseño / enfoque (de `design.md`, sin implementar todavía)**: un ensamblado nuevo
+  `NpcAi.ClinicalResponse` que referenciaría solo `NpcAi.Core`. Recuperación por tabla de
+  hechos, no por modelo: `ClinicalFactMatcher` normalizaría el texto de la enfermera
+  (minúsculas, sin tildes/signos) y buscaría el `campo` cuyos `ejemplosDePregunta` mejor
+  cubran la pregunta; en empate, gana el de menor índice en la lista (determinismo). El dato
+  debería sobrevivir textual: `Reply.Text` contendría siempre la `respuesta` del caso como
+  subcadena intacta, con a lo sumo un prefijo/sufijo fijo por personalidad (p. ej. `grosero`
+  antepone "Ya le dije, "). `ClinicalCase` (el POCO que carga el JSON de M14) no incluiría el
+  bloque `clave` en absoluto — lo hace estructuralmente imposible de filtrar, en vez de
+  confiar en que el código simplemente no lo lea. La obtención de los bytes de
+  `Data/Cases/` quedaría inyectada por constructor (`Func<ClinicalCaseId,string>`), decidida
+  por M11, para mantener el núcleo probable sin Unity. Fuera de alcance explícito: cambiar el
+  puerto, redefinir el esquema de M14, el enrutado clínico/social (decisión de M11), y usar
+  `Receptivity` en la respuesta.
+- **Estado actual — diseño completo, cero implementación**: `openspec/changes/2026-09-09-m15-respondedor-clinico/`
+  contiene únicamente `proposal.md`, `design.md` y `tasks.md`. **No existe `spec.md`, no
+  existe `apply-progress.md`, y no hay ningún archivo bajo `Runtime/ClinicalResponse/`
+  ni bajo `Tests/EditMode/ClinicalResponse/`** — ni el `.asmdef`, ni `ClinicalCase.cs`,
+  `ClinicalCaseLoader.cs`, `ClinicalFactMatcher.cs`, `ClinicalResponder.cs`, ni el doble
+  `Fakes/ScriptedClinicalResponder.cs`. `IClinicalResponder` sigue sin ninguna implementación
+  real en el repo — únicamente su base de pruebas de contrato existe (heredada de M0), sin
+  una clase concreta que la extienda todavía. M15 depende de que M14 esté en `main`
+  (necesita el esquema y los 3 `Data/Cases/caso-*.json` reales para
+  `ClinicalCasesDataTests`) — ver M14 arriba, ya real a partir de este mismo commit.
+- **Specs formales**: no existe `openspec/specs/respondedor-clinico-m15/spec.md`. Según la
+  propuesta, se archivaría al cerrar el cambio.

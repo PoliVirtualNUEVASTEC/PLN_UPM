@@ -1,0 +1,13 @@
+# Artefactos generados por el pipeline; se re-derivan corriendo los scripts.
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Salida de prepare_dataset.py (split reproducible; no se versiona)
+data/
+
+# Salida de train.py: el .onnx y el tokenizador se generan aca y los commitea PR2
+# desde Runtime/Nlu/Models/, no desde este directorio.
+*.onnx
+tokenizer/

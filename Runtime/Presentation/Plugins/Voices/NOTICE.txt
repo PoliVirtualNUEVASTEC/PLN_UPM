@@ -1,0 +1,23 @@
+Voces Piper vendorizadas en este paquete — atribución y licencias
+===================================================================
+
+es_MX-ald-medium.bytes
+-----------------------
+Voz: es_MX-ald-medium (Piper TTS)
+Fuente: https://huggingface.co/rhasspy/piper-voices/tree/main/es/es_MX/ald/medium
+Licencia: MIT (según MODEL_CARD del repositorio rhasspy/piper-voices)
+
+es_AR-daniela-high.bytes
+-------------------------
+Voz: es_AR-daniela-high (Piper TTS)
+Fuente: https://huggingface.co/rhasspy/piper-voices/tree/main/es/es_AR/daniela/high
+Dataset de origen: https://www.openslr.org/61/
+Licencia: CC BY-SA 4.0 (Attribution-ShareAlike 4.0 International)
+  https://creativecommons.org/licenses/by-sa/4.0/
+  Exige atribución y que cualquier obra derivada se distribuya bajo la misma
+  licencia. Este aviso cumple el requisito de atribución para el uso dentro
+  de este trabajo de grado.
+
+Ambas voces se distribuyen aquí como .onnx + .onnx.json comprimidos en un
+único .bytes (Decisión 2 de openspec/changes/2026-09-10-m8-presentador-npc/
+design.md), extraídos a Application.persistentDataPath en el primer arranque.
