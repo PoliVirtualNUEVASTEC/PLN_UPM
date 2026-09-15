@@ -1,0 +1,88 @@
+{
+  "id": "caso-01",
+  "paciente": {
+    "edad": 38,
+    "acompanamiento": "sola",
+    "motivoConsulta": "Dolor de cabeza que no cede desde hace 2 meses",
+    "sintomas": [
+      "Dolor de cabeza continuo desde hace 2 meses",
+      "No cede ni disminuye con acetaminofen",
+      "Mareo",
+      "Sensacion de que la tumban (inestabilidad)",
+      "Diaforesis (sudoracion)",
+      "Dificultad para hablar"
+    ],
+    "antecedentes": ["Diabetes Mellitus", "Depresion"],
+    "alergias": ["Tramadol"],
+    "medicacionActual": ["Acetaminofen, al menos 6 comprimidos por dia"],
+    "signosVitales": {
+      "fcLpm": 102,
+      "taMmHg": "163/99",
+      "frRpm": 23,
+      "satO2Pct": 94,
+      "glasgow": "15/15",
+      "temperaturaC": null
+    }
+  },
+  "hechos": [
+    {
+      "campo": "inicio_sintoma",
+      "ejemplosDePregunta": ["desde cuando", "hace cuanto le duele", "cuando empezo el dolor"],
+      "respuesta": "Hace unos dos meses, doctora, y no se me quita."
+    },
+    {
+      "campo": "evolucion",
+      "ejemplosDePregunta": ["ha mejorado", "cede con algo", "disminuye el dolor"],
+      "respuesta": "No, no cede ni disminuye con nada de lo que tomo."
+    },
+    {
+      "campo": "analgesia_consumida",
+      "ejemplosDePregunta": ["que se ha tomado", "toma algun medicamento para el dolor", "cuanto acetaminofen toma"],
+      "respuesta": "Me tomo acetaminofen, por lo menos 6 pastillas al dia."
+    },
+    {
+      "campo": "mareo",
+      "ejemplosDePregunta": ["siente mareo", "se ha sentido mareada", "vertigo"],
+      "respuesta": "Si, me siento mareada y como que me van a tumbar."
+    },
+    {
+      "campo": "habla",
+      "ejemplosDePregunta": ["dificultad para hablar", "se le traba la lengua", "nota algo raro al hablar"],
+      "respuesta": "Si, se me dificulta hablar bien, se me traba la lengua."
+    },
+    {
+      "campo": "sudoracion",
+      "ejemplosDePregunta": ["ha sudado mucho", "sudoracion", "se siente sudorosa"],
+      "respuesta": "Si, he estado bastante sudorosa."
+    },
+    {
+      "campo": "antecedentes",
+      "ejemplosDePregunta": ["tiene antecedentes", "sufre de alguna enfermedad", "diabetes o depresion"],
+      "respuesta": "Tengo Diabetes y Depresion."
+    },
+    {
+      "campo": "alergias",
+      "ejemplosDePregunta": ["es alergica", "alergica a algun medicamento", "tiene alergias"],
+      "respuesta": "Si, soy alergica al Tramadol."
+    },
+    {
+      "campo": "acompanamiento",
+      "ejemplosDePregunta": ["viene sola", "quien la acompana", "vino con alguien"],
+      "respuesta": "Vengo sola."
+    }
+  ],
+  "clave": {
+    "triajeEsperado": "II",
+    "tiempoAtencion": "< 30 min",
+    "banderasRojas": [
+      "Deficit neurologico focal agudo: dificultad para hablar (disartria/afasia)",
+      "Mareo e inestabilidad (sensacion de que la tumban)",
+      "Diaforesis",
+      "Cifras tensionales elevadas: presion arterial 163/99 mmHg (crisis hipertensiva)",
+      "Taquicardia leve (102 lpm)",
+      "Antecedente de Diabetes Mellitus (riesgo cardio y cerebrovascular)",
+      "Posible cefalea de rebote por abuso de analgesicos (6 comprimidos de acetaminofen/dia durante 2 meses)"
+    ],
+    "cierreEsperado": "Explicar la clasificacion obtenida y que se la pasara a la sala de urgencias para ser atendida en menos de 30 minutos; notificar de inmediato al medico de urgencias que la paciente llego y requiere ser atendida."
+  }
+}

@@ -18,53 +18,57 @@
 
 ## Phase 0: Guardrails (leer antes de escribir)
 
-- [ ] 0.1 Frontera de escritura: SOLO `Data/Cases/`, `Docs/MODULES.md` (sección M14) y este
+- [x] 0.1 Frontera de escritura: SOLO `Data/Cases/`, `Docs/MODULES.md` (sección M14) y este
   directorio de cambio. Más el `git mv Casos_Medicos.md Data/Cases/Casos_Medicos.md`.
-- [ ] 0.2 **Cero código.** M14 no crea ninguna clase C#, ningún `.asmdef`, ninguna prueba.
+- [x] 0.2 **Cero código.** M14 no crea ninguna clase C#, ningún `.asmdef`, ninguna prueba.
   El tipo `ClinicalCase` y las pruebas de datos son de M15. Si algo parece necesitar
   código, parar y avisar — está mal cortado.
-- [ ] 0.3 No tocar `Data/Corpus/` (M3) ni `Data/Personalities/` (M5) ni `NpcAi.Core`.
-- [ ] 0.4 `2026-09-09-m0-puerto-respuesta-clinica` puede no estar mergeado todavía: no
+- [x] 0.3 No tocar `Data/Corpus/` (M3) ni `Data/Personalities/` (M5) ni `NpcAi.Core`.
+- [x] 0.4 `2026-09-09-m0-puerto-respuesta-clinica` puede no estar mergeado todavía: no
   importa, M14 no compila nada. Solo respeta la convención "nombre de archivo ==
-  `ClinicalCaseId.Value`".
-- [ ] 0.5 Módulo de datos: `/sdd-ff` es admisible aquí (no está en la lista de módulos de
+  `ClinicalCaseId.Value`". (Nota: al ejecutar este cambio, `m0-puerto-respuesta-clinica` ya
+  está mergeado y archivado en `origin/main`.)
+- [x] 0.5 Módulo de datos: `/sdd-ff` es admisible aquí (no está en la lista de módulos de
   IA M1/M2/M4/M6), pero el equipo puede optar por el flujo completo dado que M14 fija un
-  esquema del que dependen M15 y M9.
+  esquema del que dependen M15 y M9. Se sigue el flujo completo (proposal/design/tasks ya
+  redactados por Luis; este cambio los ejecuta).
 
 ## Phase 1: Esquema y README
 
-- [ ] 1.1 Redactar `Data/Cases/README.md`: propósito; esquema campo por campo (ver
+- [x] 1.1 Redactar `Data/Cases/README.md`: propósito; esquema campo por campo (ver
   `design.md` → Esquema); regla `id` == nombre de archivo; mínimo de `hechos` por caso
   (arrancar en 8, confirmar con M15); `clave` es **solo** para M9, M15 tiene prohibido
   leerla; diferencia explícita con `Data/Corpus/` (M3, lo que dice el usuario) y
   `Data/Dialogue/` (M6, turnos sociales del NPC).
-- [ ] 1.2 Fijar los valores válidos de `triajeEsperado`: `"I"`, `"II"`, `"III"`, `"IV"`,
+- [x] 1.2 Fijar los valores válidos de `triajeEsperado`: `"I"`, `"II"`, `"III"`, `"IV"`,
   `"V"` (cadena romana). Documentar el significado clínico de cada uno en el README
   (tiempos de atención) para que M9 tenga referencia.
 
 ## Phase 2: Transcribir los 3 casos
 
-- [ ] 2.1 `git mv Casos_Medicos.md Data/Cases/Casos_Medicos.md` (preservar historia).
-- [ ] 2.2 `Data/Cases/caso-01.json` (Mariana, 38): `paciente` (cefalea 2 meses, no cede con
+- [x] 2.1 `git mv Casos_Medicos.md Data/Cases/Casos_Medicos.md` (preservar historia).
+- [x] 2.2 `Data/Cases/caso-01.json` (Mariana, 38): `paciente` (cefalea 2 meses, no cede con
   acetaminofén ~6/día, mareo, inestabilidad, diaforesis, disartria; antecedentes Diabetes +
   Depresión; alergia Tramadol; FC 102, TA 163/99, FR 23, SatO2 94, Glasgow 15/15);
   `hechos` ≥ 8 (inicio, evolución, analgesia consumida, mareo, habla, antecedentes,
   alergias, presión); `clave` (`triajeEsperado: "II"`, `tiempoAtencion: "< 30 min"`,
   banderas rojas y cierre del original).
-- [ ] 2.3 `Data/Cases/caso-02.json` (María Rosa, 53): odinofagia 5 días, sin
+- [x] 2.3 `Data/Cases/caso-02.json` (María Rosa, 53): odinofagia 5 días, sin
   expectoración ni disnea, otitis+faringitis tratada hace 2 semanas, COVID-19 el año
   anterior con buena recuperación; antecedente HTA; FC 70, TA 151/97, FR 17, SatO2 95,
   Temp 36.4; `hechos` ≥ 8; `clave` (`triajeEsperado: "IV"`, `tiempoAtencion: "1 a 4 h o
   consulta prioritaria"`, signos de alarma para volver, cierre).
-- [ ] 2.4 `Data/Cases/caso-03.json` (Sofía, 34): TEC leve hace 2 horas por caída desde su
+- [x] 2.4 `Data/Cases/caso-03.json` (Sofía, 34): TEC leve hace 2 horas por caída desde su
   propia altura, golpe temporo-parietal, hematoma ~4 cm sin ruptura de piel, sin pérdida de
   conciencia, orientada, dolor 7/10; FC 102, TA 130/85, FR 19, SatO2 100, Glasgow 15/15;
   `hechos` ≥ 8; `clave` (`triajeEsperado: "II"`, `tiempoAtencion: "< 30 min"`, banderas:
   zona del pterión / arteria meníngea media, riesgo de deterioro tardío con intervalo
   lúcido, magnitud del hematoma, dolor + taquicardia refleja).
-- [ ] 2.5 En cada archivo, revisar que ninguna `hechos[].respuesta` contiene el valor de
+- [x] 2.5 En cada archivo, revisar que ninguna `hechos[].respuesta` contiene el valor de
   `clave.triajeEsperado` ni una `banderaRoja` textual (el paciente no se autodiagnostica).
-- [ ] 2.6 Marcar en el README los puntos donde `Casos_Medicos.md` está corrupto por OCR
+  Verificado por inspección: ninguna `respuesta` de los 3 casos contiene "I"/"II"/"III"/
+  "IV"/"V" como clasificación ni el texto de una bandera roja.
+- [x] 2.6 Marcar en el README los puntos donde `Casos_Medicos.md` está corrupto por OCR
   ("intervalo lúdico" → "lúcido"; radios/diámetros sin número en casos 1 y 3) y qué se
   asumió al transcribir.
 
@@ -72,11 +76,18 @@
 
 - [ ] 3.1 Revisión cruzada de fidelidad clínica por el asesor o un segundo integrante del
   equipo (mismo espíritu que el doble etiquetado del 10% de `Data/Corpus/README.md`).
-- [ ] 3.2 Agregar la sección **M14 — Catálogo de casos clínicos** a `Docs/MODULES.md`:
-  carpeta `Data/Cases`, dueño Luis, qué hace, esquema resumido, consumidores (M15, M9),
-  estado ("dato real, 3 casos, meta de ampliación documentada en el README").
-- [ ] 3.3 Revisar que el diff no toca `Runtime/`, `NpcAi.Core`, `Data/Corpus/`,
-  `Data/Personalities/` ni nada fuera de la frontera de 0.1.
+  **Pendiente — compuerta humana, no la puede cerrar el agente.** Ver
+  "Notas de transcripción" en `Data/Cases/README.md` para los puntos concretos a revisar
+  (caso 2: umbral de fiebre asumido en 39°C; caso 3: radio/diámetro del hematoma y valores
+  de dolor/FC reconstruidos desde los signos vitales del mismo caso).
+- [x] 3.2 Agregar la sección **M14 — Catálogo de casos clínicos** a `Docs/MODULES.md`:
+  carpeta `Data/Cases`, dueño Nataly Álvarez (reasignado; la propuesta original sugería a
+  Luis), qué hace, esquema resumido, consumidores (M15, M9), estado ("dato real, 3 casos,
+  meta de ampliación documentada en el README").
+- [x] 3.3 Revisar que el diff no toca `Runtime/`, `NpcAi.Core`, `Data/Corpus/`,
+  `Data/Personalities/` ni nada fuera de la frontera de 0.1. Confirmado vía
+  `git status --short`: solo `Data/Cases/` (nuevo + `Casos_Medicos.md` movido) y
+  `Docs/MODULES.md`.
 
 ## Phase 4: Cierre (acciones del autor)
 
