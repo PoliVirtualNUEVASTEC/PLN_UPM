@@ -206,26 +206,30 @@ por ser la rama compartida real del equipo.
   `null`; funciona con `PersonalityId.None` sin lanzar; `Receptivo` y `NoReceptivo` deben
   producir texto distinto. A diferencia de `IIntentClassifier`, **no se exige determinismo**: es
   una asimetría deliberada del contrato de M0.
-- **Estado actual**: **solo doble en `origin/main` todavía**, pero con plan concreto ya
-  especificado. `Runtime/Dialogue/` en `origin/main` únicamente contiene
-  `Fakes/ScriptedDialogueGenerator.cs` — un `switch` fijo sobre `Receptivity` con 3 plantillas de
-  texto codificadas (`"Claro, digame en que le ayudo"`, `"No tengo nada mas que hablar con
-  usted"`, `"Lo escucho"`). No hay implementación real todavía.
-  El cambio `openspec/changes/2026-09-09-m6-generador-markov/` (propuesto 2026-09-09) especifica
-  el reemplazo — `MarkovDialogueGenerator`, una cadena de Markov de palabras (bigramas) construida
-  a partir de un corpus semilla nuevo (`Data/Dialogue/<personalidad>.json`, uno por cada una de
-  las 4 personalidades de M5, con frases de ejemplo por estado de `Receptivity`), coherente con
-  la propuesta de trabajo de grado ("cadenas de Markov... para darle respuesta"). Este corpus
-  semilla es distinto del de M3: M3 etiqueta lo que dice el *usuario*; el de M6 son ejemplos de
-  lo que dice el *NPC*, y no existe todavía en ningún lado del repo — el propio cambio de M6 lo
-  crea. La primera entrega indexa el corpus por personalidad y receptividad únicamente
-  (`IntentResult` se acepta en la firma pero no condiciona el texto todavía, ver el cambio →
-  Out of Scope). El comentario ya existente en
+- **Estado actual**: **implementado en local, sin mergear todavía** (cambio
+  `openspec/changes/2026-09-09-m6-generador-markov/`). `Runtime/Dialogue/` tiene
+  `MarkovDialogueGenerator : IDialogueGenerator` (motor real) y `MarkovChainBuilder` (cadena de
+  Markov de palabras, bigramas / orden 2), más el doble `Fakes/ScriptedDialogueGenerator.cs` que
+  se mantiene **sin cambios** como implementación determinista de referencia. `Generate` elige el
+  bloque por `(PersonalityId, Receptivity)`, hace un paseo aleatorio sobre la cadena de ese
+  bloque y, si el paseo degenera, cae en un respaldo escalonado (reintento acotado → frase
+  semilla verbatim → frase fija) para no devolver texto vacío nunca. `EmotionTag`/`AnimationCue`
+  salen de una tabla fija por receptividad, no de la cadena. `IntentResult` se acepta en la firma
+  pero no condiciona el texto en esta primera entrega (ver el cambio → Out of Scope).
+- **Corpus semilla**: `Data/Dialogue/<personalidad>.json` — 4 archivos (`grosero`, `histerico`,
+  `introvertido`, `empatico`, los mismos 4 ids de M5) más un `README.md`; cada `.json` tiene 3
+  listas por estado de `Receptivity`, 6 frases por bloque (12 bloques, 72 frases). Es lo que dice
+  el *NPC*, distinto de `Data/Corpus/` de M3 (lo que dice el *usuario*). Ampliar el corpus es una
+  edición de datos: no toca ninguna clase. El comentario ya existente en
   `Tests/EditMode/Core/DialogueGeneratorContract.cs` ("el generador real usa Markov") anticipaba
-  exactamente este enfoque.
-- **Specs formales**: no existe `openspec/specs/dialogo-*` ni carpeta de cambio archivada
-  todavía — el cambio `2026-09-09-m6-generador-markov` crea la primera,
-  `openspec/specs/generador-dialogo-m6/spec.md`, cuando se mergee.
+  este enfoque.
+- **Pruebas**: 14 pruebas EditMode nuevas en verde — `MarkovChainBuilderTests` (6) y
+  `MarkovDialogueGeneratorTests` (8 = 5 del contrato `DialogueGeneratorContract` heredado + 3
+  propias) —, más las del doble, que siguen en verde. Ningún punto del código instancia
+  `MarkovDialogueGenerator` todavía: el cableado en escena real es de M11 (Harness).
+- **Specs formales**: `openspec/specs/generador-dialogo-m6/spec.md`, creada por el cambio
+  `2026-09-09-m6-generador-markov` (vive en `changes/.../specs/generador-dialogo-m6/spec.md`
+  hasta el archivo).
 
 ---
 
@@ -251,11 +255,24 @@ por ser la rama compartida real del equipo.
 - **Qué hace** (según el contrato — ver Estado actual): reproduce la respuesta del NPC como voz
   sintetizada y animación.
 - **Contrato que expone**: `INpcPresenter` — solo `Play(NpcReply)`.
-- **Estado actual**: **solo doble**. `Runtime/Presentation/` en `origin/main` únicamente contiene
-  `Fakes/RecordingNpcPresenter.cs` — no sintetiza voz ni anima nada, solo registra en una lista
-  cada `NpcReply` que le pasaron (`Played`, `HasPlayed`, `Last`) para que una prueba pueda
-  verificar sobre eso.
-- **Specs formales**: no existe.
+- **Estado actual**: **real e implementado, mergeado en `origin/main`** (4 PRs encadenados,
+  mergeados 2026-09-15: PR #21 `c6cbab0` nucleó, PR #25 `562986b` envoltura, PR #23 `894f3d6`
+  motor Piper, PR #24 `b116a7b` spec/docs). Presentador por capas:
+  `NpcPresenter : INpcPresenter` (núcleo, sin `UnityEngine` de escena) despacha la síntesis fuera
+  del hilo principal y entrega el resultado por una bomba al hilo principal, donde
+  `NpcPresenterBehaviour : MonoBehaviour` reproduce el PCM en un `AudioSource` y dispara
+  `IAnimationDriver` sobre un `Animator` de escena. La síntesis de voz es TTS **Piper on-device**
+  (`PiperSpeechSynthesizer` vía P/Invoke a `libpiper`, motor GPL-3.0 aceptado explícitamente).
+  Sin voz configurada, degrada de forma segura a `Fakes/SilentSpeechSynthesizer.cs` (que se
+  mantiene como doble determinista de referencia, igual que `Fakes/RecordingNpcPresenter.cs`).
+  La configuración (voces, cues de animación, tasa de muestreo, velocidad) es dato por escenario
+  (`PresentationSettingsAsset`, `Data/Presentation/`), no código. Dos voces vendorizadas:
+  `es_AR-daniela-high` (femenina) y `es_MX-ald-medium` (masculina). 32 pruebas EditMode en verde,
+  prueba manual de audio confirmada por el usuario (20 repeticiones sin fugas, 2026-09-14).
+  Integración con la escena real (instanciar `NpcPresenterBehaviour`, cablear el rig del anfitrión)
+  queda pendiente de M11.
+- **Specs formales**: `openspec/specs/presentador-npc-m8/spec.md` (promovida desde
+  `openspec/changes/2026-09-10-m8-presentador-npc/specs/` al archivar el cambio).
 
 ---
 
@@ -328,24 +345,132 @@ por ser la rama compartida real del equipo.
 
 - **Carpeta**: `Runtime/SessionLog`.
 - **Dueño**: asignado (nombre no registrado en este documento).
-- **Qué hace (núcleo ya implementado; SQLite todavía planeado)**: al terminar una sesión de
-  entrenamiento, guarda un registro persistente de la conversación completa (lo que dijo el
-  usuario y lo que respondió el NPC), para exportar y revisar después. Se suscribe a los canales
-  ya existentes — `UtteranceChannel` (M1, voz del usuario) y el canal de respuesta del NPC (M6)
-  — sin necesidad de tocar el contrato de `NpcAi.Core`.
+- **Qué hace**: al terminar una sesión de entrenamiento, guarda un registro persistente de la
+  conversación completa (lo que dijo el usuario y lo que respondió el NPC) en SQLite local del
+  dispositivo, turno por turno, para exportar y revisar después. Se suscribe a los canales ya
+  existentes — `UtteranceChannel` (M1, voz del usuario) y `NpcReplyChannel` (M6, respuesta del
+  NPC) — sin tocar el contrato de `NpcAi.Core`. Cada sesión se identifica por una etiqueta manual
+  (`IniciarSesion(string etiqueta)`) y **todas conviven indefinidamente** en la base — no hay
+  borrado al iniciar una sesión nueva —, consultables por separado
+  (`ListarSesiones()`/`ObtenerTurnosDeSesion(etiqueta)`). Si la app se cierra por un error a
+  mitad de una sesión, al reabrir **la retoma sola** (sin perder de vista dónde se quedó ni
+  pedirle a nadie que reescriba la etiqueta), siempre que esa sesión no se haya cerrado ya con
+  `FinalizarSesion()`.
 - **Contrato que expone**: ninguno en `Runtime/Core/Ports.cs` — `ISessionStore` es un seam
-  interno de `NpcAi.SessionLog`, no un puerto compartido de M0 (decisión ya tomada: al ser un
-  suscriptor puro de canales existentes, no hace falta un puerto nuevo).
-- **Estado actual**: **PR1 mergeado en `origin/main`** (PR #8,
-  "feat/m13-session-log-pr1", 2026-09-09): núcleo puro (`SessionTurn.cs`, `ISessionStore.cs`,
-  `SessionRecorder.cs`) y doble en memoria (`Fakes/InMemorySessionStore.cs`). Escritura
-  **turno por turno** ya implementada tal como se decidió (no acumula en memoria para volcar
-  recién al cerrar la sesión, evitando perder la conversación si la app crashea a mitad de una
-  sesión). **Pendiente (PR2/PR3 del mismo cambio, no iniciados)**: el adaptador real de
-  persistencia sobre SQLite embebido (`sqlite-net-pcl`, con el binario nativo resuelto vía UPM en
-  vez de vendorizado manual como M1 hizo con Vosk) y el sub-ensamblado Unity que cablea
-  `SessionRecorder` a los canales reales en una escena. Hasta que eso se mergee, M13 solo
-  funciona con el doble en memoria (no persiste entre sesiones de la app).
-- **Specs formales**: no existe todavía `openspec/specs/bitacora-sesion-m13` — la spec se archiva
-  al cerrar el último PR del cambio `openspec/changes/2026-09-07-bitacora-sesion-m13/`
-  (actualmente con PR1 completado y PR2/PR3 pendientes).
+  interno de `NpcAi.SessionLog`, no un puerto compartido de M0 (al ser un suscriptor puro de
+  canales existentes, no hizo falta un puerto nuevo).
+- **Estado actual**: **real e implementado, mergeado en `origin/main`** en 3 PR encadenados
+  (`feat/m13-session-log-pr1` PR #8, `pr2` PR #11, `pr3` PR #12; 2026-09-08 a 2026-09-10).
+  Núcleo puro (`SessionTurn.cs`, `ISessionStore.cs`, `SessionRecorder.cs`, `SessionExport.cs`) y
+  doble en memoria (`Fakes/InMemorySessionStore.cs`). Adaptador real
+  `Sqlite/SqliteSessionStore.cs` sobre `sqlite-net-pcl`, escribiendo cada turno confirmado en
+  disco de inmediato (sin transacción abierta), para no perder la sesión si la app se cierra a
+  mitad de un entrenamiento. Sub-ensamblado `NpcAi.SessionLog.Unity` con
+  `SessionLogBehaviour.cs`, que se suscribe por Inspector a los dos canales y expone
+  `IniciarSesion()`/`FinalizarSesion()`/`ExportarTextoPlano()` a la escena anfitriona — mismo
+  patrón núcleo-puro/adaptador que ya usa M4. **Desviación de diseño corregida en el camino**:
+  la propuesta original asumía que `sqlite-net-pcl` se declaraba como dependencia UPM en
+  `package.json`; no era cierto (es un paquete NuGet, no UPM), así que se vendorizó a mano —
+  DLL administrados y binarios nativos Windows x86_64 / Android arm64-v8a — mismo patrón que M1
+  usó con Vosk. De paso se detectó que el binario nativo por defecto de `sqlite-net-pcl` 1.9.172
+  trae una vulnerabilidad conocida de severidad alta (CVE-2025-6965); los binarios vendorizados
+  se forzaron a una versión parchada, verificada binariamente antes de vendorizar. 22 pruebas
+  EditMode nuevas en `NpcAi.SessionLog.Tests`, en verde. **Ampliación 2026-09-14** (cambio SDD
+  separado, `historial-multi-sesion-m13`, motivada por una prueba real del usuario): historial
+  multi-sesión por etiqueta (antes cada `IniciarSesion` borraba todo) y reanudación automática
+  tras un cierre no limpio (`SessionRecorder.ReanudarUltimaSesion()`, gobernada por un flag
+  `Cerrada` por sesión para no retomar una que sí se cerró bien). **Pendiente (no bloqueante)**:
+  validar el binario nativo en un dispositivo/build IL2CPP real (hoy solo verificado
+  binariamente), y cablear `SessionLogBehaviour` en la escena real de M11 cuando esa escena
+  exista (sigue sin existir al 2026-09-14).
+- **Specs formales**: `openspec/specs/bitacora-sesion-m13/spec.md` — 9 requisitos con
+  trazabilidad completa a pruebas concretas (`SessionRecorderTests`, `SessionStoreContract`
+  heredada por `InMemorySessionStoreTests`/`SqliteSessionStoreTests`, `SessionExportTests`).
+
+---
+
+## M14 — Catálogo de casos clínicos
+
+- **Carpeta**: `Data/Cases`
+- **Dueño**: Nataly Álvarez
+- **Qué hace**: provee el caso clínico que un NPC-paciente "adquiere" al iniciar una sesión de
+  triaje — síntomas, antecedentes, alergias, signos vitales y motivo de consulta —, en JSON, un
+  archivo por caso (`id` == nombre de archivo, mismo patrón que M5). Es dato puro, sin código: el
+  tipo `ClinicalCase` que lo deserializa lo define M15. Cada archivo separa dos bloques: `paciente`
+  (lo que el NPC sabe y dice, incluida una tabla `hechos` de `{campo, ejemplosDePregunta[],
+  respuesta}` que M15 empareja contra lo que pregunta la enfermera) y `clave` (`triajeEsperado`,
+  `banderasRojas`, `cierreEsperado`) — dato de evaluación exclusivo de M9, que M15 tiene
+  contractualmente prohibido leer.
+- **Contrato que expone**: no es un puerto de código — es un esquema de datos, documentado en
+  `Data/Cases/README.md`. `clave.triajeEsperado` es una cadena romana (`"I"`–`"V"`), no un enum:
+  si M9 crea un enum `Triage`, mapea a esta cadena en su frontera.
+- **Estado actual**: 3 casos transcritos desde `Data/Cases/Casos_Medicos.md` (fuente narrativa,
+  movida desde la raíz del paquete), con 9 `hechos` cada uno (mínimo fijado: 8):
+  `caso-01` (Mariana, 38, cefalea de 2 meses, `triajeEsperado: "II"`), `caso-02` (María Rosa, 53,
+  odinofagia de 5 días, `triajeEsperado: "IV"`), `caso-03` (Sofía, 34, TEC leve,
+  `triajeEsperado: "II"`). El original en `Casos_Medicos.md` tenía ruido de OCR (números y una
+  palabra perdidos en la sección de banderas rojas del caso 3, umbral de fiebre no dado en el
+  caso 2); las asunciones tomadas al transcribir quedan documentadas en `Data/Cases/README.md` →
+  "Notas de transcripción", pendientes de revisión cruzada por el asesor o un segundo integrante
+  antes de darlas por definitivas. Ampliar el catálogo más allá de 3 casos es edición de datos
+  posterior, no reapertura de este cambio.
+- **Specs formales**: `openspec/specs/catalogo-casos-clinicos-m14/spec.md` se crea al archivar
+  este cambio SDD (`openspec/changes/2026-09-09-m14-catalogo-casos-clinicos/`).
+
+---
+
+## M15 — Respondedor clínico
+
+- **Carpeta**: `Runtime/ClinicalResponse/`
+- **Dueño**: Nataly Álvarez (reasignado; la propuesta original asignaba a Luis Miguel
+  Cañaveral Restrepo).
+- **Qué hace**: implementa el puerto `IClinicalResponder` para que el NPC responda como el
+  paciente del caso clínico asignado, usando la tabla de `hechos` de M14. Cuando la enfermera
+  dice algo que empareja con una entrada de esa tabla, devuelve la `respuesta` en primera
+  persona envuelta en un `NpcReply`, con un matiz de personalidad; cuando nada empareja,
+  devuelve `ClinicalResponse.NoAplica` (`Handled == false`) y el turno lo toma M6. Es un
+  módulo enrutador, no una envoltura de M6: M6 no se tocó.
+- **Puerto que consume**: `IClinicalResponder` — congelado en `Runtime/Core/Ports.cs` desde
+  el cambio de contrato v2 `2026-09-09-m0-puerto-respuesta-clinica`, con su propia base de
+  pruebas de contrato (`ClinicalResponderContract`). M15 no modifica ese contrato: lo
+  implementa por primera vez de verdad, igual que `BertIntentClassifier` hace con
+  `IIntentClassifier` en M2.
+- **Estado actual — real e implementado, mergeado en `origin/main`** en 2 PR (PR1: núcleo +
+  doble; PR2: adaptador real, 2026-09-15):
+  - `ClinicalCase.cs`: POCO (`Paciente`, `SignosVitales`, `Hecho`) — **sin** `Clave`, así que
+    es estructuralmente imposible que `triajeEsperado`/`banderasRojas` lleguen a filtrarse a
+    una respuesta.
+  - `ClinicalCaseLoader.cs`: JSON → `ClinicalCase` con `JsonUtility`. Motivó un ajuste chico
+    de datos en M14 (`temperaturaC` de número a texto, PR aparte): `JsonUtility` no soporta
+    `null` en un campo numérico.
+  - `ClinicalFactMatcher.cs`: normaliza el texto de la enfermera (minúsculas, sin tildes,
+    sin signos) y busca el primer `campo` cuyos `ejemplosDePregunta` quedan totalmente
+    cubiertos por las palabras de la pregunta; el empate lo resuelve el orden de la lista
+    (menor índice gana, por construcción del recorrido).
+  - `ClinicalResponder.cs`: adaptador real. Constructor recibe
+    `Func<ClinicalCaseId,string> cargarJson` (de dónde salen los bytes de `Data/Cases/` en
+    cada plataforma lo decide quien lo inyecte — M11 — no este tipo). Matiz de personalidad
+    por prefijo fijo (`grosero` → "Ya le dije, "; `empatico` → "Claro, doctora. "; `histerico`
+    → "¡Ay, doctora! ", decisión tomada en esta entrega, no estaba en la propuesta original;
+    `introvertido`/`None`/desconocida → sin matiz); la `respuesta` del caso siempre sobrevive
+    intacta como subcadena. `EmotionTag`/`AnimationCue` de tabla fija por `campo`.
+  - `Fakes/ScriptedClinicalResponder.cs`: doble determinista con 3 hechos embebidos, sin leer
+    `Data/Cases/`; reconoce los mismos 3 ids del catálogo real (`caso-01`/`02`/`03`) como
+    "casos existentes" — cualquier otro id (incluido `"no-existe"`) deja `IsReady` en `false`,
+    para que la batería heredada de `ClinicalResponderContract` pase igual contra el doble.
+  - **Choque de nombres resuelto**: el namespace del módulo (`NpcAi.ClinicalResponse`) choca
+    con el nombre del propio DTO (`NpcAi.Core.ClinicalResponse`) — mismo problema que
+    `Core.Receptivity` en M4, misma solución: calificar como `Core.ClinicalResponse` dentro
+    del módulo.
+  - 23 pruebas EditMode nuevas en `NpcAi.ClinicalResponse.Tests`, en verde (419/419 en el
+    proyecto completo): `ClinicalFactMatcherTests`, `ClinicalCasesDataTests` (valida los 3
+    `Data/Cases/caso-*.json` reales de M14 contra el esquema), `ScriptedClinicalResponderTests`
+    y `ClinicalResponderTests` (ambas heredan `ClinicalResponderContract` completo), más
+    subcadena intacta, saludo no manejado, sin matiz para `None`/`introvertido`, y
+    determinismo en 1000 llamadas para las 4 personalidades.
+  - **Pendiente (no bloqueante)**: cablear `ClinicalResponder` en la escena real de M11
+    cuando esa escena exista (sigue sin existir al 2026-09-15) — quién decide "clínico vs.
+    social" y de dónde salen los bytes de `Data/Cases/` en el Quest es decisión de M11, no
+    de M15.
+- **Specs formales**: `openspec/specs/respondedor-clinico-m15/spec.md` se crea al archivar
+  este cambio SDD.

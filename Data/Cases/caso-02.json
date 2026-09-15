@@ -1,0 +1,77 @@
+{
+  "id": "caso-02",
+  "paciente": {
+    "edad": 53,
+    "acompanamiento": "sola",
+    "motivoConsulta": "Dolor de garganta desde hace 5 dias",
+    "sintomas": [
+      "Dolor de garganta (odinofagia) desde hace 5 dias",
+      "Sin expectoracion",
+      "Sin dificultad para respirar"
+    ],
+    "antecedentes": ["Hipertension arterial", "Otitis y faringitis hace 2 semanas (tratada con antibioticos)", "Covid-19 el año pasado, con buena recuperacion"],
+    "alergias": [],
+    "medicacionActual": [],
+    "signosVitales": {
+      "fcLpm": 70,
+      "taMmHg": "151/97",
+      "frRpm": 17,
+      "satO2Pct": 95,
+      "glasgow": "15/15",
+      "temperaturaC": "36.4"
+    }
+  },
+  "hechos": [
+    {
+      "campo": "inicio_sintoma",
+      "ejemplosDePregunta": ["desde cuando", "hace cuanto le duele la garganta", "cuando empezo"],
+      "respuesta": "Desde hace 5 dias, doctora."
+    },
+    {
+      "campo": "expectoracion",
+      "ejemplosDePregunta": ["tose con flema", "tiene expectoracion", "saca flema al toser"],
+      "respuesta": "No, no tengo expectoraciones."
+    },
+    {
+      "campo": "dificultad_respiratoria",
+      "ejemplosDePregunta": ["le cuesta respirar", "dificultad para respirar", "se ahoga"],
+      "respuesta": "No, no tengo dificultad para respirar."
+    },
+    {
+      "campo": "antecedente_otitis_faringitis",
+      "ejemplosDePregunta": ["ha tenido infecciones antes", "otitis o faringitis reciente", "tomo antibioticos hace poco"],
+      "respuesta": "Si, hace dos semanas me diagnosticaron otitis y faringitis, y me dieron antibioticos."
+    },
+    {
+      "campo": "antecedente_covid",
+      "ejemplosDePregunta": ["ha tenido covid", "covid-19 antes", "se ha contagiado de covid"],
+      "respuesta": "Si, el año pasado en julio me dio Covid-19, pero me recupere bien."
+    },
+    {
+      "campo": "antecedentes",
+      "ejemplosDePregunta": ["tiene antecedentes", "sufre de alguna enfermedad", "es hipertensa"],
+      "respuesta": "Tengo hipertension arterial."
+    },
+    {
+      "campo": "alergias",
+      "ejemplosDePregunta": ["es alergica", "alergica a algun medicamento", "tiene alergias"],
+      "respuesta": "No, no soy alergica a nada."
+    },
+    {
+      "campo": "temperatura",
+      "ejemplosDePregunta": ["tiene fiebre", "cuanta temperatura tiene", "se ha sentido caliente"],
+      "respuesta": "No, no he sentido fiebre."
+    },
+    {
+      "campo": "acompanamiento",
+      "ejemplosDePregunta": ["viene sola", "quien la acompana", "vino con alguien"],
+      "respuesta": "Vengo sola."
+    }
+  ],
+  "clave": {
+    "triajeEsperado": "IV",
+    "tiempoAtencion": "1 a 4 h, o consulta prioritaria",
+    "banderasRojas": [],
+    "cierreEsperado": "Explicar la clasificacion obtenida e informar de forma explicita que debe asistir de nuevo a urgencias de inmediato si presenta: dificultad para respirar o para tragar su propia saliva, imposibilidad para abrir la boca, fiebre alta (>= 39 C) o picos febriles con escalofrios, o dolor toracico, cefalea intensa o mareo severo."
+  }
+}

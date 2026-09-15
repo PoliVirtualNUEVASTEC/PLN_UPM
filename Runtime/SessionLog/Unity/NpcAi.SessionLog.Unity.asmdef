@@ -1,0 +1,18 @@
+{
+    "name": "NpcAi.SessionLog.Unity",
+    "rootNamespace": "NpcAi.SessionLog.Unity",
+    "references": [
+        "NpcAi.Core",
+        "NpcAi.Core.Channels",
+        "NpcAi.SessionLog"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

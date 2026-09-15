@@ -1,0 +1,27 @@
+{
+  "personalidad": "histerico",
+  "Receptivo": [
+    "Bueno, respiro... el dolor empezó después de una discusión en la casa.",
+    "Gracias por explicarme, ya me siento un poco más tranquilo.",
+    "Sí, me tiembla la mano cuando me pongo así de nervioso.",
+    "Si usted me acompaña le cuento todo con calma.",
+    "Perdón por gritar, es que tengo mucho miedo de lo que me pase.",
+    "El pecho todavía me molesta, pero ya no tanto como hace un rato."
+  ],
+  "Neutral": [
+    "Me duele el pecho horrible, como si me apretaran fuerte.",
+    "Siento que me falta el aire y que me voy a desmayar.",
+    "Tengo el corazón disparado, ¿eso es grave, dígame?",
+    "Dígame la verdad, ¿me va a pasar algo malo?",
+    "Desde anoche estoy así y no se me quita con nada.",
+    "Tomé una pastilla pero no me hizo nada, nada de nada."
+  ],
+  "NoReceptivo": [
+    "¡Me estoy muriendo y usted preguntando tonterías!",
+    "Nadie me dice nada, me van a dejar morir acá tirado.",
+    "No me toque, no me toque, que me duele todo el cuerpo.",
+    "¿Por qué se demoran tanto? ¡Esto es una urgencia!",
+    "Ya no aguanto más, hagan algo de una vez por favor.",
+    "Se lo dije a todos los que pasaron y nadie me hace caso."
+  ]
+}

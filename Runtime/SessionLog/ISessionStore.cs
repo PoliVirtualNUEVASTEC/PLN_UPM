@@ -9,16 +9,27 @@ namespace NpcAi.SessionLog
     /// </summary>
     public interface ISessionStore
     {
-        /// <summary>Abre una sesion nueva; descarta cualquier turno de una sesion anterior no cerrada.</summary>
-        void IniciarSesion();
+        /// <summary>
+        /// Activa la sesion identificada por <paramref name="etiqueta"/>. Si la etiqueta ya
+        /// existe, sus turnos anteriores se conservan y los nuevos turnos se acumulan a
+        /// continuacion (no hay borrado). Etiqueta nula/vacia/solo espacios cae a
+        /// <see cref="EtiquetaSesion.PorDefecto"/>.
+        /// </summary>
+        void IniciarSesion(string etiqueta);
 
-        /// <summary>Persiste un turno. Se asume llamado solo mientras la sesion esta iniciada.</summary>
+        /// <summary>Persiste un turno bajo la sesion activa. Se asume llamado solo mientras hay una sesion iniciada.</summary>
         void RegistrarTurno(SessionTurn turno);
 
         /// <summary>Cierra la sesion activa. Los turnos ya registrados permanecen.</summary>
         void FinalizarSesion();
 
-        /// <summary>Turnos persistidos, en el orden en que se registraron.</summary>
+        /// <summary>Turnos de la sesion activa, en el orden en que se registraron. Equivalente a <see cref="ObtenerTurnosDeSesion"/> con la etiqueta activa.</summary>
         IReadOnlyList<SessionTurn> ObtenerTurnos();
+
+        /// <summary>Catalogo de todas las sesiones conocidas, mas reciente primero.</summary>
+        IReadOnlyList<SesionInfo> ListarSesiones();
+
+        /// <summary>Turnos de una sesion especifica (activa o pasada), en el orden en que se registraron. Etiqueta desconocida devuelve lista vacia.</summary>
+        IReadOnlyList<SessionTurn> ObtenerTurnosDeSesion(string etiqueta);
     }
 }

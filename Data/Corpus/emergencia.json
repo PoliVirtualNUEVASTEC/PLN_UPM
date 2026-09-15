@@ -1,1269 +1,624 @@
 [
-  {
-    "text": "Doctor, ¿me puede revisar? Me duele mucho el pecho.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señora, ¿me ayuda a sentarme en la camilla por favor?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que me manden una radiografía, ¿será posible?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Oiga, yo vine por una cosa y me tienen aquí botado hace rato.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe, ¿me puede explicar qué significa este resultado?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ya van dos horas esperando, ¿alguien me atiende o qué?",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Esto es una vergüenza, llevo toda la mañana sin que nadie me mire.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me diga que espere más, ya me desmayé una vez.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Quiero que me atienda ahora, no quiero seguir esperando.",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Por qué no me han dicho nada? ¡Esto ya es irresponsabilidad!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Estoy muy asustado, no sé qué me está pasando.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Mi mamá está allá dentro y no me dejan verla, estoy preocupadísimo.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que hay mucha gente, pero mi hijo está muy grave.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que da miedo no saber qué está pasando con uno.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que están haciendo lo posible, pero el miedo no se quita.",
-    "intent": "Empatia",
-    "tone": "Empatico",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Le agradezco mucho que me esté explicando todo con calma.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me dolió mucho cuando me pincharon, pero sé que era necesario.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo antecedentes de hipertensión y diabetes tipo 2.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "La fiebre empezó ayer en la noche y ya me tomé una pastilla.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me caí de la moto hace como dos horas, me duele mucho la rodilla.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Soy alérgico a la penicilina, eso lo tengo que decir siempre.",
-    "intent": "AportaInformacion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Cuánto tarda en hacer efecto la inyección que me pusieron?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Qué recomienda para la gripe? Es que mi vecina dice que...",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Y eso de la cirugía cuánto cuesta? Porque yo no tengo eps.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted cree que me puedo morir de esto? Mi suegra dice que sí.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me va a tocar operarse? Porque yo conozco un doctor que...",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Oiga, ¿y por qué ese paciente se fue primero si yo llegué antes?",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Espere, espere, antes de que me revise le quiero decir algo.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, pero mire, yo no vine por eso, vine porque me duele la cabeza.",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ay, perdón, se me olvidaba decirle que tomo pastillas para la presión.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no no, espérese, que yo no he terminado de contarle.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede poner una venda en esta herida? Me está sangrando mucho.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Por favor, ¿me puede dar una silla? No puedo estar de pie.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito ir al baño, ¿dónde queda?",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede decir cuándo me toca? Llevo mucho rato esperando.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señora, ¿usted me puede subir la cama? No me llega bien.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ya mija, ¿y cuánto más voy a esperar aquí parado como bobo?",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Yo vine primero! ¿Por qué atienden a ese antes que a mí?",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Si no me atienden ahora me voy a otro hospital, ¡ya!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me tiene harto con las vueltas, ¿no puede hacer las cosas rápido?",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me mire así, yo no estoy inventando, ¡esto me duele de verdad!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Qué miedo, ¿y si es algo grave? No quiero que me pase nada.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Mi esposo está preocupado por mí, él se quedó en la casa con los niños.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por la paciencia, sé que ustedes tienen mucho trabajo.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "A veces uno siente que se va a morir y nadie le para bola.",
-    "intent": "Empatia",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Comprendo que hay prioridades, pero el dolor no me deja tranquilo.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Empecé con náuseas y vómito desde anoche, no me he podido alimentar.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo una herida abierta en el brazo derecho, me corté con un vidrio.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me siento mareado y con mucha debilidad desde esta mañana.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Hace tres días que me duele el estómago y no he comido bien.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me tragé un tornillo pequeño, fue hace como media hora.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Y si me tomo una tisana antes de que me revisen, no pasa nada?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted sabe si en la cruz roja atienden más rápido?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿No será que tengo cáncer? Mi tío murió de eso.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede dar una cita para que me vea un especialista?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Eso del covid ya no es grave? Porque a mi primo le pasó.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Perdone, no le estaba contando que también me duele la espalda.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ah, y otra cosa, ¿usted me puede recetar algo para dormir?",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Eso no es cierto, yo no dije eso, lo que pasa es que...",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe que la interrumpa, pero necesito decirle algo importante.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, no, espere, yo no terminé, me faltó contarle otra cosa.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede hacer un examen de sangre completa? Creo que la necesito.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Doctora, ¿me puede subir la dosis de la pastilla? No me hace efecto.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que me llamen una ambulancia, no me puedo mover.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede dar un papelito con el diagnóstico? Lo necesito para el trabajo.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señora enfermera, ¿usted me puede poner una vía? La anterior se me soltó.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Ya basta! Llevo rato esperando y nadie me pela, ¡esto es un desastre!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes se creen que uno es huevón? ¡Esto me duele de verdad!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me tienen aquí como si fuera mascota, ¡y yo necesito atención urgente!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted está viendo que yo me estoy desmayando o qué? ¡Atiéndame!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me importa la cola, ¡necesito que me vean ya!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Estoy pensando en mi familia, qué va a pasar si me pasa algo.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que uno se siente tan vulnerable aquí, tan a merced de los demás.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por escucharme, a veces solo uno necesita que lo oigan.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que están cansados, pero yo también estoy sufriendo.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Mi abuela está solita en la casa y yo no sé si voy a volver.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me dolió cuando me pusieron la inyección, pero sé que era pa' mejorar.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tomo warfarina desde hace un año, eso me lo recetó el cardiólogo.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me dio un dolor fuerte en el pecho como a las tres de la tarde.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "El dolor es como un pinchazo, me da y se me quita, pero cada vez más seguido.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No he vomitado, pero sí me siento con náuseas y debilidad.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede explicar qué es un electrocardiograma?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Eso del COVID ya no piden prueba? Porque la última vez me hicieron una.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted cree que me pueda ir hoy o me toca quedarme aquí?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Eso del paracetamol es malo? Porque mi vecina dice que sí.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede decir si hay parqueadero cerca? No sé dónde dejé el carro.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, no, espérese que yo no le había dicho que también me duele la garganta.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ay, perdón, se me olvidó decirle que soy diabético.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Eso no es así, lo que pasó fue que yo...",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Usted me está midiendo la presión, pero yo le quiero contar cómo me siento.",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe que lo interrumpa, pero antes de que se vaya necesito preguntarle algo.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Oiga, ¿me puede mandar una ambulancia? No me siento bien para ir caminando.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede poner una cita con el especialista? Necesito que me revisen los ojos.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Doctora, ¿usted me puede explicar bien qué tengo? No entendí nada.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede dar algo para el dolor? No aguanto más.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señor, ¿usted me puede ayudar a llegar a la sala de espera? Estoy mareado.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Ya me cansé de esperar! ¡Que venga alguien a atenderme ya!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes creen que uno no tiene nada que hacer? ¡Llevo horas aquí!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Esto es un desorden, ¡nadie sabe ni qué está haciendo!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No me mande a esperar más, ¡yo necesito que me atiendan ahora!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Esto no puede ser! ¡Me están dejando morir aquí!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que me da miedo pensar que puede ser algo grave.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Yo sé que ustedes están esforzándose, pero la ansiedad no me deja.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Mi esposa está en casa con los niños y no sabe nada de mí.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "A veces uno se siente tan solo aquí, como si nadie le importara.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que hay prioridades, pero necesito saber que estoy bien.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me caí de las escaleras y me golpeé la cabeza, sangro por la frente.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo una erupción en todo el cuerpo, empezó esta mañana.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me siento con mucha falta de aire, no puedo ni hablar bien.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ayer me dio un mareo fuerte y casi me desmayo en el trabajo.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me dolió el abdomen como a las dos de la mañana, un dolor intenso.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede decir si el examen de sangre sale rápido?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted cree que me puedo ir caminando o me toca taxi?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Eso de la operación es ambulatoria? Porque yo no me quiero quedar.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede recomendar algo para que no me duela tanto?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Eso de la vacuna del tétanos me lo tengo que poner cada vez?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese que antes de que se vaya le quiero decir una cosa.",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ay, espérese, que se me olvidó decirle que soy alérgico a la aspirina.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, pero espérese, que yo le estaba contando otra cosa.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Usted me está diciendo que esperé, pero yo le quiero explicar mi caso.",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe que le corto, pero necesito preguntarle algo rápido.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede hacer el favor de llamarme una ambulancia? No me siento bien.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Doctor, ¿usted me puede decir qué tengo? Llevo días sintiéndome mal.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede poner una vía? La anterior se me cayó.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señora, ¿usted me puede traer una manta? Tengo frío.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que me hagan un examen de orina, me duele al orinar.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Ya basta de vueltas! ¡Necesito que me atiendan ya, esto es urgente!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes se creen que yo no tengo plata pa' otro hospital? ¡Atiéndanme!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me tienen aquí como si fuera perro, ¡y yo soy persona!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Esto es un desastre, ¡nadie sabe ni qué hace aquí!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Ya no aguanto más! ¡Esto es una vergüenza!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que uno se siente tan indefenso aquí, tan abandonado.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que ustedes están haciendo lo que pueden, pero el miedo no se va.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Mi mamá está sola en la casa y yo no sé si voy a volver.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Sé que uno tiene que esperar su turno, pero me tranquilizaría saber cuánto falta.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por su paciencia, sé que no es fácil lidiar con uno.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Empecé con diarrea y vómito desde anoche, no he podido comer nada.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo una fractura en el brazo, me caí jugando fútbol.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me siento con mucha ansiedad, no puedo ni respirar bien.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Hace dos días que me duele la garganta y no puedo tragar bien.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me picó una abeja y se me inflamó toda la mano.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted sabe si el paracetamol me puede hacer daño con la pastilla que tomo?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Eso del seguro me cubre la operación? Porque yo no tengo plata.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede decir si la droguería del centro está abierta a esta hora?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Eso del hospital es 24 horas? Porque yo no sé si volver mañana.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted cree que me dan de alta hoy o me toca esperar el turno del día?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ay, espérese, que se me olvidó decirle que también me duele la espalda.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese que yo no le había contado que soy asmático desde niño.",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Usted me está diciendo que espere, pero yo le quiero explicar mi caso.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe que lo interrumpa, pero antes de que termine quiero mencionar algo más.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, no, espérese que yo le estaba contando otra cosa importante.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede poner una inyección para el dolor? No aguanto más.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Doctora, ¿usted me puede explicar bien qué tengo? No entendí nada de lo que dijo.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede dar un certificado de incapacidad? Necesito entregarlo en el trabajo.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Señora, ¿usted me puede ayudar a llegar a la silla de ruedas? No puedo caminar.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Necesito que me manden una radiografía de la columna.",
-    "intent": "SolicitudRespetuosa",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Ya me cansé de esperar! ¡Esto es un desorden total!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ustedes creen que uno no tiene plata pa' otro hospital? ¡Atiéndanme ya!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me tienen aquí como si fuera un trapo, ¡y yo soy persona!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Esto es una vergüenza, ¡nadie sabe ni qué hace aquí!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¡Ya basta de vueltas! ¡Necesito que me atiendan ahora mismo!",
-    "intent": "SolicitudAgresiva",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Es que uno se siente tan solo aquí, como si nadie le importara.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Aprecio el esfuerzo que están haciendo, pero el susto no me deja estar tranquilo.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Mi familia está preocupada por mí y yo no sé qué pasó conmigo.",
-    "intent": "Empatia",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Entiendo que hay casos más urgentes, pero necesito que me digan en qué punto está el mío.",
-    "intent": "Empatia",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Gracias por atenderme aunque estén agotados, sé que hacen lo que pueden.",
-    "intent": "Empatia",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Empecé con fiebre y tos desde hace tres días.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Tengo una herida abierta en la pierna, me corté con un vidrio.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me siento con mareo y dolor de cabeza desde esta mañana.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Hace cuatro días que me duele el estómago y no he comido bien.",
-    "intent": "AportaInformacion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Me resbalé en las escaleras del metro y creo que me fracturé la muñeca.",
-    "intent": "AportaInformacion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted sabe si la aspirina me puede hacer daño con la warfarina?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Eso del copago me toca pagarlo aquí mismo o me lo descuentan después?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Me puede decir si hay farmacia cerca? Necesito comprar una pastilla.",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Ese servicio de urgencias también atiende los domingos y feriados?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "¿Usted cree que me puedo ir o me toca quedarme en observación?",
-    "intent": "PreguntaFueraDeTema",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Ay, espérese, que se me olvidó decirle que también se me adormece la mano.",
-    "intent": "Interrupcion",
-    "tone": "Ansioso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No no, espérese que yo no le había contado que tengo diabetes.",
-    "intent": "Interrupcion",
-    "tone": "Neutral",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Usted me está diciendo que tome asiento, pero yo necesito contarle todo lo que pasó.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "Disculpe que lo interrumpa, pero necesito hacerle una pregunta antes de que se vaya.",
-    "intent": "Interrupcion",
-    "tone": "Respetuoso",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  },
-  {
-    "text": "No, no, espérese que hay algo más que no le he contado y es urgente.",
-    "intent": "Interrupcion",
-    "tone": "Agresivo",
-    "scenario": "emergencia",
-    "labeler": "Luis"
-  }
+  { "text": "Le voy a tomar la presión y la temperatura, súbase la manga.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El médico lo va a ver en un momento, siéntese en la sala mientras tanto.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Esto que le voy a poner es suero, es para hidratarlo.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La herida necesita puntos, el doctor se los hace ahora.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Su turno es el número cuarenta y dos, ya casi lo llamamos.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le voy a sacar una muestra de sangre, va a sentir un pinchazo.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por ahora no puede comer ni tomar agua hasta que lo valore el médico.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tiene la temperatura en treinta y ocho y medio, le vamos a dar algo para bajarla.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo vamos a pasar a una camilla para que quede acostado.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El resultado del examen se demora como una hora.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le voy a poner una inyección para el dolor en el brazo.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Aquí en urgencias atendemos según la gravedad, no según el orden de llegada.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Su acompañante espera afuera, aquí solo entra el paciente.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le voy a poner oxígeno por la nariz, respire normal.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo dejamos en observación un par de horas para ver cómo sigue.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El electrocardiograma salió normal, igual el médico lo revisa.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tiene que quitarse las joyas y el reloj antes de la radiografía.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le pusimos el medicamento en la vena, en unos minutos le hace efecto.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La cita de control se la programan en el primer piso al salir.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con estos síntomas le corresponde pasar por consulta prioritaria.", "intent": "AportaInformacion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Señor, con mucho gusto le explico: le vamos a tomar unos exámenes de sangre primero.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si es tan amable de esperar en la sala, el médico lo llama en un momentito.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le comento que el suero que le pusimos es solo para hidratarlo, no se preocupe.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con su permiso, le voy a revisar la herida para contarle qué sigue.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le informo, muy amable, que su turno es el cuarenta y dos y ya falta poco.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Permítame y le explico: va a sentir un pinchacito cuando le saque la sangre.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le informo que no debe comer ni beber nada hasta que el doctor lo valore.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con respeto le digo que tiene algo de fiebre; ya le traigo algo para bajarla.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si me permite, lo acomodo en la camilla para que esté más cómodo acostado.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le cuento que el resultado del examen puede demorarse alrededor de una hora.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Muy amable, le voy a aplicar el medicamento para el dolor en el brazo.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le explico con calma: aquí se atiende por gravedad, no por orden de llegada.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le comento que, por norma, su acompañante debe esperar afuera.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con su permiso le coloco el oxígeno por la nariz; respire con normalidad.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le informo que lo vamos a dejar en observación un par de horas.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le comento que el electrocardiograma salió bien; aun así el médico lo revisará.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le comento que para la radiografía debe retirarse las joyas y el reloj.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le explico que ya le pasamos el medicamento por la vena; en unos minutos hace efecto.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le informo que la cita de control la programan en el primer piso al salir.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con gusto le aclaro: por sus síntomas le corresponde consulta prioritaria.", "intent": "AportaInformacion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Ya le dije: primero los exámenes de sangre, después lo ve el médico.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por más que pregunte, no lo voy a llamar antes del turno, así que ni insista.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El suero es para hidratarlo, no es nada del otro mundo, quédese quieto.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Eso que tiene ahí necesita puntos, no le voy a explicar lo mismo tres veces.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Su turno es el cuarenta y dos, así que le toca esperar como todos.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le voy a sacar sangre, es un pinchazo, no me haga el show.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No puede comer ni tomar agua, y no me venga después con que nadie le avisó.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tiene fiebre, obvio, por eso está aquí; ya le traigo el acetaminofén.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "En la camilla va acostado, no sentado, ya se lo expliqué.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El examen se demora una hora, no me pregunte cada cinco minutos.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le voy a poner la inyección; quédese quieto que así no puedo.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Aquí se atiende por gravedad, no porque usted grite más duro.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El acompañante se sale, ya se lo dije, esto no es sala de visitas.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le pongo el oxígeno; respire normal y deje de hablar tanto.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Se queda en observación, no se puede ir cuando se le antoje.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El electro salió normal, o sea que lo suyo no es lo que usted cree.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Para la radiografía no puede tener ni reloj ni cadenas, así son las cosas.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya le pasé el medicamento por la vena; espere a que haga efecto y no insista.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La cita de control la saca abajo, no aquí, eso no es conmigo.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con esos síntomas le toca consulta prioritaria, no urgencias; cámbiese de fila.", "intent": "AportaInformacion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Tranquilo, le explico todo: primero le tomamos unos exámenes y ya el médico lo ve.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que la espera angustia; su turno es el cuarenta y dos y de verdad ya falta poco.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Esto es solo suero para hidratarlo, no le va a doler, quédese tranquilo.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La herida necesita unos puntos; le ponemos anestesia, no va a sentir dolor.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Va a sentir un pinchacito no más cuando le saque la sangre; respire y ya pasa.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que tiene hambre, pero por ahora nada de comer; es para cuidarlo.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tiene un poco de fiebre; ya le traigo algo para que se sienta mejor.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo voy a acomodar en la camilla para que descanse mientras espera.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El examen se demora una horita; apenas llegue el resultado yo misma le aviso.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le voy a poner algo para el dolor; en unos minutos va a sentir alivio.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que ve gente adelante; se atiende por gravedad, por eso a veces la espera es larga.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Su familia puede esperar afuera; apenas se pueda yo los dejo pasar a verlo.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le pongo el oxígeno para que respire más fácil; verá que enseguida mejora.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo dejamos un ratico en observación solo para estar seguros de que va bien.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El electrocardiograma salió bien, eso es buena señal; igual el médico lo revisa.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Antes de la radiografía se quita el reloj y las cadenas; yo se los guardo aquí.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya le pasé el medicamento por la vena; dele unos minutos y el dolor va cediendo.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Cuando salga le ayudo con la cita de control para que no haga más filas.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por lo que me cuenta, lo mejor es que pase por consulta prioritaria; yo lo acompaño.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo está haciendo bien; solo respire tranquilo que nosotros lo estamos cuidando.", "intent": "AportaInformacion", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Espere... déjeme ver, hoy estamos desbordados; le pongo el suero ya y le aviso apenas pueda.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No sé cuánto se demore el médico, hay muchísima gente, pero apenas se desocupe lo llamo.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "A ver, su turno es el... cuarenta y dos, creo; déjeme confirmo y le digo.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le saco la sangre de una vez porque después no voy a tener manos, aguánteme el pinchazo.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tengo tres pacientes al tiempo, le explico rápido: nada de comer hasta que lo valoren.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La fiebre está alta, no me gusta; le doy algo ya y no lo pierdo de vista, ¿sí?", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Déjeme lo acuesto rápido en la camilla antes de que me llamen de otro lado.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El resultado... hoy el laboratorio está lento, puede ser más de una hora, la verdad.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le pongo la inyección ya, ya, antes de que se me acumule todo lo demás.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Estamos a reventar, por eso lo de la gravedad; no es que lo estemos ignorando.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El oxígeno se lo dejo puesto; si siente que le falta, me grita, ando por aquí cerca.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo dejo en observación, pero no le prometo cama, hoy está imposible; en camilla por ahora.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El electro salió normal, menos mal; déjeme respiro un segundo y le sigo explicando.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Para la radio no puede tener el reloj, y me están apurando con la sala, disculpe.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya le pasé el medicamento, era la dosis correcta... sí, era esa; espere que haga efecto.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La cita de control... hoy el sistema está caído; mejor la saca mañana temprano.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con esos síntomas debería ir a prioritaria; no sé por qué lo mandaron para acá, un momento.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Déjeme ver dónde lo ubico... esta camilla está ocupada... venga, en esta.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le tomo la presión ahora que puedo, porque en cinco minutos entra una ambulancia.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No he parado desde las seis; le pongo el suero, anoto sus datos y vuelvo apenas pueda.", "intent": "AportaInformacion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Señor, ¿sería tan amable de contarme desde cuándo se siente así?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por favor, recuéstese en la camilla cuando pueda, con calma.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Me permite tomarle la presión? Súbase la manga, si es tan amable.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le pido el favor de decirme qué medicamentos toma a diario.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Podría abrir la boca un momento, por favor? Le voy a revisar la garganta.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con su permiso, le voy a descubrir el abdomen para revisarlo.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si es tan amable, dígame en una escala del uno al diez qué tan fuerte es el dolor.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Me haría el favor de quitarse la chaqueta para poderlo auscultar?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por favor, respire hondo y despacio mientras le pongo el fonendo.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de esperar en la sala? Apenas lo llamen, pasa.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le pido el favor de no levantarse solo; cuando necesite algo, me avisa.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Me permite ver esa herida, por favor? Con cuidado le retiro la gasa.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si no es molestia, estire el brazo para canalizarle una vía.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por favor, apriete el puño un momentito mientras le busco la vena.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Me podría decir si es alérgico a algún medicamento, por favor?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le agradezco que se recueste de lado; le voy a revisar la espalda.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de pasarme su documento para registrarlo?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por favor, guarde el celular un momento mientras le tomo los signos.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Me haría el favor de quedarse quieto mientras le tomo la muestra?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con su permiso, le voy a subir un poco la bata para revisarle la pierna.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si es tan amable, cuénteme si ha tenido este dolor antes.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por favor, avíseme apenas sienta que el dolor aumenta o cambia.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Podría acostarse boca arriba, por favor? Lo ayudo a acomodarse.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le pido el favor de decirle a su acompañante que espere afuera.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de indicarme exactamente dónde le duele?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por favor, no cruce las piernas mientras le tomo la presión.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Me permite revisarle los ojos? Míreme al frente, si es tan amable.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le agradecería que se tomara este medicamento ahora, delante de mí.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por favor, dígame la fecha de su última menstruación, es parte del protocolo.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Sería tan amable de firmar aquí el consentimiento antes del procedimiento?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con su permiso, le voy a limpiar la zona; puede arder un poquito.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si es tan amable, quédese sentado un momento antes de pararse, para que no se maree.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Me haría el favor de contarme qué comió hoy y a qué hora?", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Por favor, sople acá con fuerza para medirle la respiración.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le pido el favor de mantener el brazo en alto mientras le hace efecto.", "intent": "SolicitudRespetuosa", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Cuénteme desde cuándo tiene el dolor.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Recuéstese en la camilla, le voy a revisar.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Súbase la manga para tomarle la presión.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame qué medicamentos está tomando.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Abra la boca, le reviso la garganta.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Respire hondo y sostenga el aire un momento.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere en la sala, ya lo llaman por el nombre.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Estire el brazo, le voy a canalizar una vía.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Apriete el puño mientras le busco la vena.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame si tiene alergia a algún medicamento.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quítese la chaqueta y siéntese en la camilla.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Muéstreme dónde le duele exactamente.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Acuéstese boca arriba y descúbrase el abdomen.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme su documento para registrarlo en el sistema.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Guarde el celular mientras le tomo los signos.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quédese quieto mientras le saco la muestra.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Voltéese de lado, le reviso la espalda.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame si ha tenido este problema antes.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pásese a esta silla, la otra camilla está ocupada.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tómese este medicamento ahora, con un poco de agua.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se levante sin ayuda, llámeme si necesita algo.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame en una escala del uno al diez cuánto le duele.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Descúbrase la pierna hasta la rodilla.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Mire al frente, le voy a revisar los ojos.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígale a su acompañante que espere afuera.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Cuénteme qué comió hoy y a qué hora.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Firme aquí antes de que empecemos.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sople acá con fuerza, es para medir la respiración.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Mantenga el brazo en alto un rato.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Siéntese un momento antes de pararse, para que no se maree.", "intent": "SolicitudRespetuosa", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Sé que le cuesta moverse; recuéstese despacito, yo lo ayudo.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tranquilo, respire hondo por mí, bien lento, no hay afán.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que le da miedo la aguja; míreme a mí y apriete el puño, ya pasa.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que le duele, pero necesito que me señale el punto exacto, con cuidado.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya sé que está agotado de esperar; ayúdeme con un dato más y lo dejo descansar.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Debe estar asustado, es normal; cuénteme desde cuándo se siente así.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que la camilla está fría; súbase con calma, ya le traigo una manta.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tranquila, esto no duele; solo abra la boquita un momentito.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que no quiera moverse; solo voltéese de ladito y ya, yo lo sostengo.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que es incómodo; descúbrase el abdomen solo un momento y termino rápido.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya casi, aguánteme el pinchazo un segundito, lo está haciendo muy bien.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que está preocupado por su hijo; deme el celular un momento y le tomo los signos.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Respire conmigo: hondo... y suelte. Otra vez, tranquilo.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que quiere pararse, pero espéreme y yo lo ayudo, no se vaya a caer.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que le cuesta hablar; solo asienta con la cabeza si le duele aquí.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tranquilo, tómese la pastilla, yo me quedo con usted hasta que se sienta mejor.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que es mucha pregunta; una última y lo dejo tranquilo: ¿es alérgico a algo?", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se preocupe por el documento ahora; primero recuéstese y respire.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que tiene frío y susto; deme la mano, le voy a tomar el pulso.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya sé que la noche ha sido larga; deme una mano para acomodarlo y ya lo dejo descansar.", "intent": "SolicitudRespetuosa", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Por favor, rápido, cuénteme qué le pasa que tengo la sala llena.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ayúdeme y súbase a la camilla usted mismo si puede, ando sola hoy.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme el brazo ya, por favor, que en un momento me llaman de reanimación.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame las alergias de una vez, por favor, no alcanzo a revisar la historia.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Recuéstese, recuéstese, por favor, que necesito la silla para otro paciente.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Señor, respire hondo y no me hable ahora, déjeme contar las respiraciones.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Páseme el documento rápido, por favor, tengo que registrar a cinco antes de las ocho.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quédese quieto un segundo, por favor, que si se mueve tengo que pinchar otra vez.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame dónde le duele y sea concreto, por favor, que no tengo mucho tiempo.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espéreme aquí y no se mueva, por favor; ya vuelvo enseguida.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tómese esto ya, por favor, que tengo que salir corriendo a otra cama.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ayúdeme a girarlo, por favor, no tengo con quién y hay que revisarle la espalda.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Conteste rápido, por favor: ¿desde cuándo? ¿una hora, dos, más?", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígale a su familiar que salga, por favor, necesito espacio para trabajar.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se pare, por favor, no se pare, deme dos minutos y lo atiendo bien.", "intent": "SolicitudRespetuosa", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Conteste lo que le pregunto y deje la carreta.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Acuéstese en la camilla, ya, no me haga repetírselo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Súbase la manga y deme el brazo, no tengo todo el día.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Hable claro que no le estoy entendiendo nada.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quédese quieto, así no le puedo poner la vía.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame de una vez qué se tomó, no me esté ocultando cosas.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Abra la boca y deje de hacer gestos.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Siéntese y espere el turno como todo el mundo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quíteme la mano de encima y déjeme trabajar.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No sea necio y tómese la pastilla.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje de moverse o le va a doler más, es su problema.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Camine y hágase en la camilla del fondo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Guarde ese celular ya, le estoy hablando yo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Que salga su acompañante, esto no es un paseo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Respóndame: ¿desde cuándo? Y no me eche el cuento entero.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Estire el brazo derecho y no lo mueva, se lo advierto.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me grite, baje la voz y conteste.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme el documento y deje de buscar excusas.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Párese de ahí y pásese a la silla, rápido.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Aguántese el pinchazo, no sea tan exagerado.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame las alergias ya, no me haga perder el tiempo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quítese esa chaqueta, ¿o quiere que se la quite yo?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me pegue manotazos que le voy a tener que amarrar el brazo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Conteste sí o no, no me venga con historias.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Descúbrase el estómago y deje la pena.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje de preguntar y hágame caso de una vez.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Métase a la camilla, que para eso vino.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se pare sin que yo le diga, ¿me entendió o no?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Hable ahora o se espera hasta que a mí me dé la gana.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme la otra mano, la buena, no sea difícil.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Cállese un momento y déjeme contar el pulso.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya le dije que se acostara, ¿qué es lo que no entiende?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tómese eso y no me discuta la dosis.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Voltéese, le voy a revisar la espalda, y no se queje.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje quieta la venda, no la toque más.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Míreme cuando le hablo y conteste.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Saque el brazo de la cobija, ¿cómo le tomo la presión así?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me toque los equipos, siéntese ahí y ya.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Hágase para allá que necesito espacio.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme el dato completo de una, no por pedacitos.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Suelte el celular y ponga atención a lo que le digo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quítese los zapatos usted mismo, yo no soy su empleada.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje de llorar y dígame qué le pasó.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Abra los ojos, no se me duerma, conteste.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Enséñeme la herida y deje de taparla con la mano.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Se queda acostado hasta que el médico lo vea, y punto.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me venga a decir que le duele todo, sea concreto.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Levante la pierna, la izquierda, esa, y sosténgala.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje el drama y respire hondo como le dije.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Conteste rápido que hay gente más grave que usted.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quédese en la silla, no lo quiero ver parado otra vez.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame el nombre completo y la cédula, sin enredarse.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me hale la manga, espere su turno.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Trague el remedio, no lo escupa, no sea niño.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Cierre el puño duro, ¿tan difícil es?", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme campo, retírese y deje pasar la camilla.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje de hablar por encima mío y respóndame la pregunta.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si no colabora, lo dejo de último, usted verá.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quítese esa cadena antes de la radiografía, ya se lo dije.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Baje del andador y siéntese, que se me va a caer.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Muéstreme el brazo bueno y deje de esconderlo.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje quieta la vía, si se la arranca se la vuelvo a poner y le duele.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ubíquese en esa camilla y no se me mueva de ahí.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Hable más duro, no lo escucho con tanta queja.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme la información una sola vez, no me la repita diez.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quítese los lentes y míreme aquí, al frente.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se acomode a su gusto, quédese como lo puse.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Conteste usted, no su señora, que la pregunta es para usted.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje el celular y firme aquí, que tengo fila.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Aguántese ahí sentado, ya lo atiendo cuando pueda.", "intent": "SolicitudAgresiva", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "¡Rápido, deme el brazo, que no tengo tiempo!", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Acuéstese ya, ya, que necesito esta camilla libre.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Conteste, conteste: ¿qué se tomó y cuánto? ¡Dígame!", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se mueva, no se mueva, que se me va la vena.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Súbase usted mismo, no tengo con quién ayudarle ahora.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame las alergias en dos segundos, que lo tengo que pasar ya.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¡Quédese quieto, por Dios, que atrás hay una parada!", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Hable ya, no cuando se le ocurra, ¡ahora!", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Estire el brazo, estire el brazo, se me acumula todo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme el documento, deme el documento, tengo diez sin registrar.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Siéntese acá y no se levante, no lo puedo estar cuidando.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Respire hondo ya, déjeme contar rápido, que me llaman.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Camine, camine a esa camilla, que necesito el pasillo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígame dónde le duele, señálelo, no me lo describa, ¡señálelo!", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tómese esto de una, no puedo esperar a que se anime.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ayúdeme a girarse, hágalo usted, que ando sola con veinte pacientes.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Suelte el celular y ponga atención, que no repito.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quítese la chaqueta rápido, que en un minuto entra la ambulancia.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me hale ahora, no me hale, espéreme dos segundos.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme un dato concreto y ya, que atrás me están gritando.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Abra la boca rápido, un vistazo y sigo, que voy retrasada.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quédese en esa silla, no se me pierda, no tengo cómo buscarlo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Apriete el puño ya, que si no la cojo ahora toca esperar.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Dígale a su familiar que salga, ya, necesito el espacio.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se pare, no se pare, deme un momento y vuelvo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Conteste sí o no, rápido, que hay tres timbres sonando.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Recuéstese y no hable, déjeme tomarle todo de una vez.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deme la otra mano rápido, esta no sirve, se me va el tiempo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Quédese quieto que ya casi, ya casi, no me lo dañe ahora.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espéreme sentado, no puedo con usted y con la de al lado al tiempo.", "intent": "SolicitudAgresiva", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Sé que da mucho miedo no saber qué le está pasando; lo vamos a cuidar.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tranquilo, no está solo, yo me quedo aquí con usted.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que le duele muchísimo, no está exagerando nada.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Llore tranquilo si lo necesita, aquí nadie lo está juzgando.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Debe haber aguantado mucho para llegar hasta acá; ya lo está haciendo bien.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que esté asustado, cualquiera lo estaría en su lugar.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Apriéteme la mano cuando le duela, yo estoy con usted.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que la espera lo tiene desesperado, y tiene toda la razón.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Respire conmigo, tranquilo, ya pasó lo más difícil.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Está en buenas manos, no le va a pasar nada estando acá.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que extraña a su familia; ya les avisamos, vienen para acá.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es normal sentirse así de vulnerable acá; a mí también me pasaría.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Qué susto se debió llevar; ya está a salvo, respire.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que es incómodo estar así, en bata y delante de extraños; lo entiendo.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Usted es muy valiente, aguantó todo el camino sin quejarse.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tranquila, mamita, aquí la vamos a cuidar como se merece.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que está cansado de que le pregunten lo mismo; ya casi terminamos.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se preocupe por molestar, para eso estamos, ese es nuestro trabajo.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo que siente es real y nos importa; no está solo en esto.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que le da pena llorar delante de la gente; está bien, desahóguese.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya vi que le tiembla la mano; es el susto, es normal, va a pasar.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que quiera irse a su casa; déjenos revisarlo bien primero, por usted.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que la noche ha sido eterna para usted; ya casi lo ve el médico.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tranquilo, que yo no me voy a ningún lado hasta que esté estable.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Debe estar preocupado por sus hijos; ellos están bien, concéntrese en usted ahora.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que odia los hospitales; lo entiendo, hacemos esto lo más rápido posible.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Está temblando de frío y de nervios; ya le traigo una cobija, aguánteme.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo que le pasó fue muy duro; no tiene que ser fuerte todo el tiempo.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que le da miedo la sangre; no mire, míreme a mí y hablamos.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tranquilo, respire; estoy justo aquí, no le voy a soltar la mano.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que esté bravo, pero no es con usted, es con la situación, y está bien.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya pasó lo peor; ahora solo tiene que dejarse cuidar.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que se siente solo acá; yo lo estoy acompañando, ¿sí me siente?", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Qué bueno que vino; hizo bien en no quedarse aguantando en la casa.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que está agotado; cierre los ojos un momento, yo lo vigilo.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No se disculpe por quejarse; el dolor es así, tiene todo el derecho.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que esté con la angustia a mil; deme la mano y respiremos juntos.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Usted no está siendo una carga; me alegra poder ayudarlo.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que quería que fuera otra cosa; sea lo que sea, lo vamos a acompañar.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Tranquilo, que aquí lo conocemos por su nombre, no por un número.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que le cuesta pedir ayuda; hoy déjese ayudar, ¿bueno?", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lo veo asustado y con razón; pero míreme: vamos a estar pendientes de usted.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que llorar lo hace sentir débil; a mí me parece que es de valientes.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya casi, lo está haciendo precioso; un poquito más y descansa.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Estoy con usted en esto; no tiene que aguantárselo solo.", "intent": "Empatia", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Comprendo perfectamente su preocupación, señor; es muy razonable.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es completamente entendible que se sienta así en esta situación.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lamento mucho que le haya tocado esperar tanto; tiene razón en estar molesto.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que esto sea angustiante para usted y para su familia.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le agradezco su paciencia; sé que no es fácil estar en su lugar.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Comprendo que tenga miedo; es una reacción muy humana.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Siento mucho que esté pasando por esto; vamos a acompañarlo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que quiera respuestas ya; le prometo que apenas sepamos, le contamos.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es válido que se sienta abrumado; cualquiera lo estaría.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Respeto que esté asustado; no tiene por qué disimularlo conmigo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Comprendo que confiar en desconocidos con su salud no sea sencillo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo su frustración con la espera; haré lo posible por agilizar lo suyo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lamento que se sienta solo en este momento; estamos pendientes de usted.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es comprensible que esté preocupado por sus hijos; los mantendremos informados.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le reconozco lo bien que ha llevado todo esto hasta ahora.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que sea incómodo; procuraré que sea lo más breve y digno posible.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Comprendo que esté cansado de repetir su historia; disculpe la insistencia.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es natural sentir temor ante lo desconocido; lo vamos a acompañar en cada paso.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Aprecio que confíe en nosotros para cuidarlo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que hoy no quisiera estar aquí; nadie querría, y está bien.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Comprendo que el dolor lo tenga sin paciencia; no lo tomo a mal.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Lamento el susto que se llevó; ya está en un lugar seguro.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que necesite un momento; tómese el tiempo que requiera.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Respeto lo que siente; su angustia es tan importante como cualquier síntoma.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le agradezco que nos haya dicho cómo se siente; eso también nos ayuda a cuidarlo.", "intent": "Empatia", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Es normal sentir miedo en una situación como esta.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Mucha gente se pone ansiosa en urgencias; no es raro.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que la espera cansa; a casi todos les pasa.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Estar acá angustia, es entendible.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El dolor pone a cualquiera de mal genio; es esperable.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es común preocuparse por la familia cuando uno está en esta situación.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sentirse vulnerable acá es normal, no es solo usted.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La incertidumbre es lo que más molesta; le pasa a todo el mundo.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es entendible que quiera irse a su casa.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Asustarse con un dolor así es lo esperable.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La mayoría de la gente llega nerviosa; con el tiempo se calman.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es normal que le tiemble el pulso; es la adrenalina.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Estar en bata y rodeado de desconocidos incomoda a cualquiera.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Repetir la historia varias veces cansa; forma parte del proceso.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Que le dé rabia la demora tiene sentido.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Preocuparse antes de un examen es habitual.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "El miedo a las agujas es de lo más común que vemos.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Es normal sentirse solo mientras espera; el turno acá es así.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "La ansiedad en estos casos es una respuesta esperable del cuerpo.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Estar cansado después de una noche así es lo normal.", "intent": "Empatia", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Sé que está asustado; deme un segundo y ya vuelvo con usted, ¿sí?", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que la esté pasando mal, aguánteme que estoy con dos casos graves.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que necesita que alguien lo acompañe; apenas pueda me quedo un rato, prometido.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya sé que lleva horas y es horrible; créame que estoy corriendo por usted también.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Veo que está llorando y no lo puedo atender bien ahora; no es que no me importe.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que tiene miedo; respire, respire, ahora no me puedo quedar pero ya vengo.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo su angustia, de verdad; deme diez minutos y hablamos con calma.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Sé que se siente solo; hoy estamos cortos y no doy abasto, discúlpeme.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya sé que está desesperado; yo también, pero lo vamos a sacar de esta.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Entiendo que esté al borde; agárrese, que en un momento me desocupo para usted.", "intent": "Empatia", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "¿Usted de qué barrio viene?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Y a qué se dedica?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Vio el partido de anoche?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cómo estuvo el tráfico para llegar hasta acá?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Ese reloj es de los que miden los pasos?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted no estudió en el colegio de la setenta?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cuántos hijos tiene?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Y ese acento de dónde es?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Le gusta el fútbol o más el ciclismo?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Dónde compró esos tenis?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted es el que tiene la tienda de la esquina del parque?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Está lloviendo todavía allá afuera?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cómo se llama su perro? Digo, si tiene.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted conoce a la enfermera Rocío? Trabajaba aquí antes.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Y para las elecciones ya sabe por quién va a votar?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Esa chaqueta es de cuero de verdad?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted vive por acá cerca o le tocó venir de lejos?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Le gusta cocinar? Yo ando buscando una receta de ajiaco.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cuánto le costó el celular? Está bonito.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted trabaja los fines de semana o descansa?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Vio que subió otra vez la gasolina?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿En qué equipo juega su hijo?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted es de acá o de tierra caliente?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Ese anillo es de matrimonio?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cómo se llama la novela que están dando ahora a las ocho?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted tiene carro o se mueve en moto?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Sabe si mañana hay paro de transporte?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted no es familiar del doctor Peña?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Le gusta más la costa o el interior para vacaciones?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cuánto tiempo lleva viviendo en la ciudad?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Esa gorra es del equipo o solo le gustó el color?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted fuma? Digo, en general, no ahora.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Dónde queda buena la bandeja paisa por acá?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted vio el eclipse del mes pasado?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Su esposa también trabaja o se queda en la casa?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cuánto vale ahora el pasaje del bus?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted juega parqués o más bien cartas?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Ese tatuaje qué significa?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted es de misa los domingos?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cómo está el clima en el pueblo de usted?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted no jugaba microfútbol en el polideportivo?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Le gustan los perros o los gatos?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cuántos años tiene el niño mayor?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted sabe arreglar computadores? Es que el de la casa no me prende.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Vio que van a hacer un centro comercial nuevo por el norte?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted toma tinto o más bien aromática?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿En qué universidad estudió?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Esa camisa dónde la venden?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted es hincha de acá o de un equipo de Bogotá?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cómo se llama usted de segundo nombre? Curiosidad no más.", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted madruga mucho para el trabajo?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Le gusta el vallenato o más la salsa?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cuánto cuesta hoy en día un mercado para la semana?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted tiene finca o eso es carísimo?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Vio el video que está circulando del alcalde?", "intent": "PreguntaFueraDeTema", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Disculpe la curiosidad, ¿usted a qué se dedica?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si no es indiscreción, ¿de qué región es usted?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone que le pregunte, ¿ese reloj dónde lo consiguió?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con todo respeto, ¿usted no es pariente de la señora Amparo?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, ¿cuántos hijos tiene, si se puede saber?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone la pregunta, ¿usted estudió por acá o afuera?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si me permite la curiosidad, ¿le gusta el fútbol?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, ¿usted vive lejos? Se lo pregunto por el tráfico.", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con su permiso, ¿ese anillo es una herencia de familia?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone que me meta, ¿usted trabaja en el comercio?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, ¿sabe usted si sigue lloviendo afuera?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si no es molestia preguntarle, ¿de qué equipo es hincha?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone, ¿usted no daba clases en el colegio del centro?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe la indiscreción, ¿usted cocina? Ando buscando una buena receta.", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con respeto, ¿cuántos años lleva casado?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone que le pregunte, ¿esa chaqueta es hecha a mano?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, ¿usted conoce un buen mecánico por la zona?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Si me permite, ¿usted es del pueblo de al lado o más lejos?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone la curiosidad, ¿ese tatuaje tiene algún significado?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, ¿usted sabe a qué horas cierran el banco de la esquina?", "intent": "PreguntaFueraDeTema", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "¿Usted no será primo de doña Rosa? Perdón, es que se le parece... bueno, ¿desde cuándo el dolor?", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿De dónde es ese acento? No, no importa, no tengo tiempo, dígame qué siente.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Oiga, ¿y ese carro rojo de afuera es suyo? Está mal parqueado y... no, olvídelo, siga.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted trabaja en la alcaldía? Es que lo he visto... ay, no, concéntrese, ¿qué le pasa?", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Vio el trancón de la avenida? Llegué tardísimo... en fin, ¿alergias tiene?", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Ese reloj es caro? Perdón, qué pregunta, es el afán, dígame los síntomas.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted no jugaba fútbol con mi hermano? Después me cuenta, ahora respire.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Cuántos hijos tiene? No, para qué le pregunto eso ahorita, disculpe, siga.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Está lloviendo? Dejé la ropa afuera... perdón, perdón, ¿desde cuándo se siente así?", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted es de acá? Se lo digo porque... no, nada, olvídelo, deme el brazo.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Ese celular es nuevo? El mío se dañó y... ay, no es momento, cuénteme qué le duele.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted conoce a alguien que arregle lavadoras? Después, después, ahora lo suyo.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Vio las noticias hoy? Está el país imposible... bueno, dígame, ¿qué se tomó?", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿Usted vive por el sur? Yo también, qué casualidad... en fin, ¿le duele el pecho?", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "¿A qué se dedica? Perdón, es la costumbre de hablar, no me haga caso, respire.", "intent": "PreguntaFueraDeTema", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "¡Qué bonito ese tatuaje! ¿Se lo hizo aquí en la ciudad?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Me encanta su chaqueta, de verdad; ¿fue regalo?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Qué lindos ojos tiene el niño; ¿salió a la mamá o al papá?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Se le ve buena persona; ¿usted trabaja con gente todo el día?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Qué acento tan dulce el suyo; ¿de qué pueblito es?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ese perfume huele delicioso; ¿cómo se llama?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Se nota que es de familia unida; ¿son muchos hermanos?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Qué manos tan trabajadoras las suyas; ¿usted es del campo?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Me cae bien usted; ¿siempre es así de tranquilo?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Qué sonrisa tan bonita, hasta con el susto; ¿de dónde saca esa calma?", "intent": "PreguntaFueraDeTema", "tone": "Empatico", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Pare, pare ahí, eso no me interesa, dígame qué le duele.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya, ya entendí, no siga con lo mismo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Shhh, déjeme hablar a mí, que para eso estoy.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No, no, corte esa historia, vaya al grano.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, no me cuente la vida, dígame los síntomas.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Alto ahí, eso no es lo que le pregunté.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deje de hablar y escúcheme a mí por un segundo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me interrumpa cuando estoy anotando.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya, ya, suficiente, con eso me basta.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare de hablar que no puedo contar el pulso.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Eso no, eso no, dígame concretamente qué pasó.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Cállese un momento, que me está enredando.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No siga, no siga, ya sé para dónde va y no.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Le corto ahí, esa parte no la necesito.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, no hable todos al tiempo, primero yo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Suficiente, con lo que dijo ya tengo, siga a la camilla.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me eche el discurso, sí o no y ya.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare, que se está desviando otra vez.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya, ya, deje eso, tenemos afán.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No termine esa frase, no viene al caso.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un segundo, deje de hablar que llegó otro paciente.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Eso me lo cuenta después, ahora lo importante es otra cosa.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No, mentiras, eso que está diciendo no es así, escuche.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Baje la voz y pare, que no lo puedo atender con ese escándalo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya me quedó claro, no hay que repetirlo tres veces.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Deténgase, esa pregunta no es para mí, es para el médico.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No siga hablando que se le va a subir la presión, y a mí el genio.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare el cuento, ¿desde cuándo? Eso es todo lo que quiero saber.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No, no, no, así no, déjeme a mí que usted se enreda.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Ya, córtele, que atrás hay diez esperando lo mismo.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere que suene el teléfono... shhh... no hable ahora.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Eso que dice no me sirve, deme un dato útil.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare de excusarse y conteste lo que le pregunté.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me hable mientras camino, espérese a que llegue.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Suficiente charla, siéntese y déjeme trabajar.", "intent": "Interrupcion", "tone": "Agresivo", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Un momento, déjeme tomarle esto y seguimos.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, primero el nombre y la cédula.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare ahí, ¿eso fue hoy o ayer?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un segundo, ya vuelvo y me termina de contar.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Alto, déjeme anotar lo que dijo antes de que siga.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, ¿el documento lo trae?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, que me están llamando.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare, esa parte la retomamos con el médico.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Déjeme interrumpirlo: ¿toma algún medicamento?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un segundo, respire y después sigue.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, ¿me dijo el brazo izquierdo o el derecho?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Corto un momento, tengo que atender la otra camilla.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, deje eso, primero lo básico.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare, ¿de qué edad estamos hablando?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, no he terminado de escribir lo anterior.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un segundo, ¿eso le pasa siempre o es la primera vez?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Déjeme parar acá y le tomo la temperatura.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, ¿usted es el paciente o el acompañante?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, ahí sí, ¿y después qué pasó?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare, que necesito confirmar un dato del sistema.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, primero lo peso y lo mido.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un segundo, déjeme llamar a alguien que me ayude.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Corto ahí, ¿eso es lo que más le molesta ahora?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, guarde eso y seguimos.", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare, ¿ya lo habían atendido antes por esto?", "intent": "Interrupcion", "tone": "Neutral", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Disculpe que lo interrumpa, pero necesito un dato primero.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdón, permítame un momento y ya lo escucho.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con su permiso lo corto ahí: ¿desde cuándo empezó?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, ¿me deja anotar antes de que continúe?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone la interrupción, ¿ese síntoma es reciente?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, si es tan amable; ya vuelvo con usted.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe que le corte, pero eso lo ve el médico, no yo.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdón, señor, permítame tomarle los signos y sigue contándome.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con todo respeto, vamos por partes; primero lo urgente.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, ¿me permite hacerle una pregunta rápida?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdón que me meta en su relato, ¿fue con golpe o sin golpe?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un segundo, por favor; me llaman y ya regreso.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, retomamos eso en un momento, ¿le parece?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone, necesito que respiremos primero y después me cuenta.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con su permiso, lo detengo un momento para revisarlo.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe la interrupción; ¿su documento, por favor?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdón, ¿me repite solo esa última parte?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, si me hace el favor; estoy anotando lo anterior.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, dejemos esa parte y vamos a lo que le duele.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdone que lo pare; ¿esto ya le había pasado?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Con respeto, esa información se la damos más adelante.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe, permítame confirmar un dato y seguimos.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Perdón, ¿me deja atender algo urgente y vuelvo enseguida?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, por favor; necesito llamar al médico.", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Disculpe que interrumpa; ¿toma anticoagulantes?", "intent": "Interrupcion", "tone": "Respetuoso", "scenario": "emergencia", "labeler": "Luis" },
+
+  { "text": "Espere, espere, no me hable ahora que estoy contando respiraciones.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare un segundo, pare, que me perdí en lo que anotaba.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No, no, después me cuenta eso, ahora no puedo.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, un momento, me están timbrando de otra cama.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Shhh, deje, deje, déjeme pensar qué le pongo primero.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, no siga, que si me habla se me olvida lo anterior.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare ahí, que tengo que salir corriendo y vuelvo.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No me cuente todo junto, una cosa a la vez, que me enredo.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere, espere, ¿qué fue lo que dijo? Repítame, rápido.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un segundo, no hable, déjeme ubicar dónde lo pongo.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare, pare, que llegó una ambulancia y me toca.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "No siga ahora, por favor, tengo la cabeza en otro paciente.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Espere que anote esto o se me va, no me hable.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Un momento, deje de hablar, que no doy abasto y me pierdo.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" },
+  { "text": "Pare tantito, respire usted y déjeme respirar a mí.", "intent": "Interrupcion", "tone": "Ansioso", "scenario": "emergencia", "labeler": "Luis" }
 ]
