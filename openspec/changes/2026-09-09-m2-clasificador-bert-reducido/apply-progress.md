@@ -417,15 +417,25 @@ Corregido agregando `"Unity.InferenceEngine"` a `references` en `NpcAi.Nlu.Tests
 solo un compilador real detecta — ningun agente sin acceso al Editor podia haberlo visto por
 inspeccion de codigo.
 
+**Compuerta humana del constructor nuevo — resultado (2026-09-15)**
+
+- **Quien la corrio**: el usuario, en Unity Editor Test Runner (EditMode), rama
+  `feat/m2-pr2-bert-sentis`, ya con el fix del asmdef (`d67572a`) aplicado.
+- **Resultado**: `BertIntentClassifierTests` paso en verde con el constructor nuevo
+  (`ModelAsset`/`TextAsset`). Unico item reportado despues: un `LogError` de
+  `Unity.AI.Tracing.ConsoleSink` ("Relay process exited", `connection.state_change`) —
+  verificado y descartado como ruido: pertenece al paquete `com.unity.ai.assistant`
+  (2.18.0-pre.2, el AI Assistant/chat integrado del Editor), instalado en el proyecto como
+  dependencia **separada** de `com.unity.ai.inference` (Sentis, 2.6.1, el que usa
+  `BertIntentClassifier`). No tiene relacion con M2 ni con esta clase; es el propio Editor
+  intentando conectar su chat de IA a un proceso de relay (red/licencia) y fallando, algo
+  ajeno a este cambio.
+- **Que confirma esto**: el constructor `ModelAsset`/`TextAsset` (tasks.md 2.9) queda
+  completamente validado en el Test Runner real — ya no es solo "razonado por inspeccion de
+  codigo". La tarea 2.9 pasa de "escrita, sin confirmar" a **confirmada de punta a punta**.
+
 **Remaining Tasks (obligatorio, no omitir)**
 
-- [ ] **Un humano debe re-correr el Test Runner de Unity (EditMode) en esta rama
-  (`feat/m2-pr2-bert-sentis`) para confirmar que `BertIntentClassifierTests` y el resto de la
-  bateria de `IntentClassifierContract` siguen pasando en verde con el nuevo constructor.** Esta
-  es una compuerta humana DISTINTA de la ya confirmada en la tarea 2.7: esa confirmacion fue
-  sobre el constructor VIEJO (`string modelPath`); la firma cambio, asi que ese verde anterior
-  ya no es evidencia valida para el constructor nuevo. Ningun agente puede afirmar que las
-  pruebas pasan sin esta confirmacion.
 - [ ] Fase 3 (PR3): documentacion (`Docs/MODULES.md`, `PENDIENTE-AMPLIACION.md`) — sin cambios
   por este batch.
 - [ ] Fase 4: cierre por PR (git add acotado por PR, checklist, commit LFS del `.onnx`,

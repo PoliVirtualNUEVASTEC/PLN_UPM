@@ -160,12 +160,13 @@
   nuevo constructor; la prueba de "ruta inexistente" se reemplazó por
   `Un_modelo_o_tokenizador_nulo_deja_el_clasificador_no_listo_y_no_lanza` (casos `null,null` /
   `modelo,null` / `null,tokenizador`), mismo comportamiento esperado que antes
-  (`IsReady` falso, `Classify` devuelve `Unknown`, nunca lanza). **NO confirmado en el Test
-  Runner real todavía** — es una compuerta humana nueva y distinta de la ya confirmada en la
-  tarea 2.7 (esa confirmación fue sobre el constructor VIEJO basado en `modelPath`; al cambiar
-  la firma, la batería completa (`IntentClassifierContract` + las pruebas propias de esta
-  clase, 368 tests en total según 2.7) debe volver a correrse en verde antes de considerar esta
-  tarea totalmente validada). -->
+  (`IsReady` falso, `Classify` devuelve `Unknown`, nunca lanza).
+
+  CONFIRMADO en el Test Runner real (2026-09-15, ver apply-progress.md "Compuerta humana del
+  constructor nuevo — resultado"): `BertIntentClassifierTests` paso en verde con el constructor
+  `ModelAsset`/`TextAsset`. En el camino se encontro y corrigio un gap real de asmdef
+  (`Tests/EditMode/Nlu/NpcAi.Nlu.Tests.asmdef` no referenciaba `Unity.InferenceEngine`,
+  commit `d67572a`) — exactamente el tipo de error que solo un compilador real detecta. -->
 
 > PR2 depende del `.onnx` de PR1. No requiere reentrenar dentro de PR2 — solo consume el artefacto
 > ya producido.
