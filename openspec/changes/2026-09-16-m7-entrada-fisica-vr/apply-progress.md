@@ -167,14 +167,15 @@ archivo de prueba.
 | Runtime harness command/scenario and exact result | N/A — `ScriptableObject.CreateInstance`/`OnValidate` llamado directo desde la prueba, sin escena ni Inspector, tal como fija la tabla de Work Units de `tasks.md` ("Runtime harness: N/A — `ScriptableObject.CreateInstance`, sin escena"). |
 | Rollback boundary | Borrar `Runtime/VrInput/Config/` completo (`VrInputSettings.cs`, `VrInputSettingsAsset.cs`) y `Tests/EditMode/VrInput/VrInputSettingsAssetTests.cs`; restaurar la definición de `VrInputSettings` dentro de `SpatialPhysicalActionSource.cs` (o dejar que el núcleo caiga a `new VrInputSettings()` con una definición mínima). Ningún otro módulo se ve afectado; PR1 queda intacto. |
 
-## COMPUERTA HUMANA — pendiente
+## COMPUERTA HUMANA — resultado (2026-09-16)
 
-Igual que en PR1: la confirmación real en Unity Editor Test Runner (EditMode > Run All) de las 9
-pruebas nuevas de `VrInputSettingsAssetTests`, junto con la suite completa del proyecto, queda
-pendiente de que el usuario la ejecute y registre el resultado (tarea 3.5, agrupada con la
-Fase 3 según `tasks.md`). El agente no tiene acceso a Unity CLI/headless en este entorno y no
-afirma que las pruebas "pasan" — solo que fueron escritas y razonadas por inspección contra el
-pseudocódigo/tabla exactos de `design.md`.
+- **Quién la corrió**: el usuario, en Unity Editor Test Runner (pestaña EditMode), rama
+  `feat/m7-02-config`.
+- **Resultado**: las 9 pruebas nuevas de `VrInputSettingsAssetTests` pasan en verde, junto con el
+  resto de la suite completa del proyecto.
+- **Qué confirma esto**: `OnValidate()` acota correctamente los 6 campos, incluidos los 2 rangos
+  cruzados (liberación de mirada ≥ cono de mirada; alejarse ≥ acercarse + margen mínimo), y
+  `ToSettings()` copia los 6 campos sin pérdida. Fase 2 (PR2) queda confirmada de punta a punta.
 
 ## Files Changed
 
@@ -231,8 +232,6 @@ hacer.
 
 ## Status
 
-4/4 tareas de la Fase 2 completas por el agente, con evidencia por inspección. **Test Runner real
-pendiente** (compuerta humana, agrupada con la tarea 3.5 de la Fase 3 — no bloquea seguir con
-PR3, pero sí bloquea marcar Fase 2 como confirmada de punta a punta). `sdd-apply` puede continuar
-con la Fase 3 (PR3) cuando el usuario lo indique; PR2 (`feat/m7-02-config` → PR1
-`feat/m7-01-nucleo`) queda listo para revisión.
+4/4 tareas de la Fase 2 completas y **confirmadas en Test Runner real** (ver COMPUERTA HUMANA —
+resultado arriba). PR2 (`feat/m7-02-config` → PR1 `feat/m7-01-nucleo`, PR #35) queda listo de
+punta a punta. `sdd-apply` continúa con la Fase 3 (PR3, rama `feat/m7-03-envoltura`).
