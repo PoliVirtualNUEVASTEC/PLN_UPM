@@ -50,25 +50,79 @@ solo.
 
 ## Phase 1: Núcleo C# puro, TDD (PR1)
 
-- [ ] 1.1 RED: `Tests/EditMode/VrInput/SpatialPhysicalActionSourceTests.cs : PhysicalActionSourceContract`
+- [x] 1.1 RED: `Tests/EditMode/VrInput/SpatialPhysicalActionSourceTests.cs : PhysicalActionSourceContract`
   — `CreateSubject()` = constructor sin parámetros; `EmitTestAction` vía `EmitirParaPrueba` (cast
   interno). No compila hasta 1.5/1.7.
-- [ ] 1.2 RED: `DeteccionDeMiradaTests.cs` — mirada sostenida emite `ContactoVisual` una vez, vistazo
+  <!-- apply PR1 (2026-09-16): creado, hereda PhysicalActionSourceContract sin modificarla, espejo
+  literal de OfflineSpeechToTextTests. Escrito y creido correcto por inspeccion; confirmacion real
+  en el Test Runner de Unity queda pendiente como compuerta humana (tarea 3.5/notas del archivo). -->
+- [x] 1.2 RED: `DeteccionDeMiradaTests.cs` — mirada sostenida emite `ContactoVisual` una vez, vistazo
   fugaz no emite, mirada continua no repite hasta liberar el cono ancho.
-- [ ] 1.3 RED: `HisteresisDeDistanciaTests.cs` — primera muestra siembra sin emitir (AD8), cruzar el
+  <!-- apply PR1 (2026-09-16): creado con 4 pruebas — las 3 pedidas por la traza de spec.md
+  (Mirada_sostenida_en_el_cono_levanta_ContactoVisual_una_vez,
+  Vistazo_fugaz_no_levanta_ContactoVisual,
+  Mirada_continua_no_repite_ContactoVisual_hasta_liberar_el_cono, esta ultima cubre tambien la
+  liberacion por cono ancho y la re-emision tras volver a entrar) mas una adicional
+  (Perder_el_objetivo_reinicia_la_permanencia, de AD del detector 1). Corre ProcesarMuestra
+  directo con angulos calculados, sin muestreador, como indica la tabla "Testing Strategy" de
+  design.md. Frente de cabeza fijo en +Z y objetivo siempre a radio 5 evita que el Detector 2
+  (distancia) contamine estas pruebas (distancia constante = nunca cruza umbral). Escrito y
+  creido correcto por inspeccion; confirmacion real en Test Runner pendiente (compuerta humana). -->
+- [x] 1.3 RED: `HisteresisDeDistanciaTests.cs` — primera muestra siembra sin emitir (AD8), cruzar el
   umbral de entrada levanta `Acercarse`, oscilar dentro de la banda no produce ráfaga.
-- [ ] 1.4 RED: `DeteccionDeContactoTests.cs` — primer pulso levanta `TocarPaciente`, pulso repetido
+  <!-- apply PR1 (2026-09-16): creado con 5 pruebas — Primera_muestra_siembra_sin_emitir (AD8),
+  Cruzar_el_umbral_de_entrada_levanta_Acercarse_una_vez, Cruzar_el_umbral_de_salida_levanta_Alejarse
+  y el caso critico Oscilar_sobre_el_umbral_de_entrada_no_produce_una_rafaga_de_eventos (nombres
+  siguiendo la Trazabilidad de spec.md), mas Perder_el_objetivo_no_cuenta_como_Alejarse. El frente
+  de cabeza de cada muestra mira perpendicular al objetivo (angulo de mirada fijo en 90 grados)
+  para que el Detector 1 (mirada) no contamine estas pruebas de distancia. Escrito y creido
+  correcto por inspeccion; confirmacion real en Test Runner pendiente (compuerta humana). -->
+- [x] 1.4 RED: `DeteccionDeContactoTests.cs` — primer pulso levanta `TocarPaciente`, pulso repetido
   dentro del enfriamiento no repite.
-- [ ] 1.5 GREEN: `Runtime/VrInput/SpatialSample.cs` (`Vec3` + `SpatialSample`, AD1) y
+  <!-- apply PR1 (2026-09-16): creado con 4 pruebas — Primer_pulso_levanta_TocarPaciente,
+  Contacto_continuo_dentro_del_enfriamiento_no_repite_el_evento (el caso "solape continuo no
+  inunda"), Pulso_pasado_el_enfriamiento_vuelve_a_levantar_TocarPaciente y
+  Sin_pulso_no_emite_TocarPaciente. `hayObjetivo=false` en todas las muestras aisla el Detector 3
+  del 1 y el 2. Escrito y creido correcto por inspeccion; confirmacion real en Test Runner
+  pendiente (compuerta humana). -->
+- [x] 1.5 GREEN: `Runtime/VrInput/SpatialSample.cs` (`Vec3` + `SpatialSample`, AD1) y
   `Runtime/VrInput/ISpatialSampler.cs` (AD2/AD3) — sin `UnityEngine`.
-- [ ] 1.6 GREEN: `Runtime/VrInput/Fakes/ScriptedSpatialSampler.cs` — `Encolar(SpatialSample)`/
+  <!-- apply PR1 (2026-09-16): creados exactamente como en la seccion "Interfaces / Contracts" de
+  design.md. Vec3 usa System.Math (Sqrt/Acos), nunca Mathf; AnguloEnGrados devuelve -1 para
+  direccion degenerada (longitud cero) como pide el pseudocodigo del Detector 1. -->
+- [x] 1.6 GREEN: `Runtime/VrInput/Fakes/ScriptedSpatialSampler.cs` — `Encolar(SpatialSample)`/
   `LeerMuestra` desencola en orden (lo necesitan 1.1-1.4).
-- [ ] 1.7 GREEN: `Runtime/VrInput/SpatialPhysicalActionSource.cs` — los 3 detectores (pseudocódigo de
+  <!-- apply PR1 (2026-09-16): creado como cola FIFO (System.Collections.Generic.Queue). Marcado
+  `internal` (no `public` como ScriptedPhysicalActionSource): ISpatialSampler es una costura
+  interna del modulo, no un puerto de NpcAi.Core, y no la usan directamente las 4 clases de
+  prueba de esta fase (todas corren ProcesarMuestra a mano), asi que queda lista para cuando
+  Fase 3 la necesite. -->
+- [x] 1.7 GREEN: `Runtime/VrInput/SpatialPhysicalActionSource.cs` — los 3 detectores (pseudocódigo de
   `design.md`) + `Levantar` único (AD4), hasta verde en 1.1-1.4.
-- [ ] 1.8 GREEN: `Runtime/VrInput/Properties/AssemblyInfo.cs` con
+  <!-- apply PR1 (2026-09-16): creado con los 3 detectores como pseudocodigo literal de design.md,
+  Levantar unico que solo rechaza Ninguna (AD4), EmitirParaPrueba delegando en Levantar sin
+  estrangular (AD5), DistanciaActual/MirandoAlObjetivo como observabilidad interna de prueba, y
+  Bombear() para cuando Fase 3 cablee un ISpatialSampler real. DESVIACION registrada: el
+  constructor interno consume un `VrInputSettings` (snapshot POCO con los defaults de la tabla
+  "Configuracion" de design.md) definido EN ESTE MISMO ARCHIVO, no en
+  `Runtime/VrInput/Config/VrInputSettings.cs` — ese archivo/carpeta es entrega explicita de la
+  tarea 2.2 (Fase 2, fuera de alcance de este PR) y la frontera de este PR no incluye crear
+  `Runtime/VrInput/Config/`. La tarea 2.4 ya anticipa este traslado ("confirmar que el constructor
+  interno... consume VrInputSettings, y que el constructor publico sin parametros usa `new
+  VrInputSettings()`"): Fase 2 debe mover esta clase intacta a `Config/VrInputSettings.cs` y
+  borrarla de este archivo. Ver tambien Deviations en apply-progress.md. -->
+- [x] 1.8 GREEN: `Runtime/VrInput/Properties/AssemblyInfo.cs` con
   `InternalsVisibleTo("NpcAi.VrInput.Tests")`.
-- [ ] 1.9 Confirmar que 1.5-1.7 no referencian `UnityEngine`/`Mathf`/`Time` (AD1/AD6). Fase 100%
+  <!-- apply PR1 (2026-09-16): creado, espejo literal de Runtime/Speech/Properties/AssemblyInfo.cs.
+  Necesario para que las 4 clases de prueba de esta fase (en el ensamblado NpcAi.VrInput.Tests)
+  accedan a los miembros internal del nucleo (EmitirParaPrueba, ProcesarMuestra, VrInputSettings,
+  DistanciaActual, etc.); sin este archivo el PR no compila. -->
+- [x] 1.9 Confirmar que 1.5-1.7 no referencian `UnityEngine`/`Mathf`/`Time` (AD1/AD6). Fase 100%
   automatizable: sin escena, sin headset, sin sesión XR.
+  <!-- apply PR1 (2026-09-16): confirmado con busqueda de texto (`UnityEngine|Mathf|Debug\.Log`)
+  sobre Runtime/VrInput/: las 2 unicas coincidencias son comentarios de documentacion que
+  EXPLICAN por que esos tipos estan ausentes (p.ej. "nunca Mathf"), no un `using` ni una llamada
+  real. Cero referencias en codigo ejecutable. -->
 
 ## Phase 2: Configuración como dato (PR2)
 
