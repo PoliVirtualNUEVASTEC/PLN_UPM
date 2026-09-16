@@ -252,10 +252,28 @@ por ser la rama compartida real del equipo.
   headset VR (gestos, botones) a un `PhysicalAction` del vocabulario de M0.
 - **Contrato que expone**: `IPhysicalActionSource` — solo el evento `OnAction`. El doble deja
   explícito que `PhysicalAction.Ninguna` nunca se emite como evento (no representa una acción).
-- **Estado actual**: **solo doble**. `Runtime/VrInput/` en `origin/main` únicamente contiene
-  `Fakes/ScriptedPhysicalActionSource.cs` — un `Emit(PhysicalAction)` manual pensado para que
-  pruebas o el banco de pruebas disparen acciones a mano, sin headset ni controles reales.
-- **Specs formales**: no existe.
+- **Estado actual**: **implementación real entregada para 4 de las 7 `PhysicalAction`** —
+  `ContactoVisual` (mirada de cabeza sostenida con permanencia e histéresis de liberación),
+  `Acercarse`/`Alejarse` (banda de histéresis de distancia HMD-paciente) y `TocarPaciente`
+  (contacto por `Collider` con enfriamiento) — vía el cambio
+  `openspec/changes/2026-09-16-m7-entrada-fisica-vr/`, encadenado en 3 PR de `feature-branch-chain`
+  (núcleo #34, configuración #35, envoltura #36), todavía sin mergear a `main`: quedan
+  mergeables una vez que la rama tracker (PR #33) cierre la cadena. `SpatialPhysicalActionSource`
+  (núcleo C# puro, sin `UnityEngine`) recibe `SpatialSample` ya digeridas de la costura interna
+  `ISpatialSampler`; `UnitySpatialSampler` es la implementación real de esa costura y
+  `VrInputBehaviour`/`TouchZoneRelay` la envoltura `MonoBehaviour` que cablea `Camera`, `Transform`
+  y `Collider` reales de la escena anfitriona y publica en `PhysicalActionChannel`.
+  `Fakes/ScriptedPhysicalActionSource.cs` sigue disponible sin cambios como doble determinista.
+  **`EntregarObjeto`, `SenalarPantalla` y `GestoCalma` quedan explícitamente fuera** de esta
+  entrega: necesitan interacción por mandos (probablemente XR Interaction Toolkit; seguimiento de
+  manos descartado explícitamente por el usuario) y son su propio cambio SDD posterior, todavía
+  sin iniciar. **Pendiente (compuerta humana, tarea 3.6)**: confirmación en vivo en Quest 3 físico
+  de las 4 acciones entregadas — bloqueada hoy en dos insumos que aún no existen del todo: los
+  `.asset` de datos por escenario de esta misma Fase 4/PR4 (`Data/VrInput/Emergency.asset`, recién
+  creado) y el cableado de escena de M11 (`Camera` del HMD, `Transform` del NPC, `Collider` +
+  `TouchZoneRelay` sobre el paciente), que no existe en ninguna escena del proyecto todavía.
+- **Specs formales**: `openspec/specs/entrada-fisica-vr-m7/spec.md` (promovida desde
+  `openspec/changes/2026-09-16-m7-entrada-fisica-vr/specs/` al cerrar la Fase 4 del cambio).
 
 ---
 
