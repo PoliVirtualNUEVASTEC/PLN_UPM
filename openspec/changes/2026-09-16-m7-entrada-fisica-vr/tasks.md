@@ -164,20 +164,69 @@ solo.
 
 ## Phase 3: Envoltura MonoBehaviour (PR3)
 
-- [ ] 3.1 GREEN: `Runtime/VrInput/TouchZoneRelay.cs` — `OnTriggerEnter` + `LayerMask`, latch
+- [x] 3.1 GREEN: `Runtime/VrInput/TouchZoneRelay.cs` — `OnTriggerEnter` + `LayerMask`, latch
   `_pendiente`, `ConsumirPulso()` (AD7).
-- [ ] 3.2 GREEN: `Runtime/VrInput/UnitySpatialSampler.cs` — lee `Camera`/`Transform`/`Time.deltaTime`/
+  <!-- apply PR3 (2026-09-16): creado, `OnTriggerEnter(Collider otro)` filtra por
+  `[SerializeField] LayerMask _capasDeContacto` con `(1 << otro.gameObject.layer) &
+  _capasDeContacto.value`, levanta el latch `_pendiente`. `ConsumirPulso()` internal: lee y
+  limpia en una sola operacion (pull, AD7), a lo sumo un pulso por lectura aunque entren
+  varios colliders en el mismo frame. `public sealed class : MonoBehaviour` para poder
+  agregarse desde el proyecto anfitrion (M11), igual que `VrInputBehaviour`/
+  `NpcPresenterBehaviour`. Sin prueba EditMode dedicada: `OnTriggerEnter` necesita fisica de
+  escena real que design.md no exige automatizar (Testing Strategy no la lista); se ejercita
+  end-to-end en la compuerta humana 3.6. -->
+- [x] 3.2 GREEN: `Runtime/VrInput/UnitySpatialSampler.cs` — lee `Camera`/`Transform`/`Time.deltaTime`/
   `ConsumirPulso()`; `LeerMuestra` devuelve `false` sin cámara u objetivo (AD10).
-- [ ] 3.3 GREEN: `Runtime/VrInput/VrInputBehaviour.cs` — `Awake`/`OnEnable`/`Update`/`OnDisable`/
+  <!-- apply PR3 (2026-09-16): creado, `internal sealed class` (espejo de
+  `MicrophoneAudioCapture` de M1, tambien `internal`). Constructor recibe `Camera`,
+  `Transform`, `TouchZoneRelay` (los 3 nullable). `LeerMuestra` devuelve `false` con
+  `muestra = default` si `_camaraDelHmd == null || _objetivo == null` (AD10, sin
+  `Debug.Log`, sin lanzar); si no, arma el `SpatialSample` con `Vec3` propios (conversion
+  `AVec3(Vector3)` privada, nunca `UnityEngine.Vector3` cruza al nucleo),
+  `pulsoDeContacto = _zonaDeContacto?.ConsumirPulso() ?? false` y `deltaSegundos =
+  Time.deltaTime`. Verificado end-to-end (sin escena) por
+  `Sin_camara_u_objetivo_asignados_no_lanza` en 3.4, que ejercita esta clase real (no un
+  doble) a traves de `VrInputBehaviour.CablearParaPrueba()` sin argumento. -->
+- [x] 3.3 GREEN: `Runtime/VrInput/VrInputBehaviour.cs` — `Awake`/`OnEnable`/`Update`/`OnDisable`/
   `PublicarEnCanal` (AD9) + costuras `CablearParaPrueba`/`DescablearParaPrueba`/`BombearParaPrueba`
   (patrón M8).
-- [ ] 3.4 RED→GREEN: `Tests/EditMode/VrInput/VrInputBehaviourWiringTests.cs` (precedente
+  <!-- apply PR3 (2026-09-16): creado, molde exacto de `NpcPresenterBehaviour` (M8).
+  `Awake` arma `_sujeto = new SpatialPhysicalActionSource(cfg, _muestreador)` con
+  `_muestreador = _muestreadorDePrueba ?? new UnitySpatialSampler(_camaraDelHmd, _objetivo,
+  _zonaDeContacto)`. `OnEnable` suscribe `_sujeto.OnAction += PublicarEnCanal` (AD9: el
+  nucleo interno) y llama `_muestreador.Iniciar()`; `OnDisable` desuscribe y llama
+  `_muestreador.Detener()`. `Update` solo bombea (`_sujeto?.Bombear()`, AD6, sin bomba de
+  hilo). `PublicarEnCanal` solo llama `_canal?.Raise(a)` — CONFIRMADO por inspeccion: cero
+  llamadas a `_canal.Subscribe` en todo el archivo, el bug que el orquestador ya encontro y
+  corrigio en proposal.md/spec.md no se reintrodujo. Costuras de prueba
+  `CablearParaPrueba(ISpatialSampler muestreador = null)` / `DescablearParaPrueba` /
+  `BombearParaPrueba` identicas en forma a las de M8. -->
+- [x] 3.4 RED→GREEN: `Tests/EditMode/VrInput/VrInputBehaviourWiringTests.cs` (precedente
   `NpcPresenterBehaviourTests` de M8 y `OfflineSpeechToTextWiringTests` de M1) — `OnEnable` suscribe
   `_sujeto.OnAction` (el núcleo interno, NUNCA `PhysicalActionChannel`, que solo recibe `Raise`) y
   `OnDisable` desuscribe sin fuga; sin `Camera` ni `Transform` objetivo asignados no lanza y no publica.
+  <!-- apply PR3 (2026-09-16): creado con 2 pruebas, nombres tomados literal de la
+  Trazabilidad de spec.md. `OnEnable_suscribe_y_OnDisable_desuscribe_sin_fugas`: un
+  `ScriptedSpatialSampler` (doble de PR1) guiona 2 muestras de `TocarPaciente`
+  (`hayObjetivo: false` para aislar del detector de mirada/distancia); tras
+  `CablearParaPrueba(muestreador)` + `BombearParaPrueba()` el canal recibe 1 `TocarPaciente`,
+  y tras `DescablearParaPrueba()` + `BombearParaPrueba()` (2da muestra con delta=2s, fuera
+  del enfriamiento por defecto, para forzar que el nucleo SI levantaria de nuevo si algo
+  siguiera escuchando) el conteo del canal se queda en 1 -- prueba real de que
+  `OnDisable` desuscribe, no solo que el canal nunca recibio nada.
+  `Sin_camara_u_objetivo_asignados_no_lanza`: `CablearParaPrueba()` SIN argumento (arma el
+  `UnitySpatialSampler` real de la tarea 3.2 con `_camaraDelHmd`/`_objetivo` nunca asignados
+  en el `GameObject` de prueba) + `BombearParaPrueba()` -- `Assert.DoesNotThrow` en ambas
+  llamadas y 0 publicaciones en el canal (AD10). Escrito y creido correcto por inspeccion;
+  confirmacion real en el Test Runner de Unity queda pendiente como compuerta humana (tarea
+  3.5, ver nota abajo). -->
 - [ ] 3.5 MANUAL (Unity Editor — la ejecuta y la registra el usuario, no el agente): Test Runner >
   EditMode > Run All con las Fases 1-3 completas; registrar el total de pruebas en
   `apply-progress.md`.
+  <!-- apply PR3 (2026-09-16): PENDIENTE. Sin acceso a CLI/headless Unity en este entorno
+  (regla del proyecto: solo Unity Editor GUI). El agente no reclama pruebas en verde por su
+  cuenta -- esta es una compuerta humana que el usuario debe correr y registrar, igual que en
+  PR1 y PR2. -->
 - [ ] 3.6 MANUAL / compuerta humana (Quest 3 físico — la ejecuta y la registra el usuario, no el
   agente): confirmar en vivo que encarar al NPC emite `ContactoVisual`, que acercarse/alejarse emiten
   una vez por cruce, y que tocar al paciente emite `TocarPaciente`. Los defaults de
@@ -185,6 +234,12 @@ solo.
   razonables, no medidos (Open Questions de `design.md`): esta compuerta puede exigir ajustar esos
   valores, no solo confirmar pase/falla. Registrar resultado y cualquier ajuste en
   `apply-progress.md`, atribuido al usuario.
+  <!-- apply PR3 (2026-09-16): PENDIENTE, y probablemente lo siga estando por un tiempo:
+  ademas de la compuerta humana en si, esta tarea necesita los `.asset` de datos por
+  escenario de la Fase 4 (PR4, fuera de alcance de este PR) y, en la practica, el cableado de
+  escena de M11 (Camera del HMD, Transform del NPC, collider + `TouchZoneRelay` sobre el
+  paciente) que hoy no existe en ninguna escena del proyecto. No se marca `[x]` hasta que el
+  usuario la corra y registre el resultado en Quest 3 fisico. -->
 
 ## Phase 4: Datos y documentación (PR4)
 
