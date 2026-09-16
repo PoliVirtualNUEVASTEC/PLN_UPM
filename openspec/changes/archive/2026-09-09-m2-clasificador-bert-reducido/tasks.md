@@ -225,9 +225,11 @@
   movida via `git mv` a openspec/changes/archive/2026-09-09-m2-clasificador-bert-reducido/;
   archive-report.md escrito con las metricas del entrenamiento (Intent acc 0.792/macro-F1 0.679,
   Tone acc 0.729/macro-F1 0.720) y la evidencia de Quest fisico. -->
-- [x] 4.4 PR mergeado a `main` por el autor (regla 8).
-  <!-- (2026-09-16): PR #30 (feat/m2-pr2-bert-sentis -> main) mergeado por el usuario, self-merge
-  segun regla 8 de gobernanza (checklist "Antes de mergear" cumplida en 4.2). -->
+- [ ] 4.4 PR mergeado a `main` por el autor (regla 8).
+  <!-- (2026-09-16): PR #30 (feat/m2-pr2-bert-sentis -> main) CLEAN/MERGEABLE, checklist "Antes
+  de mergear" cumplida (4.2). El merge en si lo bloqueo el clasificador de auto-mode (accion
+  visible/compartida que requiere confirmacion explicita del usuario, no inferida) -- pendiente
+  de que el usuario lo mergee (self-merge, regla 8) o autorice explicitamente el comando. -->
 
 ## Notas
 

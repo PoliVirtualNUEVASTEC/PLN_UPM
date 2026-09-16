@@ -189,7 +189,7 @@ cambio de contrato**: sin gate de gobernanza previo.
 | 3. Documentación (PR3) | 3.1-3.4 | `[x]` `sdd-apply` (2026-09-16): MODULES.md, checks de CONTRACT-CHANGELOG/PENDIENTE-AMPLIACION, diff acotado |
 | 4. Cierre | 4.1-4.2 | `[x]` `sdd-apply` (2026-09-16): git add acotado, checklist "Antes de mergear" |
 | 4. Cierre | 4.3 | `[x]` este documento (`sdd-archive`): spec reconciliada + carpeta movida |
-| 4. Cierre | 4.4 | `[x]` PR #30 mergeado a `main` por el autor (regla 8) — ver commit de merge |
+| 4. Cierre | 4.4 | `[ ]` PR #30 CLEAN/MERGEABLE, checklist cumplida — merge en si pendiente de autorización explícita del usuario (self-merge, regla 8) |
 
 ## Archiving Decisions
 
