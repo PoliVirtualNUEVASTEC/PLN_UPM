@@ -126,14 +126,41 @@ solo.
 
 ## Phase 2: Configuración como dato (PR2)
 
-- [ ] 2.1 RED: `Tests/EditMode/VrInput/VrInputSettingsAssetTests.cs` (precedente
+- [x] 2.1 RED: `Tests/EditMode/VrInput/VrInputSettingsAssetTests.cs` (precedente
   `SpeechSettingsAssetTests`) — clamp de cada campo de la tabla de `design.md`, incluidos los 2 `Max`
   cruzados (liberación ≥ cono, alejarse ≥ acercarse + 0.1).
-- [ ] 2.2 GREEN: `Runtime/VrInput/Config/VrInputSettings.cs` — snapshot POCO sin `UnityEngine`.
-- [ ] 2.3 GREEN: `Runtime/VrInput/Config/VrInputSettingsAsset.cs` — `ScriptableObject`,
+  <!-- apply PR2 (2026-09-16): creado, espejo literal de SpeechSettingsAssetTests (SetUp/TearDown
+  con ScriptableObject.CreateInstance/DestroyImmediate). 9 pruebas: una por campo simple
+  (GradosDelConoDeMirada, SegundosDePermanenciaDeMirada, MetrosParaAcercarse,
+  SegundosDeEnfriamientoDeContacto), una para GradosDeLiberacionDeMirada y MetrosParaAlejarse
+  cada uno con su propio Clamp simple, mas una prueba dedicada por cada uno de los 2 Max
+  cruzados (GradosDeLiberacionDeMirada nunca queda por debajo del cono; MetrosParaAlejarse nunca
+  queda por debajo de acercarse + 0.1) y ToSettings_copia_los_campos_del_asset_al_snapshot. No
+  compila hasta 2.3 (VrInputSettingsAsset no existe todavia). Escrito y creido correcto por
+  inspeccion; confirmacion real en Test Runner pendiente (compuerta humana, tarea 3.5). -->
+- [x] 2.2 GREEN: `Runtime/VrInput/Config/VrInputSettings.cs` — snapshot POCO sin `UnityEngine`.
+  <!-- apply PR2 (2026-09-16): movida tal cual desde SpatialPhysicalActionSource.cs (mismos
+  nombres de campo, tipos y defaults de la tabla "Configuracion" de design.md -- ningun valor
+  cambio, copiar-pegar como preveia el DESVIACION 1 de apply-progress.md de PR1). Se elimino la
+  definicion duplicada de SpatialPhysicalActionSource.cs (deja solo el enum EstadoDeDistancia,
+  que design.md ubica en ese mismo archivo). Namespace NpcAi.VrInput (no NpcAi.VrInput.Config):
+  ver Deviations abajo. -->
+- [x] 2.3 GREEN: `Runtime/VrInput/Config/VrInputSettingsAsset.cs` — `ScriptableObject`,
   `[CreateAssetMenu]`, `OnValidate`/`Mathf.Clamp`, `ToSettings()`, hasta verde en 2.1.
-- [ ] 2.4 Confirmar que el constructor interno de `SpatialPhysicalActionSource` (1.7) consume
+  <!-- apply PR2 (2026-09-16): creado, mismo molde que SpeechSettingsAsset (campos publicos
+  planos en el ScriptableObject, OnValidate internal con Mathf.Clamp, ToSettings internal
+  devolviendo el snapshot POCO con propiedades {get;set;}). OnValidate acota
+  GradosDelConoDeMirada y MetrosParaAcercarse ANTES que sus pares cruzados
+  (GradosDeLiberacionDeMirada, MetrosParaAlejarse) porque los 2 Max dependen del valor ya
+  acotado, tal como exige la tabla "Configuracion" de design.md. -->
+- [x] 2.4 Confirmar que el constructor interno de `SpatialPhysicalActionSource` (1.7) consume
   `VrInputSettings`, y que el constructor público sin parámetros usa `new VrInputSettings()`.
+  <!-- apply PR2 (2026-09-16): confirmado por inspeccion -- verificacion, no codigo nuevo. Ambos
+  constructores de Runtime/VrInput/SpatialPhysicalActionSource.cs (internal con `VrInputSettings
+  config`, publico sin parametros con `: this(new VrInputSettings(), null)`) quedan sin tocar:
+  compilan igual que antes porque VrInputSettings sigue en el namespace NpcAi.VrInput, solo en
+  un archivo distinto (Runtime/VrInput/Config/VrInputSettings.cs). Ningun `using` nuevo hizo
+  falta en SpatialPhysicalActionSource.cs. -->
 
 ## Phase 3: Envoltura MonoBehaviour (PR3)
 
