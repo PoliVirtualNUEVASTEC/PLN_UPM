@@ -220,9 +220,12 @@ solo.
   llamadas y 0 publicaciones en el canal (AD10). Escrito y creido correcto por inspeccion;
   confirmacion real en el Test Runner de Unity queda pendiente como compuerta humana (tarea
   3.5, ver nota abajo). -->
-- [ ] 3.5 MANUAL (Unity Editor — la ejecuta y la registra el usuario, no el agente): Test Runner >
+- [x] 3.5 MANUAL (Unity Editor — la ejecuta y la registra el usuario, no el agente): Test Runner >
   EditMode > Run All con las Fases 1-3 completas; registrar el total de pruebas en
   `apply-progress.md`.
+  <!-- (2026-09-16): confirmado por el usuario en Unity Editor Test Runner, rama
+  feat/m7-03-envoltura, tras corregir NpcAi.VrInput.Tests.asmdef (le faltaba la referencia a
+  NpcAi.Core.Channels) y commitear los .meta faltantes de las 3 PRs. Todo en verde. -->
   <!-- apply PR3 (2026-09-16): PENDIENTE. Sin acceso a CLI/headless Unity en este entorno
   (regla del proyecto: solo Unity Editor GUI). El agente no reclama pruebas en verde por su
   cuenta -- esta es una compuerta humana que el usuario debe correr y registrar, igual que en

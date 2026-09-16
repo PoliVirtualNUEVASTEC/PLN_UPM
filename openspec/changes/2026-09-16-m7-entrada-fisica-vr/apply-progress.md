@@ -328,10 +328,24 @@ Ninguno de diseño. Se confirmó por inspección, antes de dar la Fase 3 por ter
 del archivo — el bug real que el orquestador ya había encontrado y corregido en `proposal.md`/
 `spec.md` el mismo día (AD9) no se reintrodujo en el código de esta Fase.
 
+## COMPUERTA HUMANA 3.5 — resultado (2026-09-16)
+
+- **Quién la corrió**: el usuario, en Unity Editor Test Runner (pestaña EditMode), rama
+  `feat/m7-03-envoltura`.
+- **Bloqueo real encontrado y corregido en el camino**: `NpcAi.VrInput.Tests.asmdef` (creado en
+  PR1) le faltaba la referencia a `NpcAi.Core.Channels` — `VrInputBehaviourWiringTests.cs` usa
+  `PhysicalActionChannel` y no compilaba (`CS0234`). Mismo tipo de gap que el fix de asmdef de
+  M2 (`Unity.InferenceEngine` faltante) — solo un compilador real lo detecta. Corregido en las 3
+  ramas de la cadena (cada fix en el PR que corresponde). De paso se commitearon los `.meta`
+  faltantes de los archivos de las 3 PRs (los agentes los escriben sin Unity abierto).
+- **Resultado**: tras el fix, las 2 pruebas de `VrInputBehaviourWiringTests` pasan en verde, junto
+  con el resto de la suite completa (Fases 1-3).
+- **Qué confirma esto**: el ciclo de vida de `VrInputBehaviour` (suscripción/desuscripción al
+  núcleo interno, nunca al canal — AD9) y el no-op silencioso sin cámara/objetivo (AD10) funcionan
+  como diseñado. Fase 3 (PR3) queda confirmada de punta a punta para las tareas 3.1-3.5.
+
 ## Remaining Tasks
 
-- [ ] Tarea 3.5 (compuerta humana): Test Runner EditMode > Run All cubriendo las 2 pruebas nuevas
-  de `VrInputBehaviourWiringTests`, junto con el resto de la suite de las Fases 1-3.
 - [ ] Tarea 3.6 (compuerta humana, Quest 3 físico): confirmación en vivo de las 4 acciones. Depende
   además de los `.asset` de la Fase 4 (PR4) y del cableado de escena de M11 (Camera, Transform,
   collider + `TouchZoneRelay`), ninguno de los dos existente todavía — puede quedar abierta por un
@@ -353,8 +367,7 @@ del archivo — el bug real que el orquestador ya había encontrado y corregido 
 
 ## Status
 
-4/6 tareas de la Fase 3 completas (3.1-3.4); 3.5 y 3.6 quedan explícitamente como compuertas
-humanas pendientes, sin marcar. PR3 (`feat/m7-03-envoltura` → PR2 `feat/m7-02-config`) queda listo
-para revisión de código y, después, para que el usuario corra el Test Runner (3.5). `sdd-apply`
-continuaría con la Fase 4 (PR4, datos + docs + cierre) en un batch aparte, fuera del alcance
-asignado a este batch.
+5/6 tareas de la Fase 3 completas y **confirmadas en Test Runner real** (3.1-3.5, ver COMPUERTA
+HUMANA 3.5 arriba); solo 3.6 (Quest 3 físico) queda pendiente, bloqueada en la Fase 4 y en M11.
+PR3 (`feat/m7-03-envoltura` → PR2 `feat/m7-02-config`, PR #36) queda listo de punta a punta.
+`sdd-apply` continúa con la Fase 4 (PR4, datos + docs + cierre).
