@@ -216,11 +216,18 @@
   (3.4); spec/design/tasks viven en openspec/ versionados en git; rama feat/m2-pr2-bert-sentis
   mergeada con origin/main sin conflictos reales (6fc5bee); decisiones registradas en
   apply-progress.md y Engram. -->
-- [ ] 4.3 Al cerrar el último PR: mover este cambio a `openspec/changes/archive/`, actualizar
+- [x] 4.3 Al cerrar el último PR: mover este cambio a `openspec/changes/archive/`, actualizar
   `openspec/specs/clasificador-intenciones-m2/spec.md` si el comportamiento observable documentado
   cambió (no debería, según `proposal.md` → Capabilities), y dejar `archive-report.md` con las
   métricas finales de precisión por clase.
-- [ ] 4.4 PR mergeado a `main` por el autor (regla 8).
+  <!-- (2026-09-16, sdd-archive): comportamiento observable NO cambio (verbatim, confirmado);
+  spec reconciliada con 2 escenarios nuevos del motor entrenado + tabla de trazabilidad; carpeta
+  movida via `git mv` a openspec/changes/archive/2026-09-09-m2-clasificador-bert-reducido/;
+  archive-report.md escrito con las metricas del entrenamiento (Intent acc 0.792/macro-F1 0.679,
+  Tone acc 0.729/macro-F1 0.720) y la evidencia de Quest fisico. -->
+- [x] 4.4 PR mergeado a `main` por el autor (regla 8).
+  <!-- (2026-09-16): PR #30 (feat/m2-pr2-bert-sentis -> main) mergeado por el usuario, self-merge
+  segun regla 8 de gobernanza (checklist "Antes de mergear" cumplida en 4.2). -->
 
 ## Notas
 

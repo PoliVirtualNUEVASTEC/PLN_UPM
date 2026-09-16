@@ -4,6 +4,14 @@
 
 Define los requisitos y escenarios de comportamiento para la implementación real del clasificador de lenguaje natural (M2, `Runtime/Nlu`), responsable de clasificar enunciados de texto libre en intenciones (`Intent`) y tonos (`Tone`) estructurados mediante la interfaz contractual `IIntentClassifier`.
 
+**Nota de motor (2026-09-16, cambio `2026-09-09-m2-clasificador-bert-reducido`)**: el motor de
+decisión pasó de un clasificador de ~45 reglas de palabras clave a `BertIntentClassifier`, un
+encoder BERT reducido congelado (`distilbert-base-multilingual-cased`) con una cabeza de
+clasificación entrenada por transfer learning, exportado a ONNX y ejecutado on-device vía Unity
+Sentis. Es un cambio **motor-only**: ninguno de los requisitos de abajo cambió de enunciado; dos
+de ellos ganaron un escenario adicional específico del motor entrenado (ver "Determinismo en
+intención y tono" y "Acotamiento de confianza y latencia").
+
 ## ADDED Requirements
 
 ### Requirement: Consulta de disponibilidad (IsReady)
@@ -54,6 +62,12 @@ Para un mismo texto de entrada idéntico, sucesivas llamadas a `Classify` DEBEN 
 - Entonces el `Intent` de todas las respuestas es idéntico
 - Y el `Tone` de todas las respuestas es idéntico
 
+#### Scenario: El motor entrenado en Sentis sigue siendo determinista
+- Dado un `BertIntentClassifier` listo con el modelo entrenado cargado vía Sentis
+- Cuando se llama a `Classify` dos o más veces con el mismo texto del dominio
+- Entonces el `Intent` y el `Tone` son idénticos en todas las respuestas
+- Y cualquier diferencia queda acotada a `Confidence` y `LatencyMs` dentro de sus rangos
+
 ---
 
 ### Requirement: Acotamiento de confianza y latencia
@@ -69,6 +83,12 @@ Para cualquier clasificación ejecutada, el valor de `Confidence` DEBE estar est
 - Dado un clasificador de intenciones listo
 - Cuando clasifica cualquier texto
 - Entonces `LatencyMs` es `>= 0f`
+
+#### Scenario: La confianza que reporta el modelo entrenado permanece acotada
+- Dado un `BertIntentClassifier` listo
+- Cuando clasifica textos variados del dominio del corpus de M3
+- Entonces cada `Confidence` es un número finito en `[0.0, 1.0]`
+- Y ningún resultado expone `NaN`, infinito ni un valor fuera de rango
 
 ---
 
@@ -114,3 +134,20 @@ Toda implementación real del clasificador en `Runtime/Nlu/` DEBE heredar de `Np
 - Dado el ensamblado de pruebas `NpcAi.Nlu.Tests`
 - Cuando se ejecutan las pruebas derivadas de `IntentClassifierContract`
 - Entonces el 100% de las pruebas contractuales resultan en verde (Pass)
+
+## Trazabilidad (requisito -> prueba)
+
+Mecanismo de verificación vigente desde el cambio `2026-09-09-m2-clasificador-bert-reducido`:
+`Tests/EditMode/Nlu/BertIntentClassifierTests.cs : IntentClassifierContract` — hereda sin
+modificar `Tests/EditMode/Core/IntentClassifierContract.cs`, la misma base que ya pasa
+`ScriptedIntentClassifier`.
+
+| Requisito | Prueba heredada (base sin cambios) |
+|---|---|
+| Consulta de disponibilidad (IsReady) | `Reporta_si_esta_listo_sin_lanzar` |
+| Clasificación de entradas nulas, vacías o en blanco | `Texto_vacio_devuelve_Desconocida_y_no_lanza` |
+| Determinismo en intención y tono | `Es_determinista_para_la_misma_entrada` |
+| Acotamiento de confianza y latencia | `La_confianza_siempre_esta_entre_cero_y_uno`, `La_latencia_nunca_es_negativa` |
+| Resiliencia ante entradas atípicas o ruidosas | `Nunca_lanza_con_entradas_raras` |
+| Comportamiento ante clasificador no listo | `Classify_no_lanza_en_ningun_estado`, `Un_clasificador_no_listo_devuelve_Unknown` |
+| Conformidad con IntentClassifierContract | Suite `NpcAi.Nlu.Tests` derivada de `IntentClassifierContract`, 100% en verde |
