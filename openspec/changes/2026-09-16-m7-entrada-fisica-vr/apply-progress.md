@@ -36,18 +36,18 @@ de `design.md`, ANTES de escribir una sola línea de `SpatialPhysicalActionSourc
 | Runtime harness command/scenario and exact result | N/A — C# puro, sin escena, sin headset, sin sesión XR (tarea 1.9), tal como fija `design.md` (Threat Matrix: "sin... integración de procesos") y la tabla de Work Units de `tasks.md` ("Runtime harness: N/A — C# puro"). |
 | Rollback boundary | Borrar `Runtime/VrInput/{SpatialSample,ISpatialSampler,SpatialPhysicalActionSource}.cs`, `Runtime/VrInput/Fakes/ScriptedSpatialSampler.cs`, `Runtime/VrInput/Properties/AssemblyInfo.cs` y los 4 archivos nuevos de `Tests/EditMode/VrInput/`. M7 vuelve a "solo doble" (`ScriptedPhysicalActionSource` no se toca). Ningún otro módulo se ve afectado. |
 
-## COMPUERTA HUMANA PENDIENTE
+## COMPUERTA HUMANA — resultado (2026-09-16)
 
-Este agente NO tiene acceso al Test Runner de Unity (solo GUI en este entorno, sin CLI/headless).
-Las 4 clases de prueba nuevas (17 métodos en total) se escribieron con cuidado contra el
-pseudocódigo exacto de `design.md` y se creen correctas POR INSPECCIÓN, pero NO se ejecutaron. El
-usuario debe:
-1. Abrir Unity Editor → `Window > General > Test Runner` → pestaña EditMode.
-2. `Run All` (o filtrar a `NpcAi.VrInput.Tests`).
-3. Confirmar que compilan y pasan las 17 pruebas nuevas, y que `ScriptedPhysicalActionSourceTests`
-   (preexistente) sigue en verde sin cambios.
-4. Registrar el resultado (verde/rojo, conteo) aquí o en la tarea 3.5 de `tasks.md` cuando llegue
-   la Fase 3.
+- **Quién la corrió**: el usuario, en Unity Editor Test Runner (pestaña EditMode), rama
+  `feat/m7-01-nucleo`.
+- **Resultado**: las 17 pruebas nuevas (`SpatialPhysicalActionSourceTests`,
+  `DeteccionDeMiradaTests`, `HisteresisDeDistanciaTests`, `DeteccionDeContactoTests`) pasan en
+  verde, junto con el resto de la suite completa del proyecto.
+- **Qué confirma esto**: la lógica de los 3 detectores (mirada con permanencia/liberación,
+  histéresis de distancia sembrada en el punto medio, contacto con enfriamiento saturado) y la vía
+  guardada de emisión (`Levantar`/`EmitirParaPrueba`) funcionan como diseñado, no solo por
+  inspección de código — incluida la conformidad heredada de `PhysicalActionSourceContract` sin
+  modificar la clase base. Fase 1 (PR1) queda confirmada de punta a punta.
 
 ## Files Changed
 
@@ -126,8 +126,7 @@ los otros dos (objetivo perdido para aislar distancia/mirada del contacto; ángu
 
 ## Status
 
-9/9 tareas de la Fase 1 marcadas completas (`tasks.md` 1.1-1.9). Pruebas escritas pero NO
-ejecutadas por el agente (sin acceso a Unity Editor/Test Runner) — pendiente confirmación humana
-real en Test Runner (ver COMPUERTA HUMANA PENDIENTE arriba). Lista para que el usuario corra el
-Test Runner; después, `sdd-apply` puede continuar con la Fase 2 (PR2, sesión/rama separada) o
-`sdd-verify` puede correr una vez confirmada la compuerta humana.
+9/9 tareas de la Fase 1 completas y **confirmadas en Test Runner real** (ver COMPUERTA
+HUMANA — resultado arriba). PR1 (`feat/m7-01-nucleo` → tracker `feat/m7-entrada-fisica-vr`,
+PR #34) queda listo de punta a punta. `sdd-apply` continúa con la Fase 2 (PR2, rama
+`feat/m7-02-config`).
