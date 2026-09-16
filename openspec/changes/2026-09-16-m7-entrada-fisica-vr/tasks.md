@@ -246,18 +246,59 @@ solo.
 
 ## Phase 4: Datos y documentación (PR4)
 
-- [ ] 4.1 `Data/VrInput/README.md` — qué significa cada umbral y cómo se calibra en Quest (referencia
+- [x] 4.1 `Data/VrInput/README.md` — qué significa cada umbral y cómo se calibra en Quest (referencia
   a la compuerta 3.6).
-- [ ] 4.2 `Data/VrInput/<escenario>.asset` con los defaults de la tabla de `design.md`, ajustables tras
+  <!-- apply PR4 (2026-09-16): creado, mismo molde que Data/Speech/README.md y
+  Data/Presentation/README.md. Explica los 6 campos de VrInputSettingsAsset en lenguaje llano
+  (qué controla cada uno, cómo se misbehave muy bajo/muy alto), con una tabla que incluye tipo,
+  default y rango de OnValidate junto a la explicación. Sección dedicada "Calibración en Quest 3
+  (compuerta humana 3.6)" deja explícito que los defaults son puntos de partida razonables, no
+  medidos (Open Questions de design.md), y referencia la tarea 3.6 de este mismo tasks.md como el
+  lugar donde se ajustan y registran. -->
+- [x] 4.2 `Data/VrInput/<escenario>.asset` con los defaults de la tabla de `design.md`, ajustables tras
   3.6.
-- [ ] 4.3 `openspec/specs/entrada-fisica-vr-m7/spec.md` — capacidad nueva, sin spec previa que
+  <!-- apply PR4 (2026-09-16): creado Data/VrInput/Emergency.asset (+ .meta) y Data/VrInput.meta
+  (folder). Nombre "Emergency" (no "Emergencia"): Data/Speech/README.md y Data/Presentation/README.md
+  ya establecen este patron para el escenario de triaje/emergencia en assets de tipo *SettingsAsset
+  por escenario (Boardroom.asset para juntas, Emergency.asset citado explicitamente como precedente
+  en ambos READMEs) -- distinto del patron lowercase-espanol que usan los archivos de contenido de
+  datos (Data/Corpus/emergencia.json, Data/Personalities/*.asset), que no son settings assets por
+  escenario. m_Script referencia el guid real de VrInputSettingsAsset.cs.meta
+  (05ecf875ba7cef842a22c3396a5824ee), formato YAML copiado de Data/Speech/Boardroom.asset. Los 6
+  campos quedan exactamente en los defaults de la tabla "Configuracion" de design.md (mismos
+  numeros ya hardcodeados como defaults de C# en VrInputSettingsAsset.cs) -- este .asset los hace
+  explicitos como dato (regla dura 7), no cambia ningun valor. Guids nuevos verificados contra los
+  ~124 guids existentes del repo antes de escribir (sin colision). -->
+- [x] 4.3 `openspec/specs/entrada-fisica-vr-m7/spec.md` — capacidad nueva, sin spec previa que
   reconciliar: copia directa del spec de este cambio al cerrarlo.
-- [ ] 4.4 Sección M7 de `Docs/MODULES.md` — cerrar "solo doble" para las 4 acciones en alcance
+  <!-- apply PR4 (2026-09-16): copia byte-identica confirmada con `diff` (sin salida) desde
+  openspec/changes/2026-09-16-m7-entrada-fisica-vr/specs/entrada-fisica-vr-m7/spec.md. Creados
+  tambien openspec/specs/entrada-fisica-vr-m7.meta (folder) y spec.md.meta, mismo molde que
+  openspec/specs/generador-dialogo-m6/ (unico precedente ya promovido con .meta en este repo). El
+  borrador original dentro de la carpeta del cambio queda intacto como registro historico, sin
+  modificar. -->
+- [x] 4.4 Sección M7 de `Docs/MODULES.md` — cerrar "solo doble" para las 4 acciones en alcance
   (`ContactoVisual`, `Acercarse`, `Alejarse`, `TocarPaciente`); nombrar explícitamente
   `EntregarObjeto`, `SenalarPantalla` y `GestoCalma` como pendientes, con su cambio SDD de seguimiento
   (interacción basada en mandos).
-- [ ] 4.5 Confirmar la frontera de diff completa (PR1-PR4): nada fuera de `Runtime/VrInput/`,
+  <!-- apply PR4 (2026-09-16): reescrita "Estado actual" de la seccion M7: nombra las 4 acciones con
+  implementacion real entregada, los 3 PR de la cadena (#34 nucleo, #35 config, #36 envoltura) como
+  mergeables una vez cierre la rama tracker (PR #33, verificado con `gh pr list`), y nombra
+  EntregarObjeto/SenalarPantalla/GestoCalma como fuera de alcance con su propio cambio SDD futuro
+  (mandos, probablemente XR Interaction Toolkit; seguimiento de manos descartado explicitamente por
+  el usuario, per proposal.md). Documenta la compuerta humana 3.6 pendiente y sus dos bloqueos
+  reales (los .asset de esta misma Fase 4, ya resueltos por 4.2, y el cableado de escena de M11, que
+  todavia no existe). Agregada linea "Specs formales" apuntando al spec recien promovido (4.3). -->
+- [x] 4.5 Confirmar la frontera de diff completa (PR1-PR4): nada fuera de `Runtime/VrInput/`,
   `Data/VrInput/`, `Tests/EditMode/VrInput/`, `Docs/` y `openspec/`.
+  <!-- apply PR4 (2026-09-16): confirmado con `git diff main...HEAD --stat` (cadena PR1-PR3 ya
+  commiteada, 40 archivos) + revision de las adiciones sin commitear de esta Fase 4: el 100% de los
+  archivos caen dentro de Runtime/VrInput/, Tests/EditMode/VrInput/, Data/VrInput/, Docs/MODULES.md
+  y openspec/ (la carpeta de este cambio + el spec recien promovido en openspec/specs/). El arbol de
+  trabajo tiene ademas numerosos archivos sin trackear ajenos a este cambio (Training/Nlu/ de M2 PR2,
+  .meta faltantes de cambios ya archivados de M4/M5/M6/M8/M1/M0, Registro_Modelo_Etiquetado/) que NO
+  se tocan ni se agregan al commit de este PR4 -- confirmado explicitamente en el reporte de retorno
+  al orquestador. -->
 
 ## Phase 5: Cierre (acciones del autor, cada PR)
 

@@ -371,3 +371,113 @@ del archivo — el bug real que el orquestador ya había encontrado y corregido 
 HUMANA 3.5 arriba); solo 3.6 (Quest 3 físico) queda pendiente, bloqueada en la Fase 4 y en M11.
 PR3 (`feat/m7-03-envoltura` → PR2 `feat/m7-02-config`, PR #36) queda listo de punta a punta.
 `sdd-apply` continúa con la Fase 4 (PR4, datos + docs + cierre).
+
+---
+
+# Apply Progress: M7 — Entrada física VR (PR4: Datos, documentación y cierre)
+
+## Scope of this batch
+
+Solo tareas 4.1-4.5 de la Fase 4 (PR4 del `feature-branch-chain` decidido en `tasks.md`). Rama:
+`feat/m7-04-datos-docs-cierre` (ramificada de `feat/m7-03-envoltura`, que ya trae las Fases 1-3
+mergeadas en su historia). Esta fase es enteramente documentación y datos — sin código C#, sin
+ciclo TDD aplicable. La tarea 3.6 (compuerta humana, Quest 3 físico) sigue sin marcar: esta batch
+entrega uno de sus dos bloqueos (los `.asset` de datos), pero no la ejecuta ni la registra — eso
+sigue siendo exclusivo del usuario, con headset real y la escena de M11 todavía por construir.
+
+## Mode
+
+N/A — sin código de producción ni de prueba en esta fase (documentación y datos puros, per la
+tabla de Work Units de `tasks.md`, Unit 4: "Manual: revisión de que Docs/MODULES.md y
+Data/VrInput/README.md quedan consistentes"). No aplica TDD Cycle Evidence.
+
+## Work Unit Evidence
+
+| Evidence | Value |
+|---|---|
+| Focused test command and exact result | N/A — sin código ejecutable en esta fase. Verificación aplicada: `diff` byte-a-byte confirmó la copia idéntica del spec promovido (tarea 4.3); revisión manual de consistencia de `Docs/MODULES.md` y `Data/VrInput/README.md` contra `design.md`/`apply-progress.md` (tarea 4.4, per Work Unit 4 de `tasks.md`). |
+| Runtime harness command/scenario and exact result | N/A — datos y documentación, sin escena, sin build, sin Unity Editor. La compuerta humana real (Quest 3 físico) sigue siendo la tarea 3.6, ahora desbloqueada en uno de sus dos requisitos (`Data/VrInput/Emergency.asset`) pero todavía bloqueada en el otro (escena de M11). |
+| Rollback boundary | Revertir el commit de esta batch (`Data/VrInput/`, `openspec/specs/entrada-fisica-vr-m7/`, la sección M7 de `Docs/MODULES.md`, y los checkmarks 4.1-4.5 de `tasks.md`). No toca `Runtime/`, `Tests/` ni ningún otro módulo — las Fases 1-3 quedan intactas. |
+
+## Files Changed
+
+| File | Action | What Was Done |
+|---|---|---|
+| `Data/VrInput/README.md` | Created | Explica los 6 campos de `VrInputSettingsAsset` en lenguaje llano (qué controla, cómo se misbehave en los extremos), tabla con tipo/default/rango, sección de calibración en Quest 3 que referencia la tarea 3.6 |
+| `Data/VrInput/README.md.meta` | Created | `TextScriptImporter`, mismo molde que `Data/Speech/README.md.meta` |
+| `Data/VrInput.meta` | Created | Meta de carpeta, `DefaultImporter`, mismo molde que `Data/Speech.meta` |
+| `Data/VrInput/Emergency.asset` | Created | `VrInputSettingsAsset` con los 6 defaults exactos de la tabla "Configuración" de `design.md`; `m_Script` referencia el guid real de `VrInputSettingsAsset.cs.meta` |
+| `Data/VrInput/Emergency.asset.meta` | Created | `NativeFormatImporter`, mismo molde que `Data/Speech/Boardroom.asset.meta` |
+| `openspec/specs/entrada-fisica-vr-m7/spec.md` | Created | Copia byte-idéntica (confirmada con `diff`) del spec del cambio |
+| `openspec/specs/entrada-fisica-vr-m7/spec.md.meta` | Created | `TextScriptImporter`, mismo molde que `openspec/specs/generador-dialogo-m6/spec.md.meta` |
+| `openspec/specs/entrada-fisica-vr-m7.meta` | Created | Meta de carpeta, `DefaultImporter`, mismo molde que `openspec/specs/generador-dialogo-m6.meta` |
+| `Docs/MODULES.md` | Modified | Sección M7: "Estado actual" reescrita (4/7 `PhysicalAction` reales, PRs #34-#36 mergeables tras cerrar la tracker #33, las 3 acciones de mandos nombradas explícitamente como pendientes, compuerta 3.6 y sus 2 bloqueos); agregada línea "Specs formales" |
+| `openspec/changes/2026-09-16-m7-entrada-fisica-vr/tasks.md` | Modified | Marcadas `[x]` 4.1-4.5 con comentarios de evidencia |
+
+## Deviations from Design
+
+1. **Nombre del asset de escenario: `Emergency.asset`, no `Emergencia.asset`.** `design.md` y
+   `tasks.md` solo dicen `<escenario>.asset` sin fijar el nombre exacto. `Data/Corpus/` usa
+   español minúscula (`emergencia.json`) para *contenido* de datos, pero los dos precedentes
+   reales de *settings asset por escenario* en este repo — `Data/Speech/README.md` (que ya
+   menciona `Emergency.asset` como el nombre esperado del próximo escenario, junto al
+   `Boardroom.asset` existente) y `Data/Presentation/README.md` (que nombra `Emergency.asset`
+   explícitamente como la configuración del escenario de triaje/emergencia, aunque ese archivo
+   todavía no existe en `Data/Presentation/`) — coinciden en inglés capitalizado. Se siguió ese
+   patrón más específico y más reciente (settings asset, no dato de contenido) en vez del de
+   `Data/Corpus/`.
+2. **`openspec/specs/entrada-fisica-vr-m7.meta` y `spec.md.meta` con GUIDs nuevos generados en
+   este batch**, verificados contra los ~124 GUIDs existentes del repo antes de escribir (sin
+   colisión) — `design.md`/`tasks.md` no especifican un proceso de generación de GUID, así que se
+   siguió el único precedente ya promovido con `.meta` (`openspec/specs/generador-dialogo-m6/`).
+
+## Issues Found
+
+Ninguno de diseño. El árbol de trabajo tiene numerosos archivos sin trackear ajenos a este PR4
+(`Training/Nlu/` de M2 PR2 en curso, `.meta` faltantes de varios cambios ya archivados de M0/M1/
+M4/M5/M6/M8, `Registro_Modelo_Etiquetado/`) — ninguno se tocó ni se agregó al `git add` de este
+batch (ver tarea 4.5 y confirmación de frontera abajo).
+
+## Confirmación de frontera de diff (tarea 4.5)
+
+`git diff main...HEAD --stat` sobre la cadena ya commiteada (PR1-PR3, 40 archivos) confirma que el
+100% cae dentro de `Runtime/VrInput/`, `Tests/EditMode/VrInput/` y
+`openspec/changes/2026-09-16-m7-entrada-fisica-vr/`. Las adiciones sin commitear de esta Fase 4
+(`Data/VrInput/`, `Docs/MODULES.md`, `openspec/specs/entrada-fisica-vr-m7/`, y los checkmarks de
+`tasks.md`) caen igualmente dentro de la frontera autorizada (`Runtime/VrInput/`, `Data/VrInput/`,
+`Tests/EditMode/VrInput/`, `Docs/MODULES.md`, `openspec/`). Nada fuera de esa lista se agregó al
+commit de este PR4.
+
+## Remaining Tasks
+
+- [ ] Tarea 3.6 (compuerta humana, Quest 3 físico): confirmación en vivo de las 4 acciones. Uno de
+  sus dos bloqueos queda resuelto por esta batch (`Data/VrInput/Emergency.asset`); el otro sigue
+  pendiente (cableado de escena de M11 — `Camera`, `Transform`, `Collider` + `TouchZoneRelay`, que
+  no existe en ninguna escena del proyecto todavía). Es la ÚNICA tarea abierta en todo el cambio
+  `2026-09-16-m7-entrada-fisica-vr` tras cerrar esta Fase 4.
+- [ ] Fase 5 (cierre): `git add`/commit de este PR4 (acción de este mismo batch, ver abajo); abrir
+  y mergear los 4 PR (tracker #33 al final) es acción del orquestador/usuario, no del agente
+  (regla dura 8 de `CLAUDE.md` del proyecto: self-merge por el autor).
+
+## Workload / PR Boundary
+
+- Mode: `feature-branch-chain` (decidido 2026-09-16, registrado en el Review Workload Forecast de
+  `tasks.md`)
+- Current work unit: Unit 4 — Datos por escenario, docs y cierre (PR4)
+- Boundary: arranca desde la envoltura ya cerrada (fin de PR3) y termina con
+  `Data/VrInput/Emergency.asset` + `README.md`, el spec promovido y la sección M7 de
+  `Docs/MODULES.md` actualizada — autónomo y reversible sin tocar `Runtime/`, `Tests/` ni ningún
+  otro módulo.
+- Estimated review budget impact: `tasks.md` estimaba ~110-150 líneas para esta unidad; el stat
+  real de `git diff --cached --stat` se reporta en el mensaje de retorno de este batch al
+  orquestador.
+
+## Status
+
+5/5 tareas de la Fase 4 completas (4.1-4.5). Con esto, **todas las tareas automatizables del
+cambio `2026-09-16-m7-entrada-fisica-vr` quedan completas**; solo la tarea 3.6 (compuerta humana
+en Quest 3 físico) permanece abierta en todo el cambio, y depende además del cableado de escena de
+M11 (fuera del alcance de este cambio). PR4 (`feat/m7-04-datos-docs-cierre` → PR3
+`feat/m7-03-envoltura`) queda listo para su propio commit. `sdd-apply` entrega el control al
+orquestador: los 4 PR (#34, #35, #36 y este PR4 pendiente de abrir) quedan pendientes de que la
+rama tracker (#33) cierre la cadena hacia `main` — acción humana, no de `sdd-apply`.
