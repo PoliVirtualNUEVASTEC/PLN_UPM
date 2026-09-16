@@ -3,6 +3,7 @@
     "rootNamespace": "NpcAi.VrInput.Tests",
     "references": [
         "NpcAi.Core",
+        "NpcAi.Core.Channels",
         "NpcAi.Core.Tests",
         "NpcAi.VrInput",
         "UnityEngine.TestRunner",
