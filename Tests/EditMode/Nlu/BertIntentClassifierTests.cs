@@ -35,8 +35,21 @@ namespace NpcAi.Nlu.Tests
         private static TextAsset CargarTokenizadorDePrueba() =>
             AssetDatabase.LoadAssetAtPath<TextAsset>(RutaDelTokenizador);
 
-        protected override IIntentClassifier CreateSubject() =>
-            new BertIntentClassifier(CargarModeloDePrueba(), CargarTokenizadorDePrueba());
+        // IntentClassifierContract (la base compartida) solo conoce el puerto IIntentClassifier,
+        // que no incluye IDisposable: no tiene como liberar lo que CreateSubject() crea. Por eso
+        // el ultimo sujeto creado se guarda aca y se libera en el TearDown, cubriendo tambien las
+        // pruebas heredadas (evita el warning de Sentis "Found unreferenced, but undisposed
+        // CPUTensorData" por cada Worker abandonado sin Dispose()).
+        private BertIntentClassifier _ultimoCreado;
+
+        protected override IIntentClassifier CreateSubject()
+        {
+            _ultimoCreado = new BertIntentClassifier(CargarModeloDePrueba(), CargarTokenizadorDePrueba());
+            return _ultimoCreado;
+        }
+
+        [TearDown]
+        public void LiberarClasificador() => _ultimoCreado?.Dispose();
 
         // --- Pruebas propias del clasificador real, ademas del contrato heredado ---
 
