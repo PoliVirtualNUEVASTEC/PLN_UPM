@@ -14,24 +14,6 @@ namespace NpcAi.VrInput
     }
 
     /// <summary>
-    /// Snapshot POCO de umbrales que consume el nucleo (AD1/AD6): nunca lee <c>UnityEngine</c>.
-    /// Fase 1 la define aqui con los defaults de <c>design.md</c> (tabla "Configuracion").
-    /// Fase 2 (tasks.md 2.2/2.4) la traslada intacta a
-    /// <c>Runtime/VrInput/Config/VrInputSettings.cs</c>, junto al <c>VrInputSettingsAsset</c>
-    /// que la produce via <c>OnValidate</c>/<c>ToSettings()</c>; este archivo deja de definirla
-    /// en ese momento.
-    /// </summary>
-    internal sealed class VrInputSettings
-    {
-        public float GradosDelConoDeMirada { get; set; } = 20f;
-        public float GradosDeLiberacionDeMirada { get; set; } = 30f;
-        public float SegundosDePermanenciaDeMirada { get; set; } = 0.6f;
-        public float MetrosParaAcercarse { get; set; } = 1.2f;
-        public float MetrosParaAlejarse { get; set; } = 2.0f;
-        public float SegundosDeEnfriamientoDeContacto { get; set; } = 1.0f;
-    }
-
-    /// <summary>
     /// Nucleo real de <see cref="IPhysicalActionSource"/> (M7): tres detectores con histeresis
     /// y antirrebote sobre <see cref="SpatialSample"/> ya digeridas. No conoce <c>Camera</c>,
     /// <c>Transform</c>, <c>Collider</c> ni <c>Time</c> (AD1/AD3/AD6): todo corre sincronico
