@@ -60,7 +60,10 @@ namespace NpcAi.ClinicalResponse
 
         // Espejo exacto del esquema JSON de M14 (Data/Cases/README.md), SIN el bloque
         // "clave". Nombres de campo en minusculas a proposito: JsonUtility empareja por
-        // nombre exacto contra las claves del JSON.
+        // nombre exacto contra las claves del JSON. [Serializable] es obligatorio aqui:
+        // sin el, JsonUtility no garantiza poblar una clase anidada dentro de otra (RawPaciente
+        // dentro de RawCase, RawHecho[] dentro de RawCase, etc.) de forma consistente.
+        [Serializable]
         private sealed class RawCase
         {
             public string id;
@@ -68,6 +71,7 @@ namespace NpcAi.ClinicalResponse
             public RawHecho[] hechos;
         }
 
+        [Serializable]
         private sealed class RawPaciente
         {
             public int edad;
@@ -80,6 +84,7 @@ namespace NpcAi.ClinicalResponse
             public RawSignosVitales signosVitales;
         }
 
+        [Serializable]
         private sealed class RawSignosVitales
         {
             public int fcLpm;
@@ -90,6 +95,7 @@ namespace NpcAi.ClinicalResponse
             public string temperaturaC;
         }
 
+        [Serializable]
         private sealed class RawHecho
         {
             public string campo;

@@ -122,11 +122,14 @@ namespace NpcAi.ClinicalResponse.Tests
         }
 
         // Solo para esta prueba de datos: ClinicalCase (produccion) NUNCA mapea "clave".
+        // [Serializable] obligatorio: RawClave es un campo anidado dentro de RawClaveWrapper.
+        [System.Serializable]
         private sealed class RawClaveWrapper
         {
             public RawClave clave;
         }
 
+        [System.Serializable]
         private sealed class RawClave
         {
             public string triajeEsperado;
