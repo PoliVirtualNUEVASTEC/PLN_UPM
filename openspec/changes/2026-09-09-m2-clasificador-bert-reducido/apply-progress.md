@@ -434,6 +434,29 @@ inspeccion de codigo.
   completamente validado en el Test Runner real — ya no es solo "razonado por inspeccion de
   codigo". La tarea 2.9 pasa de "escrita, sin confirmar" a **confirmada de punta a punta**.
 
+**Spike en hardware real de Quest — resultado (2026-09-15)**
+
+- **Quien lo corrio**: el usuario, build Android instalado en una Meta Quest fisica, script de
+  prueba manual `Assets/Scripts/PruebaClasificadorEnQuest.cs` (vive en el proyecto anfitrion,
+  no en el paquete — no es parte de PR2). Resultado leido de
+  `Application.persistentDataPath/clasificador-quest-resultado.txt` via `adb pull`.
+- **Que confirma esto**: el gap senalado en la compuerta humana 2.7 ("no se probo un build real
+  de Quest, solo el Editor") queda cerrado. El constructor `ModelAsset`/`TextAsset` (tasks.md
+  2.9) carga y corre correctamente fuera del Editor, en un Player Android real:
+  - Carga del modelo (constructor): 1040.4 ms.
+  - Latencia de inferencia por frase: entre 34.2 ms y 64.9 ms — viable para uso en vivo.
+  - `IsReady = True`, sin excepciones.
+- **Hallazgo de precision (no bloqueante)**: de 6 frases de prueba (una por intencion, escritas
+  a mano por el agente, no extraidas del corpus), 3/6 salieron mal clasificadas — las 3
+  colapsaron a `AportaInformacion`. Comparado contra el `classification_report` real del
+  entrenamiento (Fase 1, `apply-progress.md` linea 131: distilbert-base-multilingual-cased,
+  Intent accuracy 0.792 sobre el split de validacion), esto **no es evidencia de un bug de
+  exportacion/tokenizador** — con n=6 el margen de error es demasiado grande para contradecir un
+  79.2% real, y las frases no son del corpus (voz de la enfermera de triaje) sino paraphrasis
+  libres del agente, probablemente mas dificiles que el split de validacion. Es consistente con
+  el sesgo hacia la clase mayoritaria ya esperable con 100 ejemplos/intencion. Queda anotado
+  como dato util para una eventual ampliacion de corpus, no como regresion de esta PR.
+
 **Remaining Tasks (obligatorio, no omitir)**
 
 - [ ] Fase 3 (PR3): documentacion (`Docs/MODULES.md`, `PENDIENTE-AMPLIACION.md`) — sin cambios

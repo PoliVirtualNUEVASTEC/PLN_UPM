@@ -166,19 +166,23 @@ datos ni cambio de `Contract.Version`.
 
 ## Success Criteria
 
-- [ ] `BertIntentClassifier` pasa exactamente la misma batería `IntentClassifierContract` que
-      `ScriptedIntentClassifier`, sin modificar la clase base.
-- [ ] El pipeline de entrenamiento en `Training/Nlu/` es reproducible: correrlo dos veces sobre
+- [x] `BertIntentClassifier` pasa exactamente la misma batería `IntentClassifierContract` que
+      `ScriptedIntentClassifier`, sin modificar la clase base. Confirmado en Test Runner real
+      (apply-progress.md, "Compuerta humana del constructor nuevo — resultado").
+- [x] El pipeline de entrenamiento en `Training/Nlu/` es reproducible: correrlo dos veces sobre
       el mismo corpus produce un modelo con el mismo comportamiento observable (mismo
       `Intent`/`Tone` para el mismo texto de entrada, dentro de la tolerancia de determinismo
-      que exige el contrato).
-- [ ] El modelo exportado corre en el Editor de Unity vía Sentis sin conexión a internet.
-- [ ] `Docs/MODULES.md` (sección M2) deja de describir la desviación como "sin documentar": pasa
+      que exige el contrato). Confirmado en tasks.md 1.7 (2026-09-14).
+- [x] El modelo exportado corre en el Editor de Unity vía Sentis sin conexión a internet.
+      Confirmado en tasks.md 2.7 y en Meta Quest físico (apply-progress.md, "Spike en hardware
+      real de Quest").
+- [x] `Docs/MODULES.md` (sección M2) deja de describir la desviación como "sin documentar": pasa
       a describir el estado real (modelo entrenado, corpus usado, limitaciones conocidas por
-      clase de tono).
-- [ ] El diff de este cambio no toca `Runtime/Core/`, `Runtime/CoreChannels/`, ni ninguna carpeta
+      clase de tono). Actualizado 2026-09-16.
+- [x] El diff de este cambio no toca `Runtime/Core/`, `Runtime/CoreChannels/`, ni ninguna carpeta
       fuera de `Training/Nlu/`, `Runtime/Nlu/`, `Tests/EditMode/Nlu/`, `package.json`,
-      `.gitattributes`, `Docs/` y `openspec/`.
+      `.gitattributes`, `Docs/` y `openspec/`. Verificado con `git diff --stat origin/main
+      feat/m2-pr2-bert-sentis` (2026-09-16): el diff queda acotado exactamente a esas carpetas.
 
 ## Decisiones del usuario (confirmadas 2026-09-08/09)
 

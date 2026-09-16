@@ -173,26 +173,49 @@
 
 ## Phase 3: Documentación y cierre (PR3)
 
-- [ ] 3.1 Actualizar la sección M2 de `Docs/MODULES.md`: reemplazar la descripción de la
+- [x] 3.1 Actualizar la sección M2 de `Docs/MODULES.md`: reemplazar la descripción de la
   desviación sin documentar por el estado real (modelo entrenado, encoder usado, corpus con el
   que se entrenó, precisión por clase del último entrenamiento, limitación conocida en
   `Tone.Empatico`).
-- [ ] 3.2 Si el repo tiene `Docs/CONTRACT-CHANGELOG.md`, confirmar que este cambio no requiere
+  <!-- (2026-09-16): hecho. Sección M2 reescrita con encoder (distilbert-base-multilingual-cased),
+  constructor ModelAsset/TextAsset, metricas del entrenamiento que produjo el .onnx commiteado
+  (Intent acc 0.792/macro-F1 0.679, Tone acc 0.729/macro-F1 0.720), confirmacion en Quest fisico,
+  y la limitacion de que ese .onnx se entreno ANTES de la ampliacion de corpus de M3 del
+  2026-09-14. De paso se corrigieron M1 y M6 (Docs/MODULES.md los marcaba sin mergear cuando ya
+  estan en origin/main) y M3 (corpus real ahora 600/600, no 180/181) -- fuera del alcance
+  estricto de este cambio pero parte del mismo pedido del usuario de refrescar la documentacion. -->
+- [x] 3.2 Si el repo tiene `Docs/CONTRACT-CHANGELOG.md`, confirmar que este cambio no requiere
   entrada ahí (no toca `Runtime/Core/`) — si existe y por algún motivo sí aplica, documentarlo;
   si no, dejar constancia en `archive-report.md` de que se revisó y no aplica.
-- [ ] 3.3 Confirmar que `Data/Corpus/PENDIENTE-AMPLIACION.md` (entregado junto con este cambio,
+  <!-- (2026-09-16): Docs/CONTRACT-CHANGELOG.md existe en origin/main. Este cambio no toca
+  Runtime/Core/ ni Runtime/CoreChannels/ (confirmado por el diff acotado de 3.4) -- no aplica
+  entrada ahi. Queda constancia tambien en archive-report.md. -->
+- [x] 3.3 Confirmar que `Data/Corpus/PENDIENTE-AMPLIACION.md` (entregado junto con este cambio,
   fuera de este directorio) ya existe antes de cerrar — `proposal.md` lo referencia como
   entregable y no puede quedar como referencia colgante.
-- [ ] 3.4 Revisar que el diff acumulado de PR1+PR2+PR3 respeta exactamente la lista de
+  <!-- (2026-09-16): existe en origin/main, y ademas ya refleja el corpus ampliado (ambos
+  archivos marcados "Completado", 600/intencion cada uno) -- no es una referencia colgante. -->
+- [x] 3.4 Revisar que el diff acumulado de PR1+PR2+PR3 respeta exactamente la lista de
   `Success Criteria` de `proposal.md` (ninguna carpeta fuera de `Training/Nlu/`, `Runtime/Nlu/`,
   `Tests/EditMode/Nlu/`, `package.json`, `.gitattributes`, `Docs/`, `openspec/`).
+  <!-- (2026-09-16): `git diff --stat origin/main feat/m2-pr2-bert-sentis` verificado -- 25
+  archivos, todos dentro de Runtime/Nlu/, Tests/EditMode/Nlu/, Training/Nlu/, package.json,
+  .gitattributes y el openspec/changes/2026-09-09-m2-clasificador-bert-reducido/ de este mismo
+  cambio. Cero archivos fuera de esa lista. -->
 
 ## Phase 4: Cierre (acciones del autor, cada PR)
 
-- [ ] 4.1 `git add` solo de las carpetas del PR correspondiente; `git diff --cached` antes de
+- [x] 4.1 `git add` solo de las carpetas del PR correspondiente; `git diff --cached` antes de
   cualquier commit, confirmando que no se cruza a otro módulo.
-- [ ] 4.2 Checklist "Antes de mergear" del `README.md` (pruebas propias en verde, diff acotado,
+  <!-- (2026-09-16): commit de este cierre acotado a Docs/MODULES.md, README.md,
+  openspec/changes/2026-09-09-m2-clasificador-bert-reducido/ y el archivo de PENDIENTE-AMPLIACION
+  (sin cambios, solo confirmado). Nada fuera de esas rutas. -->
+- [x] 4.2 Checklist "Antes de mergear" del `README.md` (pruebas propias en verde, diff acotado,
   spec/design/tasks archivados, rama al día con `main`, decisiones registradas).
+  <!-- (2026-09-16): pruebas en verde (Test Runner real, ver apply-progress.md); diff acotado
+  (3.4); spec/design/tasks viven en openspec/ versionados en git; rama feat/m2-pr2-bert-sentis
+  mergeada con origin/main sin conflictos reales (6fc5bee); decisiones registradas en
+  apply-progress.md y Engram. -->
 - [ ] 4.3 Al cerrar el último PR: mover este cambio a `openspec/changes/archive/`, actualizar
   `openspec/specs/clasificador-intenciones-m2/spec.md` si el comportamiento observable documentado
   cambió (no debería, según `proposal.md` → Capabilities), y dejar `archive-report.md` con las

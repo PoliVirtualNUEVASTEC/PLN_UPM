@@ -14,9 +14,11 @@ Cada sección abajo fue verificada leyendo el archivo real correspondiente (cód
 previo. Donde local `main` y `origin/main` difieren, se documenta el estado de `origin/main`
 por ser la rama compartida real del equipo.
 
-> **Nota de alcance temporal**: este documento describe el estado verificado el 2026-09-09.
-> Los módulos evolucionan; si pasa tiempo desde esa fecha, re-verificar contra el repo antes de
-> confiar en el detalle fino de "Estado actual".
+> **Nota de alcance temporal**: este documento describe el estado verificado el 2026-09-09,
+> con una pasada de actualización el 2026-09-16 sobre las secciones M1, M2, M3, M6, M9 y M13-M15
+> (verificado leyendo `origin/main` directo, no de memoria de trabajo previo). Los módulos
+> evolucionan; si pasa tiempo desde esa fecha, re-verificar contra el repo antes de confiar en el
+> detalle fino de "Estado actual".
 
 ---
 
@@ -56,15 +58,14 @@ por ser la rama compartida real del equipo.
   `StartListening()`/`StopListening()`. Regla dura verificada en el diseño: `StopListening()`
   cierra el segmento abierto y emite el `Utterance` pendiente **antes** de bajar `IsListening`,
   para no violar a la vez "la ventana es la frase" y "no emitir después de `StopListening`".
-- **Estado actual**: **implementado y verificado en hardware físico** (Meta Quest 3, transcripción
-  offline en español confirmada, 2026-09-03), pero **no está en `origin/main` todavía**. Vive
-  completo en 4 ramas encadenadas sin mergear: `feat/m1-speech-pr1-adapter-core` →
-  `feat/m1-speech-pr2-capture-segmentation` → `feat/m1-speech-pr3-config-wiring` →
-  `feat/m1-speech-pr4-vosk-engine`. En `origin/main`, `Runtime/Speech/` hoy solo contiene el
-  doble `ScriptedSpeechToText.cs`.
-- **Specs formales**: `openspec/specs/reconocimiento-voz-m1/spec.md` existe y está completo, pero
-  solo en la rama `feat/m1-speech-pr4-vosk-engine` (no llegó a `main` porque el PR no está
-  mergeado). El cambio SDD fue archivado en Engram/OpenSpec local de ese trabajo.
+- **Estado actual**: **real e implementado, mergeado en `origin/main`** (corrige el estado
+  reportado en la verificación de 2026-09-09, que todavía marcaba las 4 ramas encadenadas como
+  sin mergear). Implementado y verificado en hardware físico (Meta Quest, transcripción offline
+  en español confirmada), incluyendo `SpeechToTextBehaviour` (envoltura `MonoBehaviour` real: pide
+  permiso de micrófono, aprovisiona el modelo Vosk vendorizado a `persistentDataPath`, y publica
+  cada `Utterance` en el `UtteranceChannel`) — es el punto de composición que M11 (y cualquier
+  escena anfitriona) usa para conectar voz real, no solo el doble.
+- **Specs formales**: `openspec/specs/reconocimiento-voz-m1/spec.md`, ya en `origin/main`.
 
 ---
 
@@ -79,26 +80,38 @@ por ser la rama compartida real del equipo.
 - **Contrato que expone**: `IIntentClassifier` — `IsReady` (nunca lanza), `Classify(string text)`
   (nunca lanza ante `null`/vacío/símbolos/números/cadenas largas; determinista en `Intent` y
   `Tone` para la misma entrada; `Confidence` y `LatencyMs` no están obligados a serlo).
-- **Estado actual**: real e implementado, y mergeado en `origin/main`, pero **motor actual
-  distinto del que promete la propuesta de trabajo de grado**: lo que existe hoy en
-  `NluIntentClassifier.cs` y `SemanticMatcher.cs` es un clasificador **basado en reglas de
-  palabras clave**: un arreglo estático de ~45 tuplas `(patrón, Intent, confianza_fija)` en
-  español, resuelto por `string.Contains` sobre el texto normalizado — sin modelo, sin
-  embeddings, sin entrenamiento, y sin ninguna conexión al corpus de M3. Cumple el contrato
-  `IIntentClassifier` al pie de la letra, pero no es el motor final.
-  **Esta desviación ya está cerrada con un plan concreto**, no solo señalada: el cambio
-  `openspec/changes/2026-09-09-m2-clasificador-bert-reducido/` (propuesto 2026-09-09, decisiones
-  confirmadas con el usuario) especifica el reemplazo — un encoder BERT reducido (clase
-  MiniLM/DistilBERT, ~20-60M de parámetros) **congelado**, con una **cabeza de clasificación
-  entrenada por transfer learning** sobre el corpus de M3, exportado a ONNX y ejecutado
-  on-device vía Unity Sentis (`com.unity.ai.inference`, hoy solo en `keywords` de
-  `package.json`, no como dependencia real — el cambio lo corrige). Motivo de la elección:
-  con el volumen de corpus disponible (30 frases/intención/escenario hoy, meta documentada
-  60-100), afinar el transformer completo sobreajustaría; congelar el encoder y entrenar solo la
-  cabeza es transfer learning estándar para datasets chicos y corre en una GPU de consumo (GTX
-  1660, 6 GB — verificado suficiente, sin necesidad de Colab). Hasta que ese cambio se mergee,
-  `NluIntentClassifier.cs`/`SemanticMatcher.cs`/`ToneAnalyzer.cs` siguen siendo el motor real; no
-  se borran ni con el cambio nuevo, quedan como respaldo determinista documentado.
+- **Estado actual**: **motor real reemplazado — `BertIntentClassifier` (Unity Sentis)**. El
+  cambio `openspec/changes/2026-09-09-m2-clasificador-bert-reducido/` (propuesto 2026-09-09) ya
+  se implementó, se verificó en hardware real y se cierra con este mismo update de documentación
+  (PR #30, `feat/m2-pr2-bert-sentis` → `main`). El motor anterior de reglas de palabras clave
+  (`NluIntentClassifier.cs`/`SemanticMatcher.cs`) **no se borró**: sigue en el repo como respaldo
+  determinista documentado, pero ya no es el motor de referencia del módulo.
+  - **Encoder**: `distilbert-base-multilingual-cased` (~135M parámetros, 542MB fp32),
+    **congelado**, con una cabeza de clasificación (`Intent` + `Tone`) entrenada por transfer
+    learning sobre el corpus de M3 (`Training/Nlu/train.py`), exportada a ONNX y ejecutada
+    on-device vía Unity Sentis (`com.unity.ai.inference` 2.6.1, ya como dependencia real de
+    `package.json`, no solo `keywords`).
+  - **Constructor portable a build real**: `BertIntentClassifier(ModelAsset modelo, TextAsset
+    tokenizadorJson)` — corregido durante PR2 respecto del diseño original
+    (`string modelPath` + `AssetDatabase`/`File.ReadAllText`, que solo funcionaba dentro del
+    Editor). Sin esa corrección, ningún wiring de M11 podría haber cargado el modelo en un build
+    de jugador real.
+  - **Métricas del entrenamiento que produjo el `.onnx` commiteado** (sobre el corpus de M3
+    vigente en ese momento, ~30 ejemplos/intención — anterior a la ampliación de M3 del
+    2026-09-14, ver abajo): Intent accuracy 0.792, Intent macro-F1 0.679, Tone accuracy 0.729,
+    Tone macro-F1 0.720. `Tone.Empatico` explícitamente marcado como no confiable con ese corpus
+    en el momento del entrenamiento (ver limitación conocida más abajo).
+  - **Confirmado en hardware real**: Unity Editor Test Runner (368 pruebas en verde, luego 386
+    tras M14/M15) y **spike físico en Meta Quest** (2026-09-15/16) — carga del modelo ~1.0s,
+    latencia de inferencia 30-80ms por frase, pipeline completo micrófono real (M1) →
+    `BertIntentClassifier` confirmado end-to-end. Ver `apply-progress.md` de este cambio para el
+    detalle y las transcripciones reales.
+  - **Limitación conocida — modelo entrenado con un corpus ya superado**: el `.onnx` commiteado
+    se entrenó *antes* de que M3 ampliara el corpus de ~30 a 100 ejemplos/intención y resolviera
+    el desbalance de `Tone.Empatico` (2026-09-14, ver sección M3). Reentrenar contra el corpus
+    nuevo es un cambio pequeño y ya prácticamente listo (el pipeline de `Training/Nlu/` corre tal
+    cual sobre el corpus ampliado) — no es una reapertura de este cambio, según sus propias notas
+    de cierre.
 - **Specs formales**: `openspec/specs/clasificador-intenciones-m2/spec.md` (7 requisitos: nunca
   lanza, determinismo, `Confidence`∈[0,1], resiliencia a entradas atípicas, comportamiento
   cuando `IsReady` es falso, conformidad con `IntentClassifierContract`). La spec formaliza el
@@ -118,30 +131,27 @@ por ser la rama compartida real del equipo.
 - **Contrato que expone**: no es un puerto de código — es un esquema de datos. Cada `intent` y
   `tone` debe coincidir exactamente con un miembro de los enums `Intent`/`Tone` de `NpcAi.Core`.
   Regla de calidad: 10% de las frases doble-etiquetadas para medir acuerdo entre etiquetadores.
-- **Estado actual**: los datos existen, fueron depurados (duplicados y errores ortográficos
-  corregidos el 2026-09-01) y **ya están commiteados en `origin/main`**
-  (PR "docs/corpus-m3-y-modulos-m13", mergeado 2026-09-04) — `emergencia.json` con 181 entradas,
-  `juntas.json` con 180 entradas. Esto corrige el estado reportado en una verificación anterior
-  de este documento, que los marcaba como `untracked`.
-  **Volumen por debajo de la meta documentada**: ambos archivos tienen exactamente 30 ejemplos
-  por cada una de las 6 categorías de `Intent` por escenario (180/181 frases en total), frente a
-  la meta de "60-100 frases por categoría de intención, por escenario" que el propio
-  `Data/Corpus/README.md` fija — es decir, entre 2× y 3.3× por debajo de la meta en cada
-  categoría, no solo en el total.
-  **Desbalance de `Tone` no cubierto por la meta de volumen**: `Tone.Empatico` tiene apenas 1
-  ejemplo en `emergencia.json` y 0 en `juntas.json` (de 180-181 frases); `Tone.Ansioso` tiene
-  solo 16 de 180 en `juntas.json`. Ampliar el volumen total sin corregir explícitamente este
-  desbalance no resuelve el problema — un modelo entrenado sobre este corpus no puede aprender a
-  reconocer `Empatico` con 1 ejemplo. Ver `Data/Corpus/PENDIENTE-AMPLIACION.md` (nuevo) para el
-  detalle línea por línea.
-  **Acuerdo entre etiquetadores no medido todavía**: el campo `labeler` es `"Luis"` en el 100% de
-  las entradas de ambos archivos — la regla de calidad del propio README ("10% de las frases
-  doble-etiquetadas para medir acuerdo entre etiquetadores") no se ha aplicado aún; no hay una
-  segunda persona etiquetando ni una sola frase para poder medir el acuerdo.
-  Este corpus es la entrada de `Training/Nlu/` en el cambio
-  `2026-09-09-m2-clasificador-bert-reducido`: el pipeline de entrenamiento puede correr sobre el
-  corpus actual como prueba de humo del pipeline, pero la calidad del modelo resultante (sobre
-  todo en `Empatico`) depende de que esta ampliación avance.
+- **Estado actual**: **corpus ampliado y rebalanceado, mergeado en `origin/main`** (PR "feat(m3):
+  corpus en voz del usuario, 100/intencion, dos escenarios completos", mergeado 2026-09-14) —
+  corrige el estado de la verificación anterior de este documento (30 ejemplos/intención, ~180
+  frases por archivo). Estado actual verificado directo sobre `origin/main`:
+  - `emergencia.json` y `juntas.json`, **600 frases cada uno** (1200 en total), exactamente 100
+    ejemplos por cada una de las 6 categorías de `Intent`, en ambos escenarios — cumple la meta
+    de "60-100 frases por categoría de intención, por escenario" del propio
+    `Data/Corpus/README.md` (en el borde superior).
+  - **Desbalance de `Tone.Empatico` resuelto**: pasó de 1 ejemplo (de 180) a 95 ejemplos (de
+    600) en ambos archivos. Distribución de `Tone` actual, igual en los dos escenarios: Neutral
+    150, Respetuoso 125, Agresivo 125, Ansioso 105, Empatico 95 — ya no hay ninguna categoría con
+    un solo dígito de ejemplos.
+  - **Sigue sin resolver**: acuerdo entre etiquetadores. El campo `labeler` sigue siendo
+    `"Luis"` en el 100% de las 1200 entradas de ambos archivos — la regla de calidad del propio
+    README ("10% de las frases doble-etiquetadas") sigue sin aplicarse.
+  - **Consecuencia para M2**: el `.onnx` commiteado en `2026-09-09-m2-clasificador-bert-reducido`
+    se entrenó *antes* de esta ampliación (con el corpus viejo de ~30/intención) — reentrenar
+    contra este corpus nuevo es el siguiente paso natural para mejorar la precisión de `Tone`, no
+    una reapertura de ese cambio.
+  Ver `Data/Corpus/PENDIENTE-AMPLIACION.md` para el detalle línea por línea de esta ampliación
+  (marcada `Completado` para ambos archivos).
 - **Specs formales**: no existe `openspec/specs/corpus-*`. La única especificación es
   `Data/Corpus/README.md`, que no pasó por el ciclo SDD (documento de diseño directo, no delta
   formal).
@@ -206,7 +216,8 @@ por ser la rama compartida real del equipo.
   `null`; funciona con `PersonalityId.None` sin lanzar; `Receptivo` y `NoReceptivo` deben
   producir texto distinto. A diferencia de `IIntentClassifier`, **no se exige determinismo**: es
   una asimetría deliberada del contrato de M0.
-- **Estado actual**: **implementado en local, sin mergear todavía** (cambio
+- **Estado actual**: **real e implementado, mergeado en `origin/main`** (corrige el estado
+  reportado en la verificación de 2026-09-09, que todavía lo marcaba sin mergear; cambio
   `openspec/changes/2026-09-09-m6-generador-markov/`). `Runtime/Dialogue/` tiene
   `MarkovDialogueGenerator : IDialogueGenerator` (motor real) y `MarkovChainBuilder` (cadena de
   Markov de palabras, bigramas / orden 2), más el doble `Fakes/ScriptedDialogueGenerator.cs` que
@@ -289,6 +300,10 @@ por ser la rama compartida real del equipo.
   contiene `Fakes/ScriptedScenarioObjective.cs` — avanza o retrocede un paso fijo de 4 según si
   el cambio de receptividad mejoró o empeoró, saturado en `[0, 4]`. No implementa condiciones
   propias del escenario de emergencia (eso queda para la versión real).
+  **Nota (2026-09-16, sin cambio de estado)**: ya hay un modelo 3D de la sala de triaje y un
+  modelo de NPC disponibles para el proyecto anfitrión — insumo directo para cuando arranque la
+  implementación real de este módulo (y de la escena de M11), pero no implican todavía ningún
+  cambio de código ni de estado en M9.
 - **Specs formales**: no existe.
 
 ---

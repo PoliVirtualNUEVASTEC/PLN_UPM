@@ -26,9 +26,9 @@ Todo lo demas son modulos que se conocen entre si unicamente a traves de ese con
 | M10 | Escenario Sala de Juntas | `Runtime/Scenarios/Boardroom` | `IScenarioObjective` |
 | M11 | Banco de pruebas | `Samples~/Harness` | herramienta |
 | M12 | Documentacion | `Docs/` | manuales e informe |
-| M13 | Bitacora de sesion | `Runtime/SessionLog` (planeado) | registro persistente por sesion |
-| M14 | Catalogo de casos clinicos | `Data/Cases` (diseñado; implementacion pendiente) | datos JSON (casos clinicos) |
-| M15 | Respondedor clinico | `Runtime/ClinicalResponse` (diseñado; implementacion pendiente) | `IClinicalResponder` |
+| M13 | Bitacora de sesion | `Runtime/SessionLog` | registro persistente por sesion |
+| M14 | Catalogo de casos clinicos | `Data/Cases` | datos JSON (casos clinicos) |
+| M15 | Respondedor clinico | `Runtime/ClinicalResponse` | `IClinicalResponder` |
 
 ## Duenos de modulo
 
@@ -39,9 +39,8 @@ Reparto inicial (sujeto a cambios; al reasignar, actualizar esta tabla).
 | Luis Miguel Canaveral Restrepo | M1, M2, M3, M7, M9 |
 | Jefferson Estiven Aristizabal Quiceno | M4, M5, M6, M8, M10, M11 |
 | Compartido (Luis + Jefferson) | M0, M12 |
-| Asignado | M13 |
-| Sin asignar | M14 |
-| Nataly | M15 |
+| Asignado (nombre no registrado) | M13 |
+| Nataly Alvarez | M14, M15 |
 
 ## Las diez reglas de convivencia
 
