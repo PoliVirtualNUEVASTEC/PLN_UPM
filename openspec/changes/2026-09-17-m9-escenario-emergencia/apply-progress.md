@@ -127,36 +127,29 @@ referencias necesarias (`NpcAi.Core`, `NpcAi.Core.Channels` en el runtime; `NpcA
 `NpcAi.Core.Tests`, `NpcAi.Scenarios.Emergency` en las pruebas) — a diferencia del gap real que
 M7 PR3 encontró en su propio `.asmdef` de pruebas, aquí no hizo falta ningún cambio.
 
-## COMPUERTA HUMANA PENDIENTE (tarea 4.1)
+## COMPUERTA HUMANA — resultado (2026-09-17)
 
-- **Quién debe correrla**: el usuario, en Unity Editor Test Runner (pestaña EditMode), rama
+- **Quién la corrió**: el usuario, en Unity Editor Test Runner (pestaña EditMode), rama
   `feat/m9-escenario-emergencia`.
-- **Qué debe confirmar**: las 4 clases de prueba nuevas de este batch (`TriageKeyLoaderTests`,
-  `TriageScenarioObjectiveTests`, `TriageProgresoTests`, `TriageSuperficieAditivaTests`; 34
-  métodos propios + 7 heredados del contrato, 44 ejecuciones totales contando `TestCase`) en
-  verde, junto con el resto de la suite completa del proyecto (en particular
-  `ScriptedScenarioObjectiveTests`, que NO debe verse afectada: el doble no se tocó).
+- **Resultado**: las 4 clases de prueba nuevas de este batch (`TriageKeyLoaderTests`,
+  `TriageScenarioObjectiveTests`, `TriageProgresoTests`, `TriageSuperficieAditivaTests`) pasan en
+  verde, junto con el resto de la suite completa del proyecto. Sin necesidad de ajustar ningún
+  `.asmdef` esta vez — la verificación de la tarea 0.4 (leer los archivos reales, no confiar en
+  `design.md`) resultó correcta: no había gap.
+- **Qué confirma esto**: la lógica de `TriageScenarioObjective` (renormalización sin caso, mezcla
+  de receptividad+corrección clínica, la vía aditiva completa) funciona como diseñado, no solo
+  por inspección de código — incluida la conformidad heredada de `ScenarioObjectiveContract` sin
+  modificar la clase base. Fases 0-3 quedan confirmadas de punta a punta.
 - **No aplica compuerta física ni de hardware.** A diferencia de M1 (micrófono), M2 (modelo
-  entrenado) y M7 (Quest 3), M9 es lógica de escenario del lado del servidor: cero dependencia de
-  VR, XR, audio, `MonoBehaviour` o escena. Esta es la ÚNICA confirmación humana que necesita todo
-  el cambio `2026-09-17-m9-escenario-emergencia`.
-- **Antes de correr el Test Runner**: se recomienda abrir Unity Editor para que autogenere los 9
-  archivos `.meta` faltantes (ver Deviations #2) — sin ellos, Unity puede fallar en reconocer los
-  scripts nuevos o generarlos con GUIDs distintos a los ya reservados manualmente en este batch.
-  Si Unity los autogenera, no hace falta usar los GUIDs propuestos en este documento.
-- **Resultado**: sin registrar todavía — el usuario debe correr el Test Runner y registrar aquí
-  el total de pruebas y cualquier ajuste necesario (p. ej. un `.asmdef` con una referencia
-  faltante, que solo un compilador real detecta — patrón recurrente en M2/M7 de esta sesión).
+  entrenado) y M7 (Quest 3), M9 es lógica de escenario del lado del servidor. Esta fue la ÚNICA
+  confirmación humana que necesita todo el cambio `2026-09-17-m9-escenario-emergencia`.
 
 ## Remaining Tasks
 
-- [ ] Tarea 4.1 (compuerta humana): Unity Test Runner > EditMode > Run All — pendiente, ver
-  sección de arriba.
 - [ ] Fase 5 (`5.1`/`5.2`): `Docs/MODULES.md` (sección M9) y confirmación de frontera de diff
   completa — NO iniciada, fuera de alcance de este batch.
 - [ ] Fase 6 (cierre): `git add`/commit/PR, checklist "Antes de mergear", promoción del spec a
-  `openspec/specs/` y archivado — NO iniciada; depende de que la compuerta humana 4.1 confirme
-  verde primero.
+  `openspec/specs/` y archivado — NO iniciada.
 
 ## Workload / PR Boundary
 
@@ -174,7 +167,5 @@ M7 PR3 encontró en su propio `.asmdef` de pruebas, aquí no hizo falta ningún 
 ## Status
 
 12/12 tareas automatizables de las Fases 0-3 completas (0.1-0.4, 1.1-1.3, 2.1, 3.1-3.5),
-**razonadas correctas por inspección** contra el pseudocódigo exacto de `design.md` — ninguna
-confirmada todavía en Test Runner real (compuerta humana 4.1, pendiente). `sdd-apply` entrega el
-control al orquestador: no continúa con la Fase 5 hasta que el usuario registre el resultado de
-la tarea 4.1 en este documento.
+**confirmadas en Test Runner real** (ver COMPUERTA HUMANA — resultado arriba). Fases 0-4 quedan
+listas de punta a punta. `sdd-apply` continúa con la Fase 5 (docs).

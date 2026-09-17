@@ -134,7 +134,11 @@ silencio. La decisión de cadena vs. `size:exception` queda para el usuario/orqu
 
 ## Phase 4: Compuerta humana
 
-- [ ] 4.1 MANUAL (Unity Editor — la ejecuta y la registra el usuario, no el agente): Test Runner > EditMode > Run All con las Fases 1-3 completas; registrar el total en `apply-progress.md`. **No aplica compuerta física/hardware**: M9 es lógica de servidor, cero VR/XR/audio/`MonoBehaviour`.
+- [x] 4.1 MANUAL (Unity Editor — la ejecuta y la registra el usuario, no el agente): Test Runner > EditMode > Run All con las Fases 1-3 completas; registrar el total en `apply-progress.md`. **No aplica compuerta física/hardware**: M9 es lógica de servidor, cero VR/XR/audio/`MonoBehaviour`.
+  <!-- (2026-09-17): confirmado por el usuario en Unity Editor Test Runner, rama
+  feat/m9-escenario-emergencia. TriageKeyLoaderTests, TriageScenarioObjectiveTests,
+  TriageProgresoTests y TriageSuperficieAditivaTests pasan en verde junto con el resto de la
+  suite. Fases 0-3 quedan confirmadas de punta a punta. -->
 
 ## Phase 5: Documentación (PR3)
 
