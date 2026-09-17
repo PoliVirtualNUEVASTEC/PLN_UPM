@@ -12,11 +12,11 @@ namespace NpcAi.Core.Tests
     public class ContractTypeTests
     {
         [Test]
-        public void Version_del_contrato_es_dos()
+        public void Version_del_contrato_es_tres()
         {
-            // v2: primer cambio de contrato. La atadura version <-> changelog la cubre
+            // v3: segundo cambio de contrato. La atadura version <-> changelog la cubre
             // ContractVersionChangelogTests; este es el pin literal.
-            Assert.AreEqual(2, Contract.Version);
+            Assert.AreEqual(3, Contract.Version);
         }
 
         [Test]

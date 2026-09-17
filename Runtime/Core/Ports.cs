@@ -83,6 +83,51 @@ namespace NpcAi.Core
         ClinicalResponse Respond(Utterance nurseUtterance, IntentResult intent);
     }
 
+    // ------------------------------------------------------------------ Requerimientos de sala de juntas
+
+    /// <summary>
+    /// M16 — responde como el NPC-cliente de sala de juntas sobre un requerimiento de negocio
+    /// del caso asignado, gateada por <see cref="Receptivity"/>. Paso "requerimientos" del
+    /// patron enrutador (mismo patron que <see cref="IClinicalResponder"/>): si el turno no es
+    /// de requerimientos devuelve <see cref="RequirementResponse.NoAplica"/> y el llamador
+    /// enruta a <see cref="IDialogueGenerator"/> (M6).
+    /// </summary>
+    public interface IRequirementResponder
+    {
+        /// <summary>
+        /// <c>false</c> hasta que <see cref="AssignCase"/> vincule un
+        /// <see cref="RequirementCaseId"/> existente. Leer NO DEBE lanzar en ningun estado.
+        /// </summary>
+        bool IsReady { get; }
+
+        /// <summary>
+        /// Vincula el caso y la personalidad (estado de sesion, no de turno; mismo patron que
+        /// <see cref="IClinicalResponder.AssignCase"/>). Con el mismo par DEBE ser determinista
+        /// e idempotente. Con un <see cref="RequirementCaseId"/> desconocido NO DEBE lanzar y
+        /// DEBE dejar <see cref="IsReady"/> en <c>false</c>.
+        /// </summary>
+        void AssignCase(RequirementCaseId caseId, PersonalityId personality);
+
+        /// <summary>
+        /// NO DEBE lanzar en ningun estado (sin <see cref="AssignCase"/> previo, con
+        /// <paramref name="studentUtterance"/> vacio o <c>default</c>, con
+        /// <paramref name="intent"/> <c>default</c>, con cualquier valor de
+        /// <paramref name="receptivity"/>, con solo simbolos o cadenas muy largas). Con
+        /// <see cref="IsReady"/> en <c>false</c> DEBE devolver
+        /// <see cref="RequirementResponse.NoAplica"/>. Invariante transversal:
+        /// <c>Outcome != RequirementOutcome.NoAplica</c> exige <c>RequirementId.IsNone == false</c>;
+        /// con <see cref="RequirementOutcome.NoAplica"/>, <c>RequirementId</c> DEBE ser
+        /// <see cref="Core.RequirementId.None"/> y <c>Reply</c> NO tiene garantias. Con
+        /// <see cref="RequirementOutcome.AunNoRevelado"/> y <see cref="RequirementOutcome.Revelado"/>,
+        /// <c>Reply.Text</c> NO DEBE ser vacio ni solo espacios y los tags NO DEBEN ser
+        /// <c>null</c>. El contenido del requerimiento solo DEBE aparecer en <c>Reply.Text</c>
+        /// cuando <c>Outcome == RequirementOutcome.Revelado</c>. DEBE ser determinista en
+        /// <c>Outcome</c>, <c>Reply.Text</c> y <c>RequirementId</c> para la misma tupla
+        /// <c>(RequirementCaseId, PersonalityId, Utterance, IntentResult, Receptivity)</c>.
+        /// </summary>
+        RequirementResponse Respond(Utterance studentUtterance, IntentResult intent, Receptivity receptivity);
+    }
+
     // ------------------------------------------------------------------ Decision
 
     /// <summary>M4 — maquina de estados Receptivo / Neutral / No receptivo.</summary>

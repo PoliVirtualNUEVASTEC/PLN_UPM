@@ -6,6 +6,6 @@ namespace NpcAi.Core
     /// </summary>
     public static class Contract
     {
-        public const int Version = 2;
+        public const int Version = 3;
     }
 }
