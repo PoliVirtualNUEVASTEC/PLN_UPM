@@ -44,8 +44,8 @@ Recalculado contra código real, no solo el ~250-300L de la propuesta: `Clinical
 - [x] 2.1 RED — crear `Tests/EditMode/Core/RequirementResponderContract.cs`: clase abstracta, 10 `[Test]`, 2 stubs (`RespondedorDeRequerimientosNoListo`, `RespondedorDeRequerimientosDePrueba`), subclase concreta `RequirementResponderContractStubTests`; no compila (`IRequirementResponder` no existe).
 - [x] 2.2 GREEN — `Runtime/Core/Ports.cs`: `+ interface IRequirementResponder` (`IsReady`, `AssignCase`, `Respond`) en sección nueva tras "Respuesta clinica". Depende de 2.1.
 - [x] 2.3 Verify — los 10 `[Test]` de `RequirementResponderContractStubTests` escritos y revisados por lectura contra el precedente compilado (`IClinicalResponder`/`ClinicalResponderContract`); **verde en Unity aun no confirmado por Jefferson** (mismo patron que PR1: sin Editor/CLI en esta sesion).
-- [ ] 2.4 Commit atómico — `Runtime/Core/Contract.cs` `Version` `2→3`; `+ ## v3` en `Docs/CONTRACT-CHANGELOG.md`; renombrar `Version_del_contrato_es_dos`→`Version_del_contrato_es_tres` (valor `3`) en `ContractTypeTests.cs`. **Código ya escrito en el working tree** (los 3 cambios ya estan hechos), pero el `git commit` real queda EN PAUSA: ver "Alerta de presupuesto" abajo — depende de que Jefferson confirme como agrupar el commit/PR antes de crearlo.
-- [ ] 2.5 Verify — `ContractVersionChangelogTests` en verde; diff acotado a `Runtime/Core/`, `Docs/CONTRACT-CHANGELOG.md`, `Tests/EditMode/Core/`, `openspec/`. **Bloqueado** por la alerta de presupuesto: el diff real mide mas de 400 lineas (ver abajo), asi que el alcance final del commit/PR aun no esta confirmado.
+- [x] 2.4 Commit atómico — `Runtime/Core/Contract.cs` `Version` `2→3`; `+ ## v3` en `Docs/CONTRACT-CHANGELOG.md`; renombrar `Version_del_contrato_es_dos`→`Version_del_contrato_es_tres` (valor `3`) en `ContractTypeTests.cs`. Commiteado en `feat/m0-requerimientos-puerto` (commit `c542e96`), 145 líneas, dentro del presupuesto — la clase de contrato compartida se separó en PR2b (ver abajo).
+- [x] 2.5 Verify — diff de PR2 acotado a `Runtime/Core/Ports.cs`, `Runtime/Core/Contract.cs`, `Docs/CONTRACT-CHANGELOG.md`, `Tests/EditMode/Core/ContractTypeTests.cs` (solo el pin). Verde en Unity aún pendiente de que Jefferson corra el Test Runner (mismo patrón que PR1).
 
 ### ALERTA DE PRESUPUESTO — PR2 midio mas de 400 lineas reales
 
@@ -63,27 +63,17 @@ pruebas nuevas ya existentes en `ContractTypeTests.cs`):
 | `Tests/EditMode/Core/RequirementResponderContract.cs.meta` (archivo nuevo) | 2 (2 add) |
 | **Total PR2** | **413** |
 
-413 > 400 (presupuesto de revision). El codigo esta completo y razonado en verde (2.1-2.3
-listos; 2.4 escrito en el working tree pero sin `git commit`). **NO se forzo en un solo commit
-y NO se implemento el corte PR2b por cuenta propia**, tal como instruyo Jefferson. Opciones
-para que Jefferson confirme antes de continuar a 2.4 (el commit real)/2.5/Fase 3:
-
-1. **Corte de contingencia PR2b** (el que ya sugeria esta tabla arriba): separar
-   `RequirementResponderContract.cs` (+.meta) — 262 lineas, la mayor parte del exceso — en un
-   PR2b encadenado sobre PR2, dejando en PR2 solo el puerto (`Ports.cs`, 45L) + el commit
-   atomico de version/changelog/pin (`Contract.cs` + `CONTRACT-CHANGELOG.md` + pin en
-   `ContractTypeTests.cs`, 106L) = **151L en PR2**, muy por debajo del presupuesto. PR2b
-   quedaria en 262L, tambien debajo de 400.
-2. **`size:exception`**: aceptar 413L en un solo PR2, dejando constancia explicita de la
-   excepcion (igual que permite la guia de presupuesto de revision).
-3. Otra particion que Jefferson prefiera.
-
-Sin esa confirmacion, el agente de apply se detiene aqui: no crea el commit atomico de 2.4 ni
-continua a 2.5 ni a la Fase 3.
+413 > 400 (presupuesto de revision). **Resuelto (2026-09-17): Jefferson confirmó el corte de
+contingencia PR2b.** Rama final: `feat/m0-requerimientos-tipos` (PR1, 203L + 951L de docs
+OpenSpec) → `feat/m0-requerimientos-puerto` (PR2, 145L, puerto+`Version`/changelog/pin) →
+`feat/m0-requerimientos-contrato` (PR2b, 262L, `RequirementResponderContract`). Los tres
+commits ya existen localmente, cada uno en su propia rama apilada — nada mergeado a `main`
+ni pusheado todavía.
 
 ## Phase 3: Cierre
 
-- [ ] 3.1 Test Runner EditMode completo (Window > General > Test Runner); confirmar 0 `Debug.Log` en lo agregado.
+- [ ] 3.1 Test Runner EditMode completo (Window > General > Test Runner) sobre PR2/PR2b — confirmar `ContractVersionChangelogTests` y `RequirementResponderContractStubTests` en verde; confirmar 0 `Debug.Log` en lo agregado.
 - [ ] 3.2 Enviar a co-revisión de M0 (Luis Miguel Cañaveral Restrepo o el asesor Luis Fernando González Alvarán) antes de mergear.
+- [ ] 3.3 Push de las 3 ramas y apertura de los PRs encadenados (PR1→`main`, PR2→PR1, PR2b→PR2) — pendiente, no se hizo en este batch de apply.
 
 Nota: `Docs/MODULES.md` NO se toca — `design.md` no lo pide, y el precedente v2 (`respuesta-clinica-m0`) tampoco lo actualizó (sigue diciendo "7 puertos"/`Version` `1`); es deuda preexistente, fuera de alcance de este cambio.
