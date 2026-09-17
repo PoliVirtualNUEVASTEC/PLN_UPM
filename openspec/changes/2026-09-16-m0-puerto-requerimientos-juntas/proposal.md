@@ -206,26 +206,26 @@ de negocio no cambia de redacción entre turnos: M16 usa plantillas, no Markov.
 
 ## Success Criteria
 
-- [ ] `Contract.Version == 3` y `Docs/CONTRACT-CHANGELOG.md` tiene `## v3`;
+- [x] `Contract.Version == 3` y `Docs/CONTRACT-CHANGELOG.md` tiene `## v3`;
       `ContractVersionChangelogTests` en verde.
-- [ ] `CoreAssemblyPurityTests` sigue en verde: los 5 tipos nuevos son C# puro, sin
+- [x] `CoreAssemblyPurityTests` sigue en verde: los 5 tipos nuevos son C# puro, sin
       `UnityEngine` ni `NpcAi.*` ajeno (`noEngineReferences: true` intacto).
-- [ ] `ContractTypeTests` en verde con los casos nuevos — el juego completo para
+- [x] `ContractTypeTests` en verde con los casos nuevos — el juego completo para
       **`RequirementCaseId` y para `RequirementId`** (normalización, `None`, `IsNone`,
       igualdad `Ordinal`, `GetHashCode()` de `None` es `0`), `RequirementResponse.NoAplica`
       y el congelado de `RequirementOutcome` — sin modificar ningún caso de v1/v2 salvo el
       pin literal de versión (`Version_del_contrato_es_dos` → su equivalente para `3`),
       igual que el cambio v1→v2 editó el suyo.
-- [ ] `RequirementResponderContract` compila y pasa contra un stub mínimo local; queda
+- [x] `RequirementResponderContract` compila y pasa contra un stub mínimo local; queda
       lista para que M16 (real y doble) la herede.
-- [ ] El contrato declara una regla DEBE/NO DEBE por cada valor de `RequirementOutcome`,
+- [x] El contrato declara una regla DEBE/NO DEBE por cada valor de `RequirementOutcome`,
       incluidas la de `AunNoRevelado` (`Reply.Text` no vacío) y la de `RequirementId`
       poblado siempre que `Outcome != NoAplica`.
-- [ ] El diff no toca nada fuera de `Runtime/Core/`, `Docs/CONTRACT-CHANGELOG.md`,
+- [x] El diff no toca nada fuera de `Runtime/Core/`, `Docs/CONTRACT-CHANGELOG.md`,
       `Tests/EditMode/Core/` y `openspec/`. Cero archivos de `Runtime/ClinicalResponse/`,
       `Runtime/Scenarios/` o `Runtime/Nlu/`.
-- [ ] Sin `Debug.Log` en el código agregado.
-- [ ] Revisado antes del merge por el otro dueño compartido de M0 o el asesor (regla 2).
+- [x] Sin `Debug.Log` en el código agregado.
+- [x] Revisado antes del merge por el otro dueño compartido de M0 o el asesor (regla 2).
 
 ## Decisiones del usuario (confirmadas 2026-09-16)
 

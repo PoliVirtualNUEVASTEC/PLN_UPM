@@ -73,7 +73,7 @@ ni pusheado todavía.
 ## Phase 3: Cierre
 
 - [x] 3.1 Test Runner EditMode completo (Window > General > Test Runner) sobre PR2/PR2b — **confirmado por Jefferson (2026-09-17): todo en verde**, incluidas `ContractVersionChangelogTests` y `RequirementResponderContractStubTests`.
-- [ ] 3.2 Enviar a co-revisión de M0 (Luis Miguel Cañaveral Restrepo o el asesor Luis Fernando González Alvarán) antes de mergear.
-- [ ] 3.3 Push de las 3 ramas y apertura de los PRs encadenados (PR1→`main`, PR2→PR1, PR2b→PR2) — pendiente, no se hizo en este batch de apply.
+- [x] 3.2 Co-revisión de M0 — **APROBADA por Luis Miguel Cañaveral Restrepo** por comentario en los PR #39/#40/#41 (2026-09-17). Nota: el PR de cierre #42 (necesario porque #40/#41 se mergearon dentro de sus ramas base, no a `main`) trae el mismo código ya aprobado y no recibió comentario propio — Jefferson decidió que la aprobación ya dada alcanza, sin pedir una re-revisión puntual de #42.
+- [x] 3.3 Push de las 3 ramas y PRs abiertos: #39, #40, #41 (encadenados) + #42 (cierre real hacia `main`). Los 4 mergeados; `main` verificado con el contenido completo.
 
 Nota: `Docs/MODULES.md` NO se toca — `design.md` no lo pide, y el precedente v2 (`respuesta-clinica-m0`) tampoco lo actualizó (sigue diciendo "7 puertos"/`Version` `1`); es deuda preexistente, fuera de alcance de este cambio.

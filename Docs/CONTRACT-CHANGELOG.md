@@ -84,9 +84,8 @@ siempre poblado salvo en `NoAplica`.
 - El requerimiento emparejado viaja como `RequirementId` propio, no como `string` crudo:
   corrige el hueco `campoDe(clin)` que dejaba `ClinicalResponse` sin exponer que campo
   emparejo.
-- **Co-revision de M0** (regla 2): pendiente antes del merge — Luis Miguel Canaveral
-  Restrepo (otro dueno compartido de M0) o, en su defecto, el asesor Luis Fernando Gonzalez
-  Alvaran.
+- **Co-revision de M0** (regla 2): APROBADA por Luis Miguel Canaveral Restrepo (otro dueno
+  compartido de M0) por comentario en los PR #39/#40/#41, el 2026-09-17.
 - **Ciclo SDD**: cambio `2026-09-16-m0-puerto-requerimientos-juntas`,
   `spec -> apply -> verify -> archive`. Ejecucion Unity 6 EditMode; ningun agente corre
   Unity: el verde es compuerta humana.
