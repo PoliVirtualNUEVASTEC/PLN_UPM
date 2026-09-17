@@ -72,7 +72,7 @@ ni pusheado todavía.
 
 ## Phase 3: Cierre
 
-- [ ] 3.1 Test Runner EditMode completo (Window > General > Test Runner) sobre PR2/PR2b — confirmar `ContractVersionChangelogTests` y `RequirementResponderContractStubTests` en verde; confirmar 0 `Debug.Log` en lo agregado.
+- [x] 3.1 Test Runner EditMode completo (Window > General > Test Runner) sobre PR2/PR2b — **confirmado por Jefferson (2026-09-17): todo en verde**, incluidas `ContractVersionChangelogTests` y `RequirementResponderContractStubTests`.
 - [ ] 3.2 Enviar a co-revisión de M0 (Luis Miguel Cañaveral Restrepo o el asesor Luis Fernando González Alvarán) antes de mergear.
 - [ ] 3.3 Push de las 3 ramas y apertura de los PRs encadenados (PR1→`main`, PR2→PR1, PR2b→PR2) — pendiente, no se hizo en este batch de apply.
 
