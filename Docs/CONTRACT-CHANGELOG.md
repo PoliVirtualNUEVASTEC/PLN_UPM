@@ -3,6 +3,102 @@
 Toda modificacion a `NpcAi.Core` sube `Contract.Version` y deja una entrada aqui.
 Regla: un cambio de contrato a `Runtime/Core` o `Runtime/CoreChannels` es su propio cambio SDD, revisado antes del merge por el otro dueno compartido de M0 (o, en su defecto, el asesor). Sin ventana fija ni quorum de todos los duenos.
 
+## v3 — 2026-09-16 — Puerto de requerimientos de sala de juntas (M16)
+
+Segundo cambio de contrato despues del congelamiento de v1. Extension **puramente aditiva**:
+ningun enum, DTO ni puerto de v1/v2 cambia (nombre, valor, orden, cardinalidad, firma). Agrega
+la superficie que permite que M16 (respondedor de requerimientos de sala de juntas) exista
+como modulo de primera clase.
+
+### Tipos nuevos
+
+- **DTO inmutables:** `RequirementCaseId`, `RequirementId`, `RequirementResponse` (los DTO
+  pasan de 7 a 10).
+- **Enum:** `RequirementOutcome` (los enums pasan de 4 a 5).
+- **Puertos:** `IRequirementResponder` (los puertos pasan de 8 a 9).
+
+Los cinco son C# puro (`string`, `struct`, `enum` y tipos de v1: `Utterance`, `IntentResult`,
+`NpcReply`, `PersonalityId`, `Receptivity`): `NpcAi.Core` mantiene `noEngineReferences: true`
+y cero referencias `NpcAi.*` ajenas (`CoreAssemblyPurityTests` lo verifica).
+
+### `RequirementCaseId` y `RequirementId` — identificadores estables sobre string
+
+`readonly struct` sobre `string`, **espejo exacto de `PersonalityId`/`ClinicalCaseId`**:
+`Value` normalizado a minusculas y sin espacios de borde (`Trim().ToLowerInvariant()`), `null`
+/ vacio / solo espacios ⇒ `Value == null`; igualdad completa y `Ordinal` (`Equals`,
+`GetHashCode`, `operator ==`, `operator !=`); `None = default`; `IsNone == true` solo para
+`None`; `GetHashCode()` de `None` es `0`. Son identidades independientes: `RequirementCaseId`
+identifica el caso de sala de juntas, `RequirementId` un requerimiento dentro de ese caso. El
+catalogo de casos y la tabla de requerimientos son dato de M16 (`Data/`), **nunca** un cambio
+de contrato.
+
+### `RequirementResponse` — tri-estado, primer resultado no binario del contrato
+
+`readonly struct` con `Outcome` (`RequirementOutcome`), `Reply` (`NpcReply`) y `RequirementId`
+(`RequirementId`). `RequirementResponse.NoAplica` DEBE tener `Outcome == RequirementOutcome.NoAplica`
+y `RequirementId == RequirementId.None`. Invariante: `Outcome != RequirementOutcome.NoAplica`
+exige `RequirementId.IsNone == false`.
+
+| `Outcome` | Invariante |
+|---|---|
+| `NoAplica` | `RequirementId == RequirementId.None`; `Reply` sin garantias; el llamador enruta a `IDialogueGenerator` (M6) |
+| `AunNoRevelado` | `RequirementId` poblado; `Reply.Text` NO DEBE ser vacio ni solo espacios (desvio, nunca silencio) |
+| `Revelado` | `RequirementId` poblado; `Reply` va tal cual a M8; el contenido del requerimiento solo aparece aqui |
+
+NO implementa `IEquatable<T>` (igualdad estructural por defecto, igual que `ClinicalResponse`).
+
+### Invariantes de `IRequirementResponder`
+
+Toda implementacion real (`Runtime/<Modulo>/`) y todo doble (`Runtime/<Modulo>/Fakes/`) DEBE
+heredar `NpcAi.Core.Tests.RequirementResponderContract` y pasar el 100% de sus `[Test]`, sin
+escena de Unity ni entorno de VR.
+
+- **`IsReady`**: leer NO DEBE lanzar en ningun estado. DEBE ser `false` hasta que `AssignCase`
+  vincule un `RequirementCaseId` existente en M16.
+- **`AssignCase(RequirementCaseId, PersonalityId)`**: con el mismo par DEBE ser determinista e
+  idempotente. Con un `RequirementCaseId` desconocido NO DEBE lanzar y DEBE dejar
+  `IsReady == false`. Caso y personalidad son estado de sesion, no de turno (mismo patron que
+  `IClinicalResponder.AssignCase`).
+- **`Respond(Utterance, IntentResult, Receptivity)`**: NO DEBE lanzar en ningun estado (sin
+  `AssignCase`, con `Utterance` vacio o `default`, con `IntentResult` `default`, con cualquier
+  `Receptivity`, con solo simbolos, con cadenas de 5000 caracteres). Con `IsReady == false`
+  DEBE devolver `RequirementResponse.NoAplica`. Cuando `Outcome != NoAplica`, `Reply.Text` NO
+  DEBE ser vacio ni solo espacios y `Reply.EmotionTag` / `Reply.AnimationCue` NO DEBEN ser
+  `null`. DEBE ser determinista en `Outcome`, `Reply.Text` y `RequirementId` para la misma
+  tupla `(RequirementCaseId, PersonalityId, Utterance, IntentResult, Receptivity)`.
+
+### Diferencia deliberada frente a `IClinicalResponder`
+
+`IClinicalResponder.Respond` no recibe `Receptivity` y su `ClinicalResponse` es binaria
+(`Handled` bool). El turno de sala de juntas tiene un estado intermedio real ("emparejo el
+tema, pero no se gano la confianza") que un booleano borra: por eso `Respond` recibe
+`Receptivity` por valor (quinto dato de entrada, no dependencia inyectada; cero referencia de
+ensamblado a `NpcAi.Receptivity`) y `RequirementResponse` es tri-estado con `RequirementId`
+siempre poblado salvo en `NoAplica`.
+
+### Decisiones y proceso (regla 10)
+
+- **Enfoque** (confirmado con el usuario 2026-09-16): patron enrutador, igual que M15/v2. El
+  esquema del caso y los umbrales de receptividad por requerimiento son dato de M16 (`Data/`),
+  no contrato.
+- El requerimiento emparejado viaja como `RequirementId` propio, no como `string` crudo:
+  corrige el hueco `campoDe(clin)` que dejaba `ClinicalResponse` sin exponer que campo
+  emparejo.
+- **Co-revision de M0** (regla 2): pendiente antes del merge — Luis Miguel Canaveral
+  Restrepo (otro dueno compartido de M0) o, en su defecto, el asesor Luis Fernando Gonzalez
+  Alvaran.
+- **Ciclo SDD**: cambio `2026-09-16-m0-puerto-requerimientos-juntas`,
+  `spec -> apply -> verify -> archive`. Ejecucion Unity 6 EditMode; ningun agente corre
+  Unity: el verde es compuerta humana.
+
+### Correccion sobre el pin de version (R1 del diseno)
+
+El pin literal `ContractTypeTests.Version_del_contrato_es_dos()` se **renombra** a
+`Version_del_contrato_es_tres()` con valor `3`, en el mismo commit que este bump: es el mismo
+caso de v1→v2 (que tambien lo edito), no una excepcion a la regla de "aditivo puro" — esa
+regla protege los tipos y puertos del contrato, no el pin de version, que por definicion
+cambia en cada bump.
+
 ## v2 — 2026-09-09 — Puerto de respuesta clinica (M15)
 
 Primer cambio de contrato despues del congelamiento de v1. Extension **puramente aditiva**:
