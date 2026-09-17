@@ -261,6 +261,82 @@ namespace NpcAi.Core.Tests
             Assert.AreNotEqual(a, c);
         }
 
+        // --- v3: requerimientos de sala de juntas ---
+
+        [Test]
+        public void RequirementCaseId_normaliza_el_valor_recibido()
+        {
+            Assert.AreEqual("caso-juntas-01", new RequirementCaseId(" Caso-Juntas-01 ").Value);
+        }
+
+        [Test]
+        public void RequirementCaseId_None_es_el_valor_por_defecto_y_hashea_a_cero()
+        {
+            Assert.IsTrue(RequirementCaseId.None.IsNone);
+            Assert.AreEqual(0, RequirementCaseId.None.GetHashCode());
+            Assert.IsTrue(new RequirementCaseId("   ").IsNone);
+        }
+
+        [Test]
+        public void RequirementCaseId_compara_por_valor_normalizado_y_Ordinal()
+        {
+            var a = new RequirementCaseId("caso-juntas-01");
+            var b = new RequirementCaseId(" CASO-JUNTAS-01 ");
+            var otro = new RequirementCaseId("caso-juntas-02");
+
+            Assert.IsTrue(a == b);
+            Assert.AreEqual(a, b);
+            Assert.IsTrue(a != otro);
+            Assert.AreNotEqual(a, otro);
+        }
+
+        [Test]
+        public void RequirementId_normaliza_el_valor_recibido()
+        {
+            Assert.AreEqual("presupuesto", new RequirementId(" Presupuesto ").Value);
+        }
+
+        [Test]
+        public void RequirementId_None_es_el_valor_por_defecto_y_hashea_a_cero()
+        {
+            Assert.IsTrue(RequirementId.None.IsNone);
+            Assert.AreEqual(0, RequirementId.None.GetHashCode());
+            Assert.IsTrue(new RequirementId("   ").IsNone);
+        }
+
+        [Test]
+        public void RequirementId_compara_por_valor_normalizado_y_Ordinal()
+        {
+            var a = new RequirementId("presupuesto");
+            var b = new RequirementId(" PRESUPUESTO ");
+            var otro = new RequirementId("cronograma");
+
+            Assert.IsTrue(a == b);
+            Assert.AreEqual(a, b);
+            Assert.IsTrue(a != otro);
+            Assert.AreNotEqual(a, otro);
+        }
+
+        [Test]
+        public void RequirementResponse_NoAplica_no_aplica_y_no_trae_requerimiento()
+        {
+            var r = RequirementResponse.NoAplica;
+
+            Assert.AreEqual(RequirementOutcome.NoAplica, r.Outcome);
+            Assert.IsTrue(r.RequirementId.IsNone);
+        }
+
+        [Test]
+        public void El_enum_RequirementOutcome_esta_congelado_en_la_v3()
+        {
+            AssertEnumCongelado(typeof(RequirementOutcome), new (string nombre, int valor)[]
+            {
+                ("NoAplica",      0),
+                ("AunNoRevelado", 1),
+                ("Revelado",      2),
+            });
+        }
+
         // --- Helpers ---
 
         /// <summary>

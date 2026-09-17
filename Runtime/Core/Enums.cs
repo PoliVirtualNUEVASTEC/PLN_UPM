@@ -49,4 +49,16 @@ namespace NpcAi.Core
         Neutral     =  0,
         Receptivo   =  1,
     }
+
+    /// <summary>
+    /// Resultado de un turno de requerimientos de sala de juntas. Producido por M16.
+    /// Primer resultado tri-estado del contrato: <c>NoAplica = 0</c> a proposito, como el
+    /// resto de los enums (regla centinela de v1).
+    /// </summary>
+    public enum RequirementOutcome
+    {
+        NoAplica      = 0,
+        AunNoRevelado = 1,
+        Revelado      = 2,
+    }
 }
