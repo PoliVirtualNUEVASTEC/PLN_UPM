@@ -98,4 +98,34 @@ namespace NpcAi.Core
         /// <summary>Centinela de "este turno no es clinico": <c>Handled == false</c>.</summary>
         public static ClinicalResponse NoAplica => new ClinicalResponse(false, default);
     }
+
+    /// <summary>
+    /// Respuesta del respondedor de requerimientos. Producido por M16.
+    /// <para>
+    /// <see cref="RequirementOutcome.NoAplica"/>: el turno no es de requerimientos, el
+    /// llamador enruta a <see cref="IDialogueGenerator"/> (M6); <c>Reply</c> NO tiene
+    /// garantias y <c>RequirementId</c> DEBE ser <see cref="Core.RequirementId.None"/>.
+    /// <see cref="RequirementOutcome.AunNoRevelado"/>: emparejo un requerimiento pero la
+    /// receptividad no alcanzo su umbral; <c>Reply</c> es un desvio, nunca silencio.
+    /// <see cref="RequirementOutcome.Revelado"/>: <c>Reply</c> va tal cual a M8 y dice el
+    /// hecho. En los dos ultimos, <c>RequirementId</c> DEBE venir poblado.
+    /// </para>
+    /// </summary>
+    public readonly struct RequirementResponse
+    {
+        public readonly RequirementOutcome Outcome;       // NoAplica => enrutar a M6
+        public readonly NpcReply           Reply;         // valido si Outcome != NoAplica
+        public readonly RequirementId      RequirementId; // poblado si Outcome != NoAplica
+
+        public RequirementResponse(RequirementOutcome outcome, NpcReply reply, RequirementId requirementId)
+        {
+            Outcome            = outcome;
+            Reply              = reply;
+            this.RequirementId = requirementId;   // 'this.' explicito: regla Color Color (AD7)
+        }
+
+        /// <summary>Centinela de "este turno no es de requerimientos".</summary>
+        public static RequirementResponse NoAplica =>
+            new RequirementResponse(RequirementOutcome.NoAplica, default, RequirementId.None);
+    }
 }
