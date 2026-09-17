@@ -314,15 +314,39 @@ por ser la rama compartida real del equipo.
 - **Contrato que expone**: `IScenarioObjective` — `Progress01` (siempre en `[0,1]`),
   `IsComplete` (verdadero si y solo si `Progress01 == 1`, con tolerancia `1e-4`; es
   reversible/no-pegajoso), `Notify(ReceptivityChange)` (`Notify` con `default` debe ser no-op).
-- **Estado actual**: **solo doble**. `Runtime/Scenarios/Emergency/` en `origin/main` únicamente
-  contiene `Fakes/ScriptedScenarioObjective.cs` — avanza o retrocede un paso fijo de 4 según si
-  el cambio de receptividad mejoró o empeoró, saturado en `[0, 4]`. No implementa condiciones
-  propias del escenario de emergencia (eso queda para la versión real).
-  **Nota (2026-09-16, sin cambio de estado)**: ya hay un modelo 3D de la sala de triaje y un
-  modelo de NPC disponibles para el proyecto anfitrión — insumo directo para cuando arranque la
-  implementación real de este módulo (y de la escena de M11), pero no implican todavía ningún
-  cambio de código ni de estado en M9.
-- **Specs formales**: no existe.
+- **Estado actual**: **implementación real entregada** vía el cambio
+  `openspec/changes/2026-09-17-m9-escenario-emergencia/` — `TriageScenarioObjective` mide
+  `Progress01`/`IsComplete` como una **mezcla de receptividad sostenida y corrección clínica**, no
+  el paso fijo genérico que sigue usando M10. `Fakes/ScriptedScenarioObjective.cs` (el doble) no
+  cambió y sigue disponible como respaldo determinista.
+  - **Por qué una mezcla**: el bloque `clave` de `Data/Cases/*.json` (`triajeEsperado`,
+    `banderasRojas`, `cierreEsperado`) existe, está poblado en los tres casos de M14, y tres
+    documentos distintos (`Data/Cases/README.md`, la sección M14 de este archivo, y
+    `Runtime/ClinicalResponse/ClinicalCase.cs`) lo declaraban propiedad exclusiva de M9 — pero
+    nadie lo leía. `TriageScenarioObjective` cierra esa desviación con su propio lector mínimo
+    (`TriageKey`/`TriageKeyLoader`, espejo de `ClinicalCaseLoader`; M9 no referencia
+    `NpcAi.ClinicalResponse`, esos tipos son privados e inaccesibles de todas formas).
+  - **Cómo entra lo clínico sin tocar el contrato de M0**: `Notify(ReceptivityChange)` sigue
+    alimentando la mitad de receptividad (racha sostenida, se reinicia a 0 en cualquier
+    empeoramiento), pero la mitad clínica entra por una **superficie aditiva sobre la clase
+    concreta** — `AssignCase(ClinicalCaseId)`, `RegisterRedFlag(int)`, `DeclareTriage(string)` —
+    mismo patrón que `BertIntentClassifier` (M2) y `VrInputBehaviour` (M7) usan para exponer más
+    de lo que exige su puerto, sin gobernanza de cambio de contrato.
+  - **Pesos por defecto** (inyectables, sin validar con el asesor): 0.3 receptividad sostenida /
+    0.7 corrección clínica; dentro de lo clínico, 0.7 banderas rojas descubiertas / 0.3 triaje
+    declarado — inclinado a propósito hacia lo clínico, que es el motivo por el que `clave`
+    existe.
+  - **Diferido, no bloqueante**: evaluación automática de `clave.cierreEsperado` (se carga y se
+    expone en lectura, pero no mueve `Progress01` — calificarlo exige comparación semántica);
+    integración más rica con M15 (que `IClinicalResponder.Respond` exponga qué `Hecho`/`Campo`
+    hizo *match*, para que M9 no dependa de que el compositor reporte a mano qué bandera roja se
+    superfició) — sería su propio cambio SDD sobre M15; y el cableado real en escena, que es
+    trabajo de M11 (todavía sin escena ni script commiteados).
+  - **Nota (2026-09-16, ya aprovechada)**: el modelo 3D de la sala de triaje y el modelo de NPC
+    mencionados en la verificación anterior de este documento no son insumo de M9 (M9 es lógica
+    pura, sin nada visual) — son insumo de M11, cuando esa escena se construya.
+- **Specs formales**: `openspec/specs/escenario-emergencia-m9/spec.md` (9 requisitos, 21
+  escenarios — promovida al archivar el cambio).
 
 ---
 

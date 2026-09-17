@@ -142,15 +142,34 @@ silencio. La decisión de cadena vs. `size:exception` queda para el usuario/orqu
 
 ## Phase 5: Documentación (PR3)
 
-- [ ] 5.1 `Docs/MODULES.md` (sección M9) — cerrar "solo doble"; documentar el consumo real de `clave` que `Data/Cases/README.md`, la sección M14 y `ClinicalCase.cs` ya daban por hecho; nombrar lo diferido: evaluación de `cierreEsperado`, integración rica con M15 (índice/`campo` de *match*), cableado de M11.
-- [ ] 5.2 Confirmar frontera de diff completa (Fases 0-5): nada fuera de `Runtime/Scenarios/Emergency/`, `Tests/EditMode/Scenarios/Emergency/`, `Docs/` y `openspec/`.
+- [x] 5.1 `Docs/MODULES.md` (sección M9) — cerrar "solo doble"; documentar el consumo real de `clave` que `Data/Cases/README.md`, la sección M14 y `ClinicalCase.cs` ya daban por hecho; nombrar lo diferido: evaluación de `cierreEsperado`, integración rica con M15 (índice/`campo` de *match*), cableado de M11.
+  <!-- (2026-09-17): seccion M9 reescrita: estado real, por que una mezcla, como entra lo clinico
+  sin tocar M0, pesos por defecto, y lo diferido nombrado explicitamente. Tambien se aclaro que el
+  modelo 3D de la sala de triaje (nota del 2026-09-16) es insumo de M11, no de M9. -->
+- [x] 5.2 Confirmar frontera de diff completa (Fases 0-5): nada fuera de `Runtime/Scenarios/Emergency/`, `Tests/EditMode/Scenarios/Emergency/`, `Docs/` y `openspec/`.
+  <!-- (2026-09-17): `git diff main..feat/m9-escenario-emergencia --stat` verificado -- 100% dentro
+  de esas 4 rutas. Cero Runtime/Core/, Runtime/CoreChannels/, Runtime/ClinicalResponse/,
+  Runtime/Scenarios/Boardroom/, Data/. -->
 
 ## Phase 6: Cierre (acciones del autor)
 
-- [ ] 6.1 `git add` solo de las carpetas de este cambio; `git diff --cached` antes de cualquier commit.
-- [ ] 6.2 Checklist "Antes de mergear" del `README.md`: pruebas propias en verde, diff acotado, `ScriptedScenarioObjective` sigue pasando el contrato sin cambios, rama al día con `main`, decisiones registradas en Engram y en el documento de contexto (regla 10).
-- [ ] 6.3 `openspec/specs/escenario-emergencia-m9/spec.md` — copia directa del spec de este cambio (capacidad nueva, sin spec previa que reconciliar, mismo patrón que M7 PR4); mover este directorio a `openspec/changes/archive/` y escribir `archive-report.md`.
+- [x] 6.1 `git add` solo de las carpetas de este cambio; `git diff --cached` antes de cualquier commit.
+  <!-- (2026-09-17): commit de cierre acotado a Runtime/Scenarios/Emergency/, Tests/EditMode/Scenarios/Emergency/,
+  Docs/MODULES.md y openspec/ (el cambio archivado + la spec promovida). Nada fuera de esas rutas. -->
+- [x] 6.2 Checklist "Antes de mergear" del `README.md`: pruebas propias en verde, diff acotado, `ScriptedScenarioObjective` sigue pasando el contrato sin cambios, rama al día con `main`, decisiones registradas en Engram y en el documento de contexto (regla 10).
+  <!-- (2026-09-17): pruebas en verde (Test Runner real, ver apply-progress.md); diff acotado (5.2);
+  ScriptedScenarioObjective.cs nunca se toco; rama feat/m9-escenario-emergencia creada desde main
+  ya actualizado (con toda la cadena de M7 mergeada); decisiones registradas en Engram y en este
+  tasks.md/apply-progress.md/archive-report.md. -->
+- [x] 6.3 `openspec/specs/escenario-emergencia-m9/spec.md` — copia directa del spec de este cambio (capacidad nueva, sin spec previa que reconciliar, mismo patrón que M7 PR4); mover este directorio a `openspec/changes/archive/` y escribir `archive-report.md`.
+  <!-- (2026-09-17, sdd-archive): diff vacio verificado entre el delta original y la copia
+  promovida; carpeta movida via git mv a openspec/changes/archive/2026-09-17-m9-escenario-emergencia/;
+  archive-report.md escrito con las metricas finales. -->
 - [ ] 6.4 PR(s) final(es) mergeado(s) a `main` por el autor (regla 8, self-merge).
+  <!-- (2026-09-17): PR abierto, CLEAN/mergeable, checklist "Antes de mergear" cumplida (6.2) --
+  merge en si pendiente de que el usuario lo ejecute (accion visible/de estado compartido, el
+  auto-mode classifier de Claude Code requiere confirmacion explicita en el momento, no inferida
+  de una autorizacion previa -- mismo patron que M2/M7 en esta sesion). -->
 
 ## Notas
 
