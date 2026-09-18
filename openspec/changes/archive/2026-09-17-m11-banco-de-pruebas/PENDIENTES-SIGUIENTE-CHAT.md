@@ -1,3 +1,5 @@
+> CERRADO (2026-09-18): PR1 mergeado (#44, commit `5b78ce7`), verify `PASS_WITH_WARNINGS` (0 CRITICAL), cambio archivado en `openspec/changes/archive/`. La lista de abajo es histórica; no actuar sobre ella.
+
 # M11 — Pendientes al cambiar de chat (2026-09-18)
 
 Estado: **PR1 (`SessionDirector`) completo, 19/19 tareas cerradas, compuerta humana
