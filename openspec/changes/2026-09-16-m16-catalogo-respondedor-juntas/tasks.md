@@ -61,8 +61,8 @@ automatización VCS/PR ni clasificación de ejecutables).
 - [x] 1.1 Crear `Runtime/RequirementResponse/NpcAi.RequirementResponse.asmdef`, `references: ["NpcAi.Core"]`, `noEngineReferences: false`. Verificable: compila, sin otras refs.
 - [x] 1.2 Crear `Runtime/RequirementResponse/RequirementCase.cs` (`RequirementCase`, `Cliente`, `Requerimiento`, espejo del diseño). Sin prueba propia (se ejercita vía 1.5, igual que M15).
 - [x] 1.3 Crear `Tests/EditMode/RequirementResponse/NpcAi.RequirementResponse.Tests.asmdef` (refs: `NpcAi.Core`, `NpcAi.Core.Tests`, `NpcAi.RequirementResponse`, TestRunner; `includePlatforms: ["Editor"]`).
-- [x] 1.4 **RED** — `Tests/EditMode/RequirementResponse/RequirementCaseLoaderTests.cs`: carga válida; JSON vacío/basura ⇒ `false` sin lanzar; `receptividadMinima` por nombre mapea a los 3 valores (AD1); nombre inválido/ausente ⇒ ese requerimiento se descarta (AD2); por debajo de `MinimoRequerimientos=6` ⇒ `false`; `emotionTag`/`animationCue` ausentes ⇒ defaults `"neutral"`/`"idle"` (AD8). Debe fallar en rojo (clase no existe).
-- [x] 1.5 **GREEN** — Crear `Runtime/RequirementResponse/RequirementCaseLoader.cs` (`TryParse`, clases `Raw*`, `TryMapearReceptividad`, `Where(...)` de descarte, mínimo 6) — mínimo necesario para 1.4 en verde.
+- [x] 1.4 **RED** — `Tests/EditMode/RequirementResponse/RequirementCaseLoaderTests.cs`: carga válida; JSON vacío/basura ⇒ `false` sin lanzar; `receptividadMinima` por nombre mapea a los 3 valores (AD1); nombre inválido/ausente ⇒ ese requerimiento se descarta (AD2); por debajo de `MinimoRequerimientos=4` ⇒ `false`; `emotionTag`/`animationCue` ausentes ⇒ defaults `"neutral"`/`"idle"` (AD8). Debe fallar en rojo (clase no existe).
+- [x] 1.5 **GREEN** — Crear `Runtime/RequirementResponse/RequirementCaseLoader.cs` (`TryParse`, clases `Raw*`, `TryMapearReceptividad`, `Where(...)` de descarte, mínimo 4) — mínimo necesario para 1.4 en verde. **Bajado de 6 a 4 el 2026-09-18** tras redactar los 4 casos de datos: el dominio real de colegio (`caso-juntas-03`) solo llega a 4 requerimientos narrados en `Data/Corpus/juntas.json` sin inventar contenido; Jefferson confirmó bajar el mínimo global en vez de forzar datos o pedir ampliación de corpus.
 - [x] 1.6 **Verify PR1** — 1.4 en verde; asmdef de runtime referencia solo `NpcAi.Core`; diff no toca `Runtime/Core/`, `Runtime/CoreChannels/`, `Runtime/ClinicalResponse/`. **Confirmado por Jefferson (2026-09-18): Test Runner EditMode corrido en el Editor, todos los tests en verde.** PR abierto: [#45](https://github.com/PoliVirtualNUEVASTEC/PLN_UPM/pull/45).
 
 ## Phase 2: Emparejador + puerta + doble (PR2, depende de Fase 1)
@@ -87,11 +87,11 @@ automatización VCS/PR ni clasificación de ejecutables).
 
 ## Phase 4: Catálogo de datos + docs (PR4, depende de Fase 3; partir en 4a/4b si el conteo real de 4.2–4.5 supera 400 líneas)
 
-- [ ] 4.1 Escribir `Data/Requirements/README.md`: esquema, regla "un caso == un archivo, `id` == nombre de archivo", reglas de redacción de `ejemplosDePregunta` (mínimo 2, mínimo 2 palabras de contenido cada uno).
-- [ ] 4.2 Transcribir `Data/Requirements/caso-juntas-01.json` (torneo de fútbol) desde `Data/Corpus/juntas.json` — solo contenido ya narrado, **sin `"presupuesto"`** ni ningún requerimiento inventado; ≥6 requerimientos, ≥1 por cada nivel de receptividad.
-- [ ] 4.3 Transcribir `Data/Requirements/caso-juntas-02.json` (tienda) con el mismo criterio.
-- [ ] 4.4 Transcribir `Data/Requirements/caso-juntas-03.json` (colegio) con el mismo criterio.
-- [ ] 4.5 Transcribir `Data/Requirements/caso-juntas-04.json` (aerolínea) con el mismo criterio.
+- [x] 4.1 Escribir `Data/Requirements/README.md`: esquema, regla "un caso == un archivo, `id` == nombre de archivo", reglas de redacción de `ejemplosDePregunta` (mínimo 2, mínimo 2 palabras de contenido cada uno). **Hecho (2026-09-18, adelantado)**.
+- [x] 4.2 Transcribir `Data/Requirements/caso-juntas-01.json` (torneo de fútbol) desde `Data/Corpus/juntas.json` — solo contenido ya narrado, **sin `"presupuesto"`** ni ningún requerimiento inventado; ≥4 requerimientos, ≥1 por cada nivel de receptividad. **Hecho (2026-09-18, adelantado)**: 6 requerimientos, corrige además el ejemplo de `design.md` que incluía "presupuesto"/"calendario" (no narrados en el corpus, retirados).
+- [x] 4.3 Transcribir `Data/Requirements/caso-juntas-02.json` (tienda) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: 6 requerimientos.
+- [x] 4.4 Transcribir `Data/Requirements/caso-juntas-03.json` (colegio) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: solo 4 requerimientos reales en el corpus — motivó bajar `MinimoRequerimientos` de 6 a 4 (decisión de Jefferson, ver 1.5).
+- [x] 4.5 Transcribir `Data/Requirements/caso-juntas-04.json` (aerolínea) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: 6 requerimientos.
 - [ ] 4.6 **RED** — `RequirementCasesDataTests.cs` (patrón `ClinicalCasesDataTests`, `AssetDatabase.FindAssets` filtrado por `Data/Requirements/` + prefijo `caso-juntas-`): esquema mínimo por requerimiento; `id` == nombre de archivo; cobertura de los 3 niveles por caso; exactamente 4 casos; ninguna `respuesta` aparece como subcadena en ningún `desvio` de `matices.json`.
 - [ ] 4.7 **GREEN** — Ajustar 4.2–4.5 (solo datos, ninguna clase C#) hasta que 4.6 pase.
 - [ ] 4.8 Actualizar `Docs/MODULES.md` con la fila M16 (`Runtime/RequirementResponse/`, `NpcAi.RequirementResponse`, estado, dependencias M0→M16→M10).

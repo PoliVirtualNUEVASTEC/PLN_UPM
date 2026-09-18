@@ -200,7 +200,9 @@ namespace NpcAi.RequirementResponse
 ```csharp
 public static class RequirementCaseLoader
 {
-    private const int MinimoRequerimientos = 6;
+    private const int MinimoRequerimientos = 4; // bajado de 6 a 4 el 2026-09-18: el dominio
+    // real de colegio en Data/Requirements/ solo llega a 4 requerimientos sin inventar
+    // contenido (decision de Jefferson, prioriza fidelidad al corpus sobre un minimo parejo)
 
     public static bool TryParse(string json, out RequirementCase caso);
 
@@ -429,7 +431,7 @@ Campo por campo:
 |---|---|---|
 | `id` | string | == nombre de archivo sin `.json` |
 | `cliente.empresa` / `.rol` / `.proyecto` / `.contexto` | string | Contexto narrativo; `Respond` no lo consulta |
-| `requerimientos` | array, **mínimo 6** | Tabla de recuperación + puerta |
+| `requerimientos` | array, **mínimo 4** (bajado de 6 el 2026-09-18, ver nota arriba) | Tabla de recuperación + puerta |
 | `requerimientos[].id` | string | Estable, minúsculas, sin tildes. Va a `RequirementId` |
 | `requerimientos[].receptividadMinima` | string | `"NoReceptivo"` \| `"Neutral"` \| `"Receptivo"` — **texto, no número ni enum** (AD1) |
 | `requerimientos[].ejemplosDePregunta` | string[], mínimo 2 | Ver reglas de redacción arriba |

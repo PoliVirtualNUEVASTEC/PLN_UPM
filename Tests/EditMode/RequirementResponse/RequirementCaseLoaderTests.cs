@@ -14,9 +14,11 @@ namespace NpcAi.RequirementResponse.Tests
     /// </summary>
     public class RequirementCaseLoaderTests
     {
-        // 6 requerimientos: el minimo que exige RequirementCaseLoader. Cubre los 3 nombres de
-        // receptividadMinima (AD1) y deja "emotionTag"/"animationCue" ausentes en "req-1" para
-        // probar los defaults de AD8; "req-2" si los declara, para comparar contra el default.
+        // 6 requerimientos (por encima del minimo de 4 que exige RequirementCaseLoader; bajado
+        // de 6 a 4 el 2026-09-18 porque el dominio real de colegio en Data/Requirements/ solo
+        // llega a 4 sin inventar contenido). Cubre los 3 nombres de receptividadMinima (AD1) y
+        // deja "emotionTag"/"animationCue" ausentes en "req-1" para probar los defaults de AD8;
+        // "req-2" si los declara, para comparar contra el default.
         private const string JsonDeCasoValido = @"{
             ""id"": ""caso-prueba"",
             ""cliente"": {
@@ -94,8 +96,8 @@ namespace NpcAi.RequirementResponse.Tests
         [Test]
         public void Un_nombre_de_receptividadMinima_desconocido_descarta_solo_ese_requerimiento()
         {
-            // 7 requerimientos: 6 validos + 1 con receptividadMinima desconocida ("Urgente").
-            // Tras descartar el invalido quedan exactamente 6 (el minimo), asi que el caso SI
+            // 5 requerimientos: 4 validos + 1 con receptividadMinima desconocida ("Urgente").
+            // Tras descartar el invalido quedan exactamente 4 (el minimo), asi que el caso SI
             // carga, pero sin el requerimiento descartado (AD2).
             const string json = @"{
                 ""id"": ""caso-prueba-2"",
@@ -104,17 +106,15 @@ namespace NpcAi.RequirementResponse.Tests
                     { ""id"": ""req-1"", ""receptividadMinima"": ""NoReceptivo"", ""ejemplosDePregunta"": [""a""], ""respuesta"": ""r1"" },
                     { ""id"": ""req-2"", ""receptividadMinima"": ""NoReceptivo"", ""ejemplosDePregunta"": [""b""], ""respuesta"": ""r2"" },
                     { ""id"": ""req-3"", ""receptividadMinima"": ""Neutral"", ""ejemplosDePregunta"": [""c""], ""respuesta"": ""r3"" },
-                    { ""id"": ""req-4"", ""receptividadMinima"": ""Neutral"", ""ejemplosDePregunta"": [""d""], ""respuesta"": ""r4"" },
-                    { ""id"": ""req-5"", ""receptividadMinima"": ""Receptivo"", ""ejemplosDePregunta"": [""e""], ""respuesta"": ""r5"" },
-                    { ""id"": ""req-6"", ""receptividadMinima"": ""Receptivo"", ""ejemplosDePregunta"": [""f""], ""respuesta"": ""r6"" },
+                    { ""id"": ""req-4"", ""receptividadMinima"": ""Receptivo"", ""ejemplosDePregunta"": [""d""], ""respuesta"": ""r4"" },
                     { ""id"": ""req-invalido"", ""receptividadMinima"": ""Urgente"", ""ejemplosDePregunta"": [""g""], ""respuesta"": ""r7"" }
                 ]
             }";
 
             var cargo = RequirementCaseLoader.TryParse(json, out var caso);
 
-            Assert.IsTrue(cargo, "6 requerimientos validos alcanzan el minimo tras descartar el invalido");
-            Assert.AreEqual(6, caso.Requerimientos.Count);
+            Assert.IsTrue(cargo, "4 requerimientos validos alcanzan el minimo tras descartar el invalido");
+            Assert.AreEqual(4, caso.Requerimientos.Count);
             Assert.IsFalse(caso.Requerimientos.Any(r => r.Id == "req-invalido"),
                 "El requerimiento con receptividadMinima desconocida DEBE descartarse (AD2)");
         }
@@ -122,17 +122,16 @@ namespace NpcAi.RequirementResponse.Tests
         [Test]
         public void Descartar_deja_menos_del_minimo_y_TryParse_devuelve_false()
         {
-            // 6 requerimientos, 2 con receptividadMinima invalida (una desconocida, una
-            // vacia): quedan 4 validos, por debajo del minimo de 6, asi que el caso completo
+            // 5 requerimientos, 2 con receptividadMinima invalida (una desconocida, una
+            // vacia): quedan 3 validos, por debajo del minimo de 4, asi que el caso completo
             // NO carga.
             const string json = @"{
                 ""id"": ""caso-prueba-3"",
                 ""cliente"": { ""empresa"": ""E"", ""rol"": ""R"", ""proyecto"": ""P"", ""contexto"": ""C"" },
                 ""requerimientos"": [
                     { ""id"": ""req-1"", ""receptividadMinima"": ""NoReceptivo"", ""ejemplosDePregunta"": [""a""], ""respuesta"": ""r1"" },
-                    { ""id"": ""req-2"", ""receptividadMinima"": ""NoReceptivo"", ""ejemplosDePregunta"": [""b""], ""respuesta"": ""r2"" },
-                    { ""id"": ""req-3"", ""receptividadMinima"": ""Neutral"", ""ejemplosDePregunta"": [""c""], ""respuesta"": ""r3"" },
-                    { ""id"": ""req-4"", ""receptividadMinima"": ""Neutral"", ""ejemplosDePregunta"": [""d""], ""respuesta"": ""r4"" },
+                    { ""id"": ""req-2"", ""receptividadMinima"": ""Neutral"", ""ejemplosDePregunta"": [""c""], ""respuesta"": ""r3"" },
+                    { ""id"": ""req-3"", ""receptividadMinima"": ""Receptivo"", ""ejemplosDePregunta"": [""d""], ""respuesta"": ""r4"" },
                     { ""id"": ""req-invalido-1"", ""receptividadMinima"": ""Urgente"", ""ejemplosDePregunta"": [""e""], ""respuesta"": ""r5"" },
                     { ""id"": ""req-invalido-2"", ""receptividadMinima"": """", ""ejemplosDePregunta"": [""f""], ""respuesta"": ""r6"" }
                 ]
@@ -140,7 +139,7 @@ namespace NpcAi.RequirementResponse.Tests
 
             var cargo = RequirementCaseLoader.TryParse(json, out var caso);
 
-            Assert.IsFalse(cargo, "4 requerimientos validos estan bajo el minimo de 6");
+            Assert.IsFalse(cargo, "3 requerimientos validos estan bajo el minimo de 4");
             Assert.IsNull(caso);
         }
 

@@ -18,7 +18,7 @@ namespace NpcAi.RequirementResponse
     /// </summary>
     public static class RequirementCaseLoader
     {
-        private const int MinimoRequerimientos = 6;
+        private const int MinimoRequerimientos = 4;
 
         public static bool TryParse(string json, out RequirementCase caso)
         {
