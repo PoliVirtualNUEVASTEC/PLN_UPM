@@ -63,7 +63,7 @@ automatización VCS/PR ni clasificación de ejecutables).
 - [x] 1.3 Crear `Tests/EditMode/RequirementResponse/NpcAi.RequirementResponse.Tests.asmdef` (refs: `NpcAi.Core`, `NpcAi.Core.Tests`, `NpcAi.RequirementResponse`, TestRunner; `includePlatforms: ["Editor"]`).
 - [x] 1.4 **RED** — `Tests/EditMode/RequirementResponse/RequirementCaseLoaderTests.cs`: carga válida; JSON vacío/basura ⇒ `false` sin lanzar; `receptividadMinima` por nombre mapea a los 3 valores (AD1); nombre inválido/ausente ⇒ ese requerimiento se descarta (AD2); por debajo de `MinimoRequerimientos=6` ⇒ `false`; `emotionTag`/`animationCue` ausentes ⇒ defaults `"neutral"`/`"idle"` (AD8). Debe fallar en rojo (clase no existe).
 - [x] 1.5 **GREEN** — Crear `Runtime/RequirementResponse/RequirementCaseLoader.cs` (`TryParse`, clases `Raw*`, `TryMapearReceptividad`, `Where(...)` de descarte, mínimo 6) — mínimo necesario para 1.4 en verde.
-- [x] 1.6 **Verify PR1** — 1.4 en verde; asmdef de runtime referencia solo `NpcAi.Core`; diff no toca `Runtime/Core/`, `Runtime/CoreChannels/`, `Runtime/ClinicalResponse/`.
+- [x] 1.6 **Verify PR1** — 1.4 en verde; asmdef de runtime referencia solo `NpcAi.Core`; diff no toca `Runtime/Core/`, `Runtime/CoreChannels/`, `Runtime/ClinicalResponse/`. **Confirmado por Jefferson (2026-09-18): Test Runner EditMode corrido en el Editor, todos los tests en verde.** PR abierto: [#45](https://github.com/PoliVirtualNUEVASTEC/PLN_UPM/pull/45).
 
 ## Phase 2: Emparejador + puerta + doble (PR2, depende de Fase 1)
 
