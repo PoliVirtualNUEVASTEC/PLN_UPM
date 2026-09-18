@@ -28,43 +28,43 @@ Si el usuario acepta `size:exception`, las fases siguientes se aplican como un s
 
 ## Phase 0: Guardrails
 
-- [ ] 0.1 Confirmar frontera del diff antes de escribir: solo `Runtime/Harness/`, `Tests/EditMode/Harness/`, `openspec/`. Nada en `Runtime/Core/`, `Runtime/CoreChannels/`, otro `Runtime/<Modulo>/`, `Data/`, `Samples~/`, `Docs/` (son PR2/fuera de alcance).
-- [ ] 0.2 Confirmar que no hay cambio de contrato: `Ports.cs`/`Dtos.cs` (M0) sin tocar; firmas de `IScenarioObjective`/`IClinicalResponder` sin cambio (AD1).
+- [x] 0.1 Confirmar frontera del diff antes de escribir: solo `Runtime/Harness/`, `Tests/EditMode/Harness/`, `openspec/`. Nada en `Runtime/Core/`, `Runtime/CoreChannels/`, otro `Runtime/<Modulo>/`, `Data/`, `Samples~/`, `Docs/` (son PR2/fuera de alcance). Confirmado por `git status`/`git diff --cached --stat` antes de commitear (ver apply-progress.md).
+- [x] 0.2 Confirmar que no hay cambio de contrato: `Ports.cs`/`Dtos.cs` (M0) sin tocar; firmas de `IScenarioObjective`/`IClinicalResponder` sin cambio (AD1). Confirmado leyendo `Runtime/Core/Ports.cs`/`Dtos.cs` reales antes de escribir; `SessionDirector` consume las firmas congeladas tal cual, con `AssignCase`/`DeclareTriage` de M9 cableados solo via delegado (AD1).
 - [x] 0.3 Ya resuelto: `spec.md` ya nombra un doble local para "Nunca registra banderas rojas" y ya explica por reflexión la ausencia de costura `INpcPresenter` en "Nunca reproduce directamente" (commit `4fe4709`, previo a este `sdd-tasks`). `design.md` Open Questions quedó desactualizado en este punto — no repetir la correccion.
-- [ ] 0.4 Nota (sin acción): los `.meta` de cada `.cs`/carpeta nuevo faltarán hasta que el Unity Editor del usuario los regenere — necesita su propio commit de seguimiento, igual que el fix de M7.
+- [x] 0.4 Nota (sin acción): los `.meta` de cada `.cs`/carpeta nuevo faltarán hasta que el Unity Editor del usuario los regenere — necesita su propio commit de seguimiento, igual que el fix de M7. Confirmado: 2 carpetas + 7 archivos nuevos sin `.meta` en este batch (ver Deviations en apply-progress.md); no se fabricaron `.meta` a mano.
 
 ## Phase 1: Foundation (asmdefs + espías)
 
-- [ ] 1.1 Crear `Runtime/Harness/NpcAi.Harness.asmdef` — `references: ["NpcAi.Core"]`, `noEngineReferences: true` (AD12), espejo literal de `Runtime/Receptivity/NpcAi.Receptivity.asmdef`.
-- [ ] 1.2 Crear `Tests/EditMode/Harness/NpcAi.Harness.Tests.asmdef` — referencia `NpcAi.Core`, `NpcAi.Harness`, `NpcAi.ClinicalResponse`, `NpcAi.Presentation`, TestRunner, `nunit.framework.dll`; solo Editor.
-- [ ] 1.3 Crear `Tests/EditMode/Harness/EspiasDeArnes.cs` con los 5 espías `internal sealed` (AD11): `EspiaClasificador`, `EspiaReceptividad`, `EspiaDialogo`, `EspiaObjetivo`, `EspiaClinico` — cada uno graba exactamente lo que la tabla "Testing Strategy" de design.md nombra.
+- [x] 1.1 Crear `Runtime/Harness/NpcAi.Harness.asmdef` — `references: ["NpcAi.Core"]`, `noEngineReferences: true` (AD12), espejo literal de `Runtime/Receptivity/NpcAi.Receptivity.asmdef`.
+- [x] 1.2 Crear `Tests/EditMode/Harness/NpcAi.Harness.Tests.asmdef` — referencia `NpcAi.Core`, `NpcAi.Harness`, `NpcAi.ClinicalResponse`, `NpcAi.Presentation`, TestRunner, `nunit.framework.dll`; solo Editor.
+- [x] 1.3 Crear `Tests/EditMode/Harness/EspiasDeArnes.cs` con los 5 espías `internal sealed` (AD11): `EspiaClasificador`, `EspiaReceptividad`, `EspiaDialogo`, `EspiaObjetivo`, `EspiaClinico` — cada uno graba exactamente lo que la tabla "Testing Strategy" de design.md nombra.
 
 ## Phase 2: TDD — Constructor, arranque y selección por semilla (PR1a)
 
-- [ ] 2.1 RED: `Tests/EditMode/Harness/SessionDirectorSesionTests.cs` — constructor: cada uno de los 5 puertos + 2 delegados nulo → `ArgumentNullException`; `casos`/`personalidades` nulos o vacíos → `ArgumentException` (AD3).
-- [ ] 2.2 RED (mismo archivo): escenarios 7-9 de la spec — los 3 efectos de `IniciarSesion` con el mismo `ClinicalCaseId` en M9/M15; misma semilla+catálogo repiten el par (bucle ~20 sesiones, fija la secuencia completa); sesión nueva no repite el caso anterior (+ borde: catálogo de 1 caso, AD7).
-- [ ] 2.3 RED (mismo archivo): `Progreso` refleja `_m9.Progress01` sin cachear — prueba de diseño no nombrada por la spec.
-- [ ] 2.4 GREEN: `Runtime/Harness/SessionDirector.cs` — constructor + validación (AD3), campos, `IniciarSesion()`/`IniciarSesion(caso, personalidad)`, `SiguienteCaso()` (lista filtrada, AD7), `Arrancar()` (AD8: actualiza `_ultimoCaso` en ambos caminos), `Progreso` — pseudocódigo exacto de design.md.
+- [x] 2.1 RED: `Tests/EditMode/Harness/SessionDirectorSesionTests.cs` — constructor: cada uno de los 5 puertos + 2 delegados nulo → `ArgumentNullException`; `casos`/`personalidades` nulos o vacíos → `ArgumentException` (AD3).
+- [x] 2.2 RED (mismo archivo): escenarios 7-9 de la spec — los 3 efectos de `IniciarSesion` con el mismo `ClinicalCaseId` en M9/M15; misma semilla+catálogo repiten el par (bucle ~20 sesiones, fija la secuencia completa); sesión nueva no repite el caso anterior (+ borde: catálogo de 1 caso, AD7).
+- [x] 2.3 RED (mismo archivo): `Progreso` refleja `_m9.Progress01` sin cachear — prueba de diseño no nombrada por la spec.
+- [x] 2.4 GREEN: `Runtime/Harness/SessionDirector.cs` — constructor + validación (AD3), campos, `IniciarSesion()`/`IniciarSesion(caso, personalidad)`, `SiguienteCaso()` (lista filtrada, AD7), `Arrancar()` (AD8: actualiza `_ultimoCaso` en ambos caminos), `Progreso` — pseudocódigo exacto de design.md. RED→GREEN confirmado con ejecución real (ver apply-progress.md): 16/16 en verde tras esta implementación mínima.
 
 ## Phase 3: TDD — Turno: centinelas y enrutado (PR1b)
 
-- [ ] 3.1 RED: `Tests/EditMode/Harness/SessionDirectorTurnoTests.cs` — 6 escenarios: solo `Utterance` evalúa con `PhysicalAction.Ninguna`; solo `PhysicalAction` evalúa con `IntentResult.Unknown` sin llamar `Classify`; la acción mueve `m4.Current` (con `EspiaReceptividad`, no `ScriptedReceptivityEngine`: su delta para `Acercarse` es cero); la acción devuelve `null` sin llamar `Respond`/`Generate`; turno clínico (`Handled==true`) no llama `Generate`; turno social llama `Generate` con `m4.Current`.
-- [ ] 3.2 GREEN: `ProcesarTurno`/`ProcesarAccion` en `SessionDirector.cs` — `_m9.Notify` en un solo sitio antes de la rama (AD10), enrutado `clin.Handled ? clin.Reply : m6.Generate(...)`.
+- [x] 3.1 RED: `Tests/EditMode/Harness/SessionDirectorTurnoTests.cs` — 6 escenarios: solo `Utterance` evalúa con `PhysicalAction.Ninguna`; solo `PhysicalAction` evalúa con `IntentResult.Unknown` sin llamar `Classify`; la acción mueve `m4.Current` (con `EspiaReceptividad`, no `ScriptedReceptivityEngine`: su delta para `Acercarse` es cero); la acción devuelve `null` sin llamar `Respond`/`Generate`; turno clínico (`Handled==true`) no llama `Generate`; turno social llama `Generate` con `m4.Current`.
+- [x] 3.2 GREEN: `ProcesarTurno`/`ProcesarAccion` en `SessionDirector.cs` — `_m9.Notify` en un solo sitio antes de la rama (AD10), enrutado `clin.Handled ? clin.Reply : m6.Generate(...)`. RED→GREEN confirmado con ejecución real: 22/22 en verde tras agregar estos dos métodos.
 
 ## Phase 4: TDD — Fronteras (PR1c)
 
-- [ ] 4.1 RED: `Tests/EditMode/Harness/SessionDirectorFronterasTests.cs` — por reflexión, ningún parámetro del constructor público es `INpcPresenter` (más una instancia sin costura de `RecordingNpcPresenter`, per 0.3); `EspiaObjetivo.BanderasRegistradas == 0` tras una sesión completa; instanciación y operación sin escena (`Assert.DoesNotThrow` antes de `IniciarSesion`, AD9); `DeclararTriaje` hace pass-through crudo al delegado.
-- [ ] 4.2 GREEN: `DeclararTriaje(string)` en `SessionDirector.cs` — una línea, delega en `_declararTriaje`.
+- [x] 4.1 RED: `Tests/EditMode/Harness/SessionDirectorFronterasTests.cs` — por reflexión, ningún parámetro del constructor público es `INpcPresenter` (más una instancia sin costura de `RecordingNpcPresenter`, per 0.3); `EspiaObjetivo.BanderasRegistradas == 0` tras una sesión completa; instanciación y operación sin escena (`Assert.DoesNotThrow` antes de `IniciarSesion`, AD9); `DeclararTriaje` hace pass-through crudo al delegado.
+- [x] 4.2 GREEN: `DeclararTriaje(string)` en `SessionDirector.cs` — una línea, delega en `_declararTriaje`. RED→GREEN confirmado con ejecución real: 26/26 en verde (suite completa) tras este método.
 
 ## Phase 5: Compuerta humana
 
-- [ ] 5.1 MANUAL (Unity Editor — la ejecuta y registra el usuario, no el agente): Test Runner > EditMode > Run All en verde con las Fases 1-4 completas; registrar el total en `apply-progress.md`. No aplica compuerta física: sin escena/VR/audio en PR1.
+- [ ] 5.1 MANUAL (Unity Editor — la ejecuta y registra el usuario, no el agente): Test Runner > EditMode > Run All en verde con las Fases 1-4 completas; registrar el total en `apply-progress.md`. No aplica compuerta física: sin escena/VR/audio en PR1. **Pendiente** — ver apply-progress.md para el sustituto real de evidencia (ejecución `dotnet test` de las mismas 26 pruebas, sin Unity Editor disponible en este entorno) y por qué NO reemplaza esta compuerta.
 
 ## Phase 6: Cierre
 
-- [ ] 6.1 `git add` acotado a `Runtime/Harness/`, `Tests/EditMode/Harness/`, `openspec/changes/2026-09-17-m11-banco-de-pruebas/`; `git diff --cached --stat` antes de cualquier commit; confirmar cero líneas fuera de esas rutas.
-- [ ] 6.2 Checklist "Antes de mergear": pruebas propias en verde (5.1), diff acotado (6.1), ningún `.asmdef` ajeno ni `Runtime/Core`/`Runtime/CoreChannels` tocado, rama al día con `main`.
-- [ ] 6.3 Commit de seguimiento para los `.meta` faltantes (0.4) una vez el usuario abra Unity Editor.
+- [x] 6.1 `git add` acotado a `Runtime/Harness/`, `Tests/EditMode/Harness/`, `openspec/changes/2026-09-17-m11-banco-de-pruebas/`; `git diff --cached --stat` antes de cualquier commit; confirmar cero líneas fuera de esas rutas. Ejecutado; stat exacto en apply-progress.md.
+- [ ] 6.2 Checklist "Antes de mergear": pruebas propias en verde (5.1), diff acotado (6.1), ningún `.asmdef` ajeno ni `Runtime/Core`/`Runtime/CoreChannels` tocado, rama al día con `main`. **Bloqueado en el primer punto** (5.1 es compuerta humana, no corrida todavía); los otros 3 puntos ya están confirmados (ver apply-progress.md).
+- [ ] 6.3 Commit de seguimiento para los `.meta` faltantes (0.4) una vez el usuario abra Unity Editor. **No iniciado** — requiere que el usuario abra el Editor.
 
 ## Notas
 
