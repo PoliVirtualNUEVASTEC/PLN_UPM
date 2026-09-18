@@ -163,6 +163,10 @@ Más 14 pruebas de diseño no nombradas por la spec (11 de validación AD3 + `Se
 - [ ] 6.2 (Fase 6): checklist "Antes de mergear" — bloqueado en su primer punto (depende de 5.1).
 - [ ] 6.3 (Fase 6): commit de seguimiento para los `.meta` — requiere que el usuario abra Unity Editor.
 
+## Estado final al cierre (2026-09-18)
+
+19/19 tareas completadas. La compuerta humana de la tarea 5.1 fue confirmada en verde por el usuario el 2026-09-18; el usuario confirmó después que el total fue de 26 pruebas (W1 cerrado). Los `.meta` fueron generados en el commit de seguimiento `a4118f8`. El PR #44 fue mergeado en `5b78ce7` el 2026-09-18T16:12:38Z. Este archivo es un snapshot de la sesión anterior (17/19); el apartado anterior es histórico y este cierre prevalece sobre esas cifras.
+
 ## Workload / PR Boundary
 
 - Mode: `size:exception` en un solo PR (confirmado por el usuario 2026-09-18, registrado en el

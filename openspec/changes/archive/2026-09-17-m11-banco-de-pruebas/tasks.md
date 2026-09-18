@@ -63,7 +63,7 @@ Si el usuario acepta `size:exception`, las fases siguientes se aplican como un s
 ## Phase 6: Cierre
 
 - [x] 6.1 `git add` acotado a `Runtime/Harness/`, `Tests/EditMode/Harness/`, `openspec/changes/2026-09-17-m11-banco-de-pruebas/`; `git diff --cached --stat` antes de cualquier commit; confirmar cero líneas fuera de esas rutas. Ejecutado; stat exacto en apply-progress.md.
-- [x] 6.2 Checklist "Antes de mergear": pruebas propias en verde (5.1, confirmado), diff acotado (6.1, confirmado), ningún `.asmdef` ajeno ni `Runtime/Core`/`Runtime/CoreChannels` tocado (confirmado via `git diff main...HEAD --stat` excluyendo las 3 rutas permitidas: solo aparece el borrado ya aprobado de `2026-09-09-m11-armado-sesion/`), rama al dia con `main` (pendiente de verificar justo antes de abrir el PR). Listo para abrir PR1.
+- [x] 6.2 Checklist "Antes de mergear": pruebas propias en verde (5.1, confirmado), diff acotado (6.1, confirmado), ningún `.asmdef` ajeno ni `Runtime/Core`/`Runtime/CoreChannels` tocado (confirmado via `git diff main...HEAD --stat` excluyendo las 3 rutas permitidas: solo aparece el borrado ya aprobado de `2026-09-09-m11-armado-sesion/`), rama al dia con `main` (verificado al abrir el PR #44: 0 commits detras de `main`, 7 adelante). Listo para abrir PR1.
 - [x] 6.3 Commit de seguimiento para los `.meta` faltantes (0.4): commit `a4118f8`, 9 archivos (`Runtime/Harness.meta`, `Runtime/Harness/*.meta`, `Tests/EditMode/Harness.meta`, `Tests/EditMode/Harness/*.meta`), generados por el Unity Editor del usuario al correr el Test Runner.
 
 ## Notas
