@@ -58,13 +58,13 @@ Si el usuario acepta `size:exception`, las fases siguientes se aplican como un s
 
 ## Phase 5: Compuerta humana
 
-- [ ] 5.1 MANUAL (Unity Editor — la ejecuta y registra el usuario, no el agente): Test Runner > EditMode > Run All en verde con las Fases 1-4 completas; registrar el total en `apply-progress.md`. No aplica compuerta física: sin escena/VR/audio en PR1. **Pendiente** — ver apply-progress.md para el sustituto real de evidencia (ejecución `dotnet test` de las mismas 26 pruebas, sin Unity Editor disponible en este entorno) y por qué NO reemplaza esta compuerta.
+- [x] 5.1 MANUAL (Unity Editor — la ejecuta y registra el usuario, no el agente): Test Runner > EditMode > Run All en verde con las Fases 1-4 completas. **Confirmado por el usuario el 2026-09-18: todo en verde.**
 
 ## Phase 6: Cierre
 
 - [x] 6.1 `git add` acotado a `Runtime/Harness/`, `Tests/EditMode/Harness/`, `openspec/changes/2026-09-17-m11-banco-de-pruebas/`; `git diff --cached --stat` antes de cualquier commit; confirmar cero líneas fuera de esas rutas. Ejecutado; stat exacto en apply-progress.md.
-- [ ] 6.2 Checklist "Antes de mergear": pruebas propias en verde (5.1), diff acotado (6.1), ningún `.asmdef` ajeno ni `Runtime/Core`/`Runtime/CoreChannels` tocado, rama al día con `main`. **Bloqueado en el primer punto** (5.1 es compuerta humana, no corrida todavía); los otros 3 puntos ya están confirmados (ver apply-progress.md).
-- [ ] 6.3 Commit de seguimiento para los `.meta` faltantes (0.4) una vez el usuario abra Unity Editor. **No iniciado** — requiere que el usuario abra el Editor.
+- [x] 6.2 Checklist "Antes de mergear": pruebas propias en verde (5.1, confirmado), diff acotado (6.1, confirmado), ningún `.asmdef` ajeno ni `Runtime/Core`/`Runtime/CoreChannels` tocado (confirmado via `git diff main...HEAD --stat` excluyendo las 3 rutas permitidas: solo aparece el borrado ya aprobado de `2026-09-09-m11-armado-sesion/`), rama al dia con `main` (pendiente de verificar justo antes de abrir el PR). Listo para abrir PR1.
+- [x] 6.3 Commit de seguimiento para los `.meta` faltantes (0.4): commit `a4118f8`, 9 archivos (`Runtime/Harness.meta`, `Runtime/Harness/*.meta`, `Tests/EditMode/Harness.meta`, `Tests/EditMode/Harness/*.meta`), generados por el Unity Editor del usuario al correr el Test Runner.
 
 ## Notas
 
