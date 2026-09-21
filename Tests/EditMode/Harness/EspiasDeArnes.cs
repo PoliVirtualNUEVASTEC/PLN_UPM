@@ -39,7 +39,19 @@ namespace NpcAi.Harness.Tests
         /// <summary>Una entrada por cada <see cref="Reset"/>, en orden de llamada.</summary>
         public List<PersonalityId> Resets { get; } = new List<PersonalityId>();
 
-        public Receptivity Current { get; private set; } = Receptivity.Neutral;
+        /// <summary>
+        /// Programable por la prueba. <see cref="Reset"/> lo devuelve a
+        /// <see cref="Receptivity.Neutral"/>, asi que una prueba que necesite otro valor debe
+        /// asignarlo DESPUES de iniciar la sesion.
+        /// </summary>
+        public Receptivity Current { get; set; } = Receptivity.Neutral;
+
+        /// <summary>
+        /// Cuando no es <c>null</c>, <see cref="Evaluate"/> devuelve exactamente este cambio en
+        /// lugar del que calcula el espia; permite programar uno distinguible de
+        /// <c>default(ReceptivityChange)</c> y verificar que M11 lo reenvia sin alterarlo.
+        /// </summary>
+        public ReceptivityChange? CambioProgramado { get; set; }
 
         public void Reset(PersonalityId personality)
         {
@@ -61,7 +73,7 @@ namespace NpcAi.Harness.Tests
             if (action != PhysicalAction.Ninguna)
                 Current = Receptivity.Receptivo;
 
-            return new ReceptivityChange(from, Current, 0, "ESPIA");
+            return CambioProgramado ?? new ReceptivityChange(from, Current, 0, "ESPIA");
         }
     }
 
@@ -132,6 +144,9 @@ namespace NpcAi.Harness.Tests
 
         public int Invocaciones { get; private set; }
 
+        /// <summary>El <see cref="IntentResult"/> de la ultima llamada a <see cref="Respond"/>.</summary>
+        public IntentResult UltimoIntent { get; private set; }
+
         public bool IsReady => true;
 
         // "Core." es obligatorio aqui: el namespace del modulo NpcAi.ClinicalResponse choca
@@ -150,6 +165,7 @@ namespace NpcAi.Harness.Tests
         public Core.ClinicalResponse Respond(Utterance nurseUtterance, IntentResult intent)
         {
             Invocaciones++;
+            UltimoIntent = intent;
             return Respuesta;
         }
     }

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using NpcAi.Core;
-using NpcAi.Presentation.Fakes;
 
 namespace NpcAi.Harness.Tests
 {
@@ -48,14 +47,12 @@ namespace NpcAi.Harness.Tests
                 .Any(p => typeof(INpcPresenter).IsAssignableFrom(p.ParameterType));
 
             Assert.IsFalse(tieneParametroPresentador);
-
-            // RecordingNpcPresenter existe y se instancia, pero no hay costura donde
-            // inyectarlo en SessionDirector: la aserion estructural de arriba es la que
-            // puede fallar de verdad si algun dia se agrega ese parametro.
-            var presentador = new RecordingNpcPresenter();
-            Assert.IsFalse(presentador.HasPlayed);
         }
 
+        // Prueba de humo: SessionDirector solo ve IScenarioObjective, que no declara
+        // RegisterRedFlag, asi que este contador es inalcanzable por construccion y no
+        // detecta regresiones por si sola. La garantia la lleva la prueba por reflexion
+        // SessionDirector_no_declara_ningun_miembro_de_bandera_roja.
         [Test]
         public void SesionCompleta_nunca_incrementa_el_contador_de_bandera_roja_del_espia_local()
         {
@@ -68,6 +65,31 @@ namespace NpcAi.Harness.Tests
             director.DeclararTriaje("infeccioso");
 
             Assert.AreEqual(0, objetivo.BanderasRegistradas);
+        }
+
+        [Test]
+        public void SessionDirector_no_declara_ningun_miembro_de_bandera_roja()
+        {
+            const BindingFlags todos = BindingFlags.Public | BindingFlags.NonPublic
+                | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+
+            var miembros = typeof(SessionDirector).GetMembers(todos);
+
+            // Guarda contra una enumeracion vacia por banderas de reflexion mal elegidas:
+            // sin esto la asercion de abajo pasaria de forma vacua.
+            Assert.IsTrue(miembros.Any(m => m.Name == nameof(SessionDirector.ProcesarTurno)));
+
+            var miembrosDeBandera = miembros
+                .Select(m => m.Name)
+                .Where(nombre =>
+                    nombre.IndexOf("RedFlag", StringComparison.OrdinalIgnoreCase) >= 0
+                    || nombre.IndexOf("BanderaRoja", StringComparison.OrdinalIgnoreCase) >= 0)
+                .ToArray();
+
+            Assert.IsEmpty(
+                miembrosDeBandera,
+                "SessionDirector no debe declarar ninguna costura de bandera roja: " +
+                string.Join(", ", miembrosDeBandera));
         }
 
         // --- Requirement: SessionDirector es C# puro ---
