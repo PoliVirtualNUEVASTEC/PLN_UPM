@@ -88,10 +88,10 @@ Conteo esperado en `NpcAi.RequirementResponse.Tests`: 40 pruebas (8 + 10 + 15 + 
 
 Jefferson confirmó 40/40 en verde, 0 omitidas (filtros `RequirementMatcherTests|RequirementDisclosurePolicyTests|ScriptedRequirementResponderTests|RequirementCaseLoaderTests`). Presupuesto: se decidió **partir en PR2a/PR2b** en vez de `size:exception` (ver nota al inicio de la Fase 2 en `tasks.md`).
 
-- **PR2a** — rama `feat/m16-matcher-politica` (renombrada desde `feat/m16-matcher-politica-doble`, mismo punto sobre `feat/m16-tipo-cargador`). Commit `946021b`: `RequirementMatcher.cs` + `RequirementDisclosurePolicy.cs` + sus pruebas + los `.meta` de carpeta `Runtime/RequirementResponse.meta` y `Tests/EditMode/RequirementResponse.meta` que venían sin rastrear desde PR1 (riesgo cerrado). 286 líneas con `.meta`.
-- **PR2b** — rama `feat/m16-doble-scripted`, creada sobre `feat/m16-matcher-politica`. Commit `17aed9e`: `Fakes/ScriptedRequirementResponder.cs` + su prueba de contrato + `Fakes.meta`. 197 líneas con `.meta`.
-- Ambos commits locales, sin `push`. `Data/Requirements/` (README + 4 casos, adelanto de Fase 4) sigue sin commitear, para el PR4.
+- **PR2a** — rama `feat/m16-matcher-politica` (renombrada desde `feat/m16-matcher-politica-doble`, mismo punto sobre `feat/m16-tipo-cargador`). Commit `946021b`: `RequirementMatcher.cs` + `RequirementDisclosurePolicy.cs` + sus pruebas + los `.meta` de carpeta `Runtime/RequirementResponse.meta` y `Tests/EditMode/RequirementResponse.meta` que venían sin rastrear desde PR1 (riesgo cerrado). 286 líneas con `.meta`. **Abierto: [#47](https://github.com/PoliVirtualNUEVASTEC/PLN_UPM/pull/47)**, base `feat/m16-tipo-cargador`.
+- **PR2b** — rama `feat/m16-doble-scripted`, creada sobre `feat/m16-matcher-politica`. Commit `17aed9e`: `Fakes/ScriptedRequirementResponder.cs` + su prueba de contrato + `Fakes.meta`. 197 líneas con `.meta`. Commit `bb3e8b7` (docs, cierre 2.1-2.8b). **Abierto: [#48](https://github.com/PoliVirtualNUEVASTEC/PLN_UPM/pull/48)**, base `feat/m16-matcher-politica` (stacked sobre PR2a).
+- `Data/Requirements/` (README + 4 casos, adelanto de Fase 4) sigue sin commitear, para el PR4.
 
 ### Próximo paso
 
-Falta `push` de ambas ramas y abrir 2 PRs en GitHub: PR2a con base `feat/m16-tipo-cargador`, PR2b con base `feat/m16-matcher-politica` (stacked-to-main, igual que M0). Después, Fase 3 (`PersonalityStyleBank`, `matices.json`, `RequirementResponder`).
+Fase 3 (`PersonalityStyleBank` + `matices.json` + `RequirementResponder` real), rama nueva sobre `feat/m16-doble-scripted` una vez que #47/#48 avancen en revisión.
