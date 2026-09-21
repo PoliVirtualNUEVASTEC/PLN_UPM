@@ -226,15 +226,18 @@ decidió **partir en PR3a/PR3b** (mismo criterio que PR2, exceso mayor esta vez:
 - **PR3a** — rama `feat/m16-matices-bank` (renombrada desde `feat/m16-matices-respondedor`,
   mismo punto sobre `feat/m16-doble-scripted`). Commit `607e847`: `Data/Requirements/matices.json`
   + `PersonalityStyleBank.cs` + su prueba + `Data/Requirements.meta` (folder meta, primera vez
-  que ese directorio entra a git). 309 líneas con `.meta`.
+  que ese directorio entra a git). 309 líneas con `.meta`. **Abierto:
+  [#50](https://github.com/PoliVirtualNUEVASTEC/PLN_UPM/pull/50)**, base `feat/m16-doble-scripted`.
 - **PR3b** — rama `feat/m16-respondedor-real`, creada sobre `feat/m16-matices-bank`. Commit
-  `4caa20b`: `RequirementResponder.cs` + su prueba de contrato. 241 líneas con `.meta`.
-- Ambos commits locales, sin `push`. `Data/Requirements/README.md` + `caso-juntas-01..04.json`
-  (adelanto de Fase 4) siguen sin commitear.
+  `4caa20b`: `RequirementResponder.cs` + su prueba de contrato. 241 líneas con `.meta`. Commit
+  `fe93251` (docs, cierre 3.1-3.6b). **Abierto:
+  [#51](https://github.com/PoliVirtualNUEVASTEC/PLN_UPM/pull/51)**, base `feat/m16-matices-bank`
+  (stacked sobre PR3a).
+- `Data/Requirements/README.md` + `caso-juntas-01..04.json` (adelanto de Fase 4) siguen sin
+  commitear.
 
 ### Próximo paso
 
-Falta `push` de ambas ramas y abrir 2 PRs en GitHub: PR3a con base `feat/m16-doble-scripted`
-(PR2b, #48), PR3b con base `feat/m16-matices-bank` (stacked-to-main). Después, Fase 4 (catálogo
-de datos + `RequirementCasesDataTests` + `Docs/MODULES.md`), ya con el README y los 4 `.json` de
-`Data/Requirements/` redactados desde PR1 pero sin commitear.
+Fase 4 (catálogo de datos + `RequirementCasesDataTests` + `Docs/MODULES.md`), rama nueva sobre
+`feat/m16-respondedor-real` una vez que #50/#51 avancen en revisión, ya con el README y los 4
+`.json` de `Data/Requirements/` redactados desde PR1 pero sin commitear.
