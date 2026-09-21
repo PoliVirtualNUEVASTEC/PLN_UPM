@@ -67,14 +67,23 @@ automatización VCS/PR ni clasificación de ejecutables).
 
 ## Phase 2: Emparejador + puerta + doble (PR2, depende de Fase 1)
 
-- [ ] 2.1 **RED** — `RequirementMatcherTests.cs`: coincidencia esperada, `-1` en turno social, normalización quita tildes/signos, empate gana menor índice.
-- [ ] 2.2 **GREEN** — Crear `RequirementMatcher.cs` (`Normalizar`, `Match`; adaptación de `ClinicalFactMatcher`, AD11).
-- [ ] 2.3 **RED** — `RequirementDisclosurePolicyTests.cs`: matriz 3×3 (`receptividadMinima` × `Receptivity`) — 6 `Revelado`, 3 `AunNoRevelado`; nunca `NoAplica`.
-- [ ] 2.4 **GREEN** — Crear `RequirementDisclosurePolicy.cs` (`Decidir`, comparación aritmética `(int)actual >= (int)minima`, AD4).
-- [ ] 2.5 Crear `Fakes/ScriptedRequirementResponder.cs`: tabla embebida de ≥6 `Requerimiento` cubriendo los 3 niveles, **incluye una entrada sintética `"presupuesto"`** (decisión #66: el doble sí puede usar datos sintéticos) con `ejemplosDePregunta` que cubran "cual es el presupuesto del proyecto"; reconoce los 4 ids `caso-juntas-01..04`; reutiliza `RequirementMatcher`/`RequirementDisclosurePolicy` (regla 4).
-- [ ] 2.6 **RED** — `ScriptedRequirementResponderTests.cs : RequirementResponderContract` (hereda, sin tocar la base).
-- [ ] 2.7 **GREEN** — Ajustar 2.5 hasta que los 10 `[Test]` heredados pasen sin `Assume`-skip (posible por el dato sintético).
-- [ ] 2.8 **Verify PR2** — Doble en 10/10 verde; 2.1 y 2.3 en verde; diff no toca módulos ajenos.
+> **Partido en PR2a/PR2b (2026-09-21)**: el lote completo (447 líneas autoradas)
+> excedía el presupuesto de 400 por 47. Jefferson decidió partir por unidad de
+> trabajo natural en vez de aceptar `size:exception`: **PR2a** = Matcher +
+> DisclosurePolicy + sus pruebas (rama `feat/m16-matcher-politica`, commit
+> `946021b`, 286 líneas con `.meta`). **PR2b** = doble + su prueba de contrato
+> (rama `feat/m16-doble-scripted`, sobre PR2a, commit `17aed9e`, 197 líneas con
+> `.meta`), mismo patrón ya usado para PR4a/PR4b más abajo.
+
+- [x] 2.1 **RED** — `RequirementMatcherTests.cs`: coincidencia esperada, `-1` en turno social, normalización quita tildes/signos, empate gana menor índice. **PR2a.**
+- [x] 2.2 **GREEN** — Crear `RequirementMatcher.cs` (`Normalizar`, `Match`; adaptación de `ClinicalFactMatcher`, AD11). **PR2a.**
+- [x] 2.3 **RED** — `RequirementDisclosurePolicyTests.cs`: matriz 3×3 (`receptividadMinima` × `Receptivity`) — 6 `Revelado`, 3 `AunNoRevelado`; nunca `NoAplica`. **PR2a.**
+- [x] 2.4 **GREEN** — Crear `RequirementDisclosurePolicy.cs` (`Decidir`, comparación aritmética `(int)actual >= (int)minima`, AD4). **PR2a.**
+- [x] 2.5 Crear `Fakes/ScriptedRequirementResponder.cs`: tabla embebida de ≥6 `Requerimiento` cubriendo los 3 niveles, **incluye una entrada sintética `"presupuesto"`** (decisión #66: el doble sí puede usar datos sintéticos) con `ejemplosDePregunta` que cubran "cual es el presupuesto del proyecto"; reconoce los 4 ids `caso-juntas-01..04`; reutiliza `RequirementMatcher`/`RequirementDisclosurePolicy` (regla 4). **PR2b.**
+- [x] 2.6 **RED** — `ScriptedRequirementResponderTests.cs : RequirementResponderContract` (hereda, sin tocar la base). **PR2b.**
+- [x] 2.7 **GREEN** — Ajustar 2.5 hasta que los 10 `[Test]` heredados pasen sin `Assume`-skip (posible por el dato sintético). **PR2b.**
+- [x] 2.8a **Verify PR2a** — 2.1 y 2.3 en verde; asmdef de runtime sigue refiriendo solo `NpcAi.Core`; diff no toca módulos ajenos. Confirmado por Jefferson (2026-09-21): Test Runner EditMode en verde.
+- [x] 2.8b **Verify PR2b** — Doble en 10/10 verde; conteo total del lote (Matcher+DisclosurePolicy+doble+regresión PR1): 40/40 en verde, 0 omitidas. Confirmado por Jefferson (2026-09-21).
 
 ## Phase 3: Banco de matices + adaptador real (PR3, depende de Fase 2)
 
