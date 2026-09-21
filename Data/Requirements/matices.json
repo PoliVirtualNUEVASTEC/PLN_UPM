@@ -1,0 +1,36 @@
+{
+  "matices": [
+    {
+      "personalidad": "grosero",
+      "prefijoRevelado": "Ya se lo dije, ",
+      "desvios": [
+        "Eso no se lo voy a explicar ahora.",
+        "No estamos para esos detalles."
+      ]
+    },
+    {
+      "personalidad": "empatico",
+      "prefijoRevelado": "Claro, con gusto. ",
+      "desvios": [
+        "Prefiero que primero nos conozcamos un poco mas.",
+        "Lleguemos a eso en un momento."
+      ]
+    },
+    {
+      "personalidad": "histerico",
+      "prefijoRevelado": "¡Uf, si! ",
+      "desvios": [
+        "¡No, no, eso todavia no!",
+        "¡Ay, espere, eso lo vemos despues!"
+      ]
+    },
+    {
+      "personalidad": "introvertido",
+      "prefijoRevelado": "",
+      "desvios": [
+        "Preferiria no hablar de eso todavia.",
+        "Mmm... mas adelante."
+      ]
+    }
+  ]
+}
