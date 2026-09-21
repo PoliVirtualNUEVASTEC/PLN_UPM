@@ -87,12 +87,33 @@ automatización VCS/PR ni clasificación de ejecutables).
 
 ## Phase 3: Banco de matices + adaptador real (PR3, depende de Fase 2)
 
-- [ ] 3.1 Crear `Data/Requirements/matices.json` (4 personalidades: `grosero`, `histerico`, `introvertido`, `empatico`, cada una con `prefijoRevelado` + `desvios[]`).
-- [ ] 3.2 **RED** — `PersonalityStyleBankTests.cs`: carga de las 4; rotación determinista (`indice % desvios.Count`, AD7, 3 llamadas mismo resultado); índice fuera de rango no lanza; personalidad desconocida/`None` ⇒ fallback con texto no vacío (AD10).
-- [ ] 3.3 **GREEN** — Crear `PersonalityStyleBank.cs` (`TryParse`, `PrefijoRevelado`, `Desvio`, clases `Raw*`).
-- [ ] 3.4 **RED** — `RequirementResponderTests.cs : RequirementResponderContract`: `CreateSubject()` con fixture JSON embebido que refleja el **dominio real** de `caso-juntas-01` (torneo de fútbol) — **sin inventar `"presupuesto"`** (decisión #66). Consecuencia documentada, no oculta: los `[Test]` heredados 4–9 (`Cuando_revela_...`, `Cuando_aun_no_revela_...`, `El_RequirementId_esta_poblado_...`, `Es_determinista_...`, `Baja_receptividad_...`, `AssignCase_es_idempotente_...`) usan la frase fija `"cual es el presupuesto del proyecto"` con `Assume` — al no existir ese requerimiento en el fixture real, quedan **omitidos por `Assume` (inconclusive), no en rojo**; solo los `[Test]` 1, 2, 3 y 10 corren en verde contra la implementación real. Esto es un gap conocido contra la escenario "ambas pasan el 100% sin `Assume`" de la spec `respondedor-requerimientos-m16` — flag para `sdd-verify`/mantenedor, no se fuerza dato falso ni se oculta. Agregar además 3 pruebas propias: (a) `Revelado` ⇒ `Reply.Text` contiene la `respuesta` intacta; (b) `AunNoRevelado` ⇒ `Reply.Text` no contiene la `respuesta`; (c) el matiz de personalidad cambia el prefijo, no el dato.
-- [ ] 3.5 **GREEN** — Crear `RequirementResponder.cs` (`IRequirementResponder` real; prefijo `Core.RequirementResponse` obligatorio, AD5 ignora `intent`, AD9 `Func<RequirementCaseId,string>` + `maticesJson` inyectados, AD10 fallback si `matices.json` no valida).
-- [ ] 3.6 **Verify PR3** — 3.2 en verde; 3.4 con los 4 `[Test]` no dependientes de "presupuesto" en verde y los 6 dependientes documentados como `Assume`-omitidos (no como fallo oculto); 3 pruebas propias en verde; asmdef sigue refiriendo solo `NpcAi.Core`.
+> **Partido en PR3a/PR3b (2026-09-21)**: el lote completo (527 líneas autoradas)
+> excedía el presupuesto de 400 por 127, más que PR2. Jefferson volvió a elegir
+> partir por unidad de trabajo natural en vez de `size:exception`: **PR3a** =
+> `matices.json` + `PersonalityStyleBank` + su prueba (rama
+> `feat/m16-matices-bank`, commit `607e847`, 309 líneas con `.meta`). **PR3b**
+> = `RequirementResponder` + su prueba de contrato (rama
+> `feat/m16-respondedor-real`, sobre PR3a, commit `4caa20b`, 241 líneas con
+> `.meta`), mismo patrón de PR2a/PR2b.
+>
+> **Corrección al pronóstico de esta misma fase**: de los 10 `[Test]`
+> heredados de `RequirementResponderContract`, en realidad corren **6 en
+> verde y 4 inconclusas por `Assume`** (no 4 verdes/6 inconclusas como decía
+> el párrafo original de 3.4 abajo). `Es_determinista_...` y
+> `AssignCase_es_idempotente_...` no dependen de "presupuesto": solo
+> verifican consistencia entre llamadas, que se cumple igual con `NoAplica`.
+> Las 4 que sí quedan inconclusas: `Cuando_revela_...`,
+> `Cuando_aun_no_revela_...`, `El_RequirementId_esta_poblado_...`,
+> `Baja_receptividad_...`. Confirmado por Jefferson en Test Runner
+> (2026-09-21): exactamente esas 4 en naranja, el resto verde.
+
+- [x] 3.1 Crear `Data/Requirements/matices.json` (4 personalidades: `grosero`, `histerico`, `introvertido`, `empatico`, cada una con `prefijoRevelado` + `desvios[]`). **PR3a.**
+- [x] 3.2 **RED** — `PersonalityStyleBankTests.cs`: carga de las 4; rotación determinista (`indice % desvios.Count`, AD7, 3 llamadas mismo resultado); índice fuera de rango no lanza; personalidad desconocida/`None` ⇒ fallback con texto no vacío (AD10). **PR3a.**
+- [x] 3.3 **GREEN** — Crear `PersonalityStyleBank.cs` (`TryParse`, `PrefijoRevelado`, `Desvio`, clases `Raw*`). **PR3a.**
+- [x] 3.4 **RED** — `RequirementResponderTests.cs : RequirementResponderContract`: `CreateSubject()` con fixture JSON embebido que refleja el **dominio real** de `caso-juntas-01` (torneo de fútbol) — **sin inventar `"presupuesto"`** (decisión #66). Ver corrección de conteo en la nota de partido arriba (6 verdes/4 inconclusas, no 4/6). Agregadas las 3 pruebas propias: (a) `Revelado` ⇒ `Reply.Text` contiene la `respuesta` intacta; (b) `AunNoRevelado` ⇒ `Reply.Text` no contiene la `respuesta`; (c) el matiz de personalidad cambia el prefijo, no el dato. **PR3b.**
+- [x] 3.5 **GREEN** — Crear `RequirementResponder.cs` (`IRequirementResponder` real; prefijo `Core.RequirementResponse` obligatorio, AD5 ignora `intent`, AD9 `Func<RequirementCaseId,string>` + `maticesJson` inyectados, AD10 fallback si `matices.json` no valida). **PR3b.**
+- [x] 3.6a **Verify PR3a** — 3.2 en verde; asmdef de runtime sigue refiriendo solo `NpcAi.Core`; diff no toca módulos ajenos. Confirmado por Jefferson (2026-09-21).
+- [x] 3.6b **Verify PR3b** — 6/10 `[Test]` heredados en verde, 4 inconclusas por `Assume` documentadas (no fallo oculto); 3 pruebas propias en verde; conteo total del lote (PR1+PR2+PR3): 62 pruebas, 0 rojas. Confirmado por Jefferson (2026-09-21).
 
 ## Phase 4: Catálogo de datos + docs (PR4, depende de Fase 3; partir en 4a/4b si el conteo real de 4.2–4.5 supera 400 líneas)
 
