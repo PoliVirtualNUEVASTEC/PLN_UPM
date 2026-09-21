@@ -402,21 +402,22 @@ tenía pre-planeado para esta fase (no el corte genérico A/B de PR2/PR3).
 - **PR4a** — rama `feat/m16-casos-torneo-tienda` (renombrada desde `feat/m16-catalogo-datos`,
   mismo punto sobre `feat/m16-respondedor-real`). Commit `38f3d97`: `README.md` +
   `caso-juntas-01.json` + `caso-juntas-02.json`. De paso corrige el README para reflejar
-  `MinimoRequerimientos=4` (ver desviación #3 arriba). 268 líneas con `.meta`.
+  `MinimoRequerimientos=4` (ver desviación #3 arriba). 268 líneas con `.meta`. **Abierto:
+  [#52](https://github.com/PoliVirtualNUEVASTEC/PLN_UPM/pull/52)**, base `feat/m16-respondedor-real`.
 - **PR4b** — rama `feat/m16-casos-colegio-aerolinea`, creada sobre `feat/m16-casos-torneo-tienda`.
   Commit `3933977`: `caso-juntas-03.json` + `caso-juntas-04.json` + `RequirementCasesDataTests.cs`
-  + `Docs/MODULES.md` (fila M16). 356 líneas con `.meta`.
-- Ambos commits locales, sin `push` todavía.
+  + `Docs/MODULES.md` (fila M16). 356 líneas con `.meta`. **Abierto:
+  [#53](https://github.com/PoliVirtualNUEVASTEC/PLN_UPM/pull/53)**, base
+  `feat/m16-casos-torneo-tienda` (stacked sobre PR4a) — último PR de la cadena M16.
 
 Con esto, **las 4 fases de M16 quedan implementadas end-to-end**: catálogo, matcher, puerta de
 receptividad, doble, respondedor real, matices de personalidad y datos de los 4 casos.
 
 ### Próximo paso
 
-1. `push` de `feat/m16-casos-torneo-tienda` y `feat/m16-casos-colegio-aerolinea` + abrir 2 PRs en
-   GitHub (PR4a base `feat/m16-respondedor-real` #51, PR4b base `feat/m16-casos-torneo-tienda`).
-2. Tras el merge de toda la cadena (#45→#47→#48→#50→#51→PR4a→PR4b), `sdd-verify` sobre el cambio
-   completo (`respondedor-requerimientos-m16` + `catalogo-requerimientos-m16`) y luego
-   `sdd-archive` promueve ambos `spec.md` a `openspec/specs/`.
+1. Revisión y merge de la cadena completa (#45→#47→#48→#50→#51→#52→#53).
+2. Tras el merge, `sdd-verify` sobre el cambio completo (`respondedor-requerimientos-m16` +
+   `catalogo-requerimientos-m16`) y luego `sdd-archive` promueve ambos `spec.md` a
+   `openspec/specs/`.
 3. M16 desbloquea M10 (Sala de Juntas), que sigue esperando este catálogo+respondedor para
    convertirse en cambio SDD propio.
