@@ -1,0 +1,51 @@
+{
+  "id": "caso-juntas-04",
+  "cliente": {
+    "empresa": "Aerolinea",
+    "rol": "Coordinador de operaciones",
+    "proyecto": "Sistema de vuelos, tripulaciones y tiquetes",
+    "contexto": "Hoy manejan vuelos, tripulantes y pasajeros con informacion dispersa."
+  },
+  "requerimientos": [
+    {
+      "id": "avion",
+      "receptividadMinima": "NoReceptivo",
+      "ejemplosDePregunta": ["como identifican cada avion", "que datos tiene el avion"],
+      "respuesta": "Cada avion queda identificado por matricula, modelo y capacidad."
+    },
+    {
+      "id": "vuelo",
+      "receptividadMinima": "NoReceptivo",
+      "ejemplosDePregunta": ["que aeropuertos tiene el vuelo", "cada vuelo tiene origen y destino"],
+      "respuesta": "Cada vuelo va a tener un aeropuerto de origen y uno de destino."
+    },
+    {
+      "id": "tripulante",
+      "receptividadMinima": "Neutral",
+      "ejemplosDePregunta": ["como asignan el rol del tripulante", "el tripulante cambia de rol"],
+      "respuesta": "El tripulante va a tener un rol distinto segun el vuelo."
+    },
+    {
+      "id": "tiquete",
+      "receptividadMinima": "Neutral",
+      "ejemplosDePregunta": ["que guarda el tiquete", "que datos tiene el tiquete"],
+      "respuesta": "El tiquete va a guardar el asiento, la clase y el precio final.",
+      "emotionTag": "neutral",
+      "animationCue": "asentir"
+    },
+    {
+      "id": "pasajero_identificacion",
+      "receptividadMinima": "Receptivo",
+      "ejemplosDePregunta": ["como identifican al pasajero", "que documento usa el pasajero"],
+      "respuesta": "El pasajero se identifica por pasaporte o cedula y nacionalidad."
+    },
+    {
+      "id": "pasajero_multivuelo",
+      "receptividadMinima": "Receptivo",
+      "ejemplosDePregunta": ["puede viajar en varios vuelos", "un pasajero repite vuelos distintos"],
+      "respuesta": "Un pasajero puede viajar en muchos vuelos distintos.",
+      "emotionTag": "reservado",
+      "animationCue": "cruzar_brazos"
+    }
+  ]
+}
