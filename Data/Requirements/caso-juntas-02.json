@@ -1,0 +1,51 @@
+{
+  "id": "caso-juntas-02",
+  "cliente": {
+    "empresa": "Tienda de barrio con varias sucursales",
+    "rol": "Dueno del negocio",
+    "proyecto": "Sistema de inventario y ventas",
+    "contexto": "Hoy llevan el inventario y las ventas por separado en cada sucursal."
+  },
+  "requerimientos": [
+    {
+      "id": "producto",
+      "receptividadMinima": "NoReceptivo",
+      "ejemplosDePregunta": ["como identifican cada producto", "un producto tiene varios proveedores"],
+      "respuesta": "El producto se identifica por codigo de barras, nombre y categoria, y puede tener varios proveedores distintos."
+    },
+    {
+      "id": "proveedor",
+      "receptividadMinima": "NoReceptivo",
+      "ejemplosDePregunta": ["como identifican al proveedor", "que datos manejan del proveedor"],
+      "respuesta": "El proveedor se identifica por NIT y razon social."
+    },
+    {
+      "id": "precio_compra",
+      "receptividadMinima": "Neutral",
+      "ejemplosDePregunta": ["como manejan el precio de compra", "el precio depende del proveedor"],
+      "respuesta": "El precio de compra se maneja por cada combinacion de producto y proveedor."
+    },
+    {
+      "id": "inventario",
+      "receptividadMinima": "Neutral",
+      "ejemplosDePregunta": ["como controlan el inventario", "cada sucursal tiene su inventario"],
+      "respuesta": "Cada sucursal controla su propio inventario, por separado de las demas.",
+      "emotionTag": "neutral",
+      "animationCue": "asentir"
+    },
+    {
+      "id": "cliente_frecuente",
+      "receptividadMinima": "Receptivo",
+      "ejemplosDePregunta": ["como funcionan los puntos", "como identifican al cliente frecuente"],
+      "respuesta": "El cliente frecuente queda con documento, nombre y puntos, y acumula puntos con cada compra."
+    },
+    {
+      "id": "factura",
+      "receptividadMinima": "Receptivo",
+      "ejemplosDePregunta": ["que informacion lleva la factura", "como se arma la factura"],
+      "respuesta": "La factura lleva numero, fecha, hora y valor total, y agrupa varios productos con su cantidad y subtotal.",
+      "emotionTag": "reservado",
+      "animationCue": "cruzar_brazos"
+    }
+  ]
+}
