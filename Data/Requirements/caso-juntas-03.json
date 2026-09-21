@@ -1,0 +1,39 @@
+{
+  "id": "caso-juntas-03",
+  "cliente": {
+    "empresa": "Colegio",
+    "rol": "Coordinador del comedor escolar",
+    "proyecto": "Aplicacion para el menu y el comedor de los estudiantes",
+    "contexto": "Los padres hoy no tienen forma de ver ni cambiar el menu de sus hijos."
+  },
+  "requerimientos": [
+    {
+      "id": "rangos_edad",
+      "receptividadMinima": "NoReceptivo",
+      "ejemplosDePregunta": ["cuantos rangos de edad manejan", "que rangos de edad tienen los estudiantes"],
+      "respuesta": "La aplicacion va a manejar tres rangos de edad para los estudiantes."
+    },
+    {
+      "id": "alergias",
+      "receptividadMinima": "NoReceptivo",
+      "ejemplosDePregunta": ["registran alergias de los ninos", "que restricciones alimentarias manejan"],
+      "respuesta": "Registramos las restricciones alimentarias y las alergias de cada nino."
+    },
+    {
+      "id": "menu",
+      "receptividadMinima": "Neutral",
+      "ejemplosDePregunta": ["los padres pueden cambiar el menu", "pueden ver el menu de sus hijos"],
+      "respuesta": "Los padres van a poder ver y cambiar el menu de sus hijos.",
+      "emotionTag": "neutral",
+      "animationCue": "asentir"
+    },
+    {
+      "id": "descuento_empleados",
+      "receptividadMinima": "Receptivo",
+      "ejemplosDePregunta": ["que descuento tienen los empleados", "cuanto es el descuento del empleado"],
+      "respuesta": "Los empleados tienen un veinte por ciento de descuento.",
+      "emotionTag": "reservado",
+      "animationCue": "cruzar_brazos"
+    }
+  ]
+}

@@ -531,3 +531,65 @@ por ser la rama compartida real del equipo.
     de M15.
 - **Specs formales**: `openspec/specs/respondedor-clinico-m15/spec.md` se crea al archivar
   este cambio SDD.
+
+---
+
+## M16 — Catálogo y respondedor de requerimientos de sala de juntas
+
+- **Carpeta**: `Runtime/RequirementResponse/`, `Data/Requirements/`
+- **Dueño**: Jefferson Estiven Aristizábal Quiceno
+- **Qué hace**: implementa el puerto `IRequirementResponder` para que el NPC responda como el
+  cliente del caso de sala de juntas asignado, usando la tabla de `requerimientos` del caso.
+  Cuando el estudiante pregunta algo que empareja con un requerimiento, la puerta de
+  receptividad (`receptividadMinima` del requerimiento vs. la `Receptivity` actual) decide si el
+  dato sale intacto (`Revelado`) o si el turno se desvía con una frase genérica de personalidad
+  (`AunNoRevelado`, banco de datos, nunca un `switch`); cuando nada empareja, devuelve
+  `Core.RequirementResponse.NoAplica` y el turno lo toma M6. Espejo de M15
+  (`Runtime/ClinicalResponse/`), con dos piezas propias que M15 no tiene: la puerta de
+  receptividad por requerimiento y el banco de matices de personalidad como dato externo (regla
+  7 del repo: agregar una personalidad no cambia ninguna clase).
+- **Puerto que consume**: `IRequirementResponder` — congelado en `Runtime/Core/Ports.cs` desde
+  el contrato v3 (`2026-09-16-m0-puerto-requerimientos-juntas`, PRs #39-#42, M0→M16), con su
+  propia base de pruebas de contrato (`RequirementResponderContract`). M16 no modifica ese
+  contrato: lo implementa por primera vez, igual que M15 hace con `IClinicalResponder`.
+- **Estado actual**: **implementación real completa, en revisión — ningún PR mergeado a `main`
+  todavía**. 5 PR encadenados (`stacked-to-main`, mismo patrón de M0): PR1 (#45, tipo de caso +
+  cargador), PR2a (#47, emparejador + puerta de receptividad) y PR2b (#48, doble determinista en
+  paridad de contrato) sobre PR1, PR3a (#50, banco de matices) y PR3b (#51, adaptador real) sobre
+  PR2b, y este PR4 (catálogo de datos + pruebas de datos + esta fila) sobre PR3b.
+  - `RequirementCase.cs`: POCO (`Cliente`, `Requerimiento`) — sin bloque de evaluación, mismo
+    principio que `ClinicalCase` (M15) con `Clave`.
+  - `RequirementCaseLoader.cs`: JSON → `RequirementCase`. `receptividadMinima` viaja como texto
+    en el JSON y se mapea por nombre exacto (nunca por valor numérico de enum, que rompería en
+    silencio); un requerimiento con la puerta rota se descarta sin abortar el caso completo, y el
+    caso entero falla solo si tras descartar quedan menos de 4 requerimientos válidos.
+  - `RequirementMatcher.cs`: copia adaptada de `ClinicalFactMatcher` (misma normalización;
+    duplicada, no compartida, porque referenciar `NpcAi.ClinicalResponse` violaría la regla 3 del
+    repo).
+  - `RequirementDisclosurePolicy.cs`: la puerta de receptividad — nunca devuelve `NoAplica`, solo
+    decide entre `Revelado` y `AunNoRevelado` comparando la `Receptivity` actual contra la mínima
+    del requerimiento.
+  - `PersonalityStyleBank.cs`: banco de estilo por personalidad cargado de
+    `Data/Requirements/matices.json` (prefijo de revelación + frases de desvío rotadas por
+    índice); nunca recibe ni conoce la `respuesta` de ningún requerimiento, así que el desvío no
+    puede filtrarla por construcción. Con `matices.json` ausente o inválido, cae en un fallback en
+    código (AD10) que garantiza texto no vacío.
+  - `RequirementResponder.cs`: adaptador real (`IRequirementResponder`); ignora `Intent` a
+    propósito (decisión de negocio, misma que M15).
+  - `Fakes/ScriptedRequirementResponder.cs`: doble determinista, tabla embebida de 6
+    requerimientos que cubre los 3 niveles, en paridad de contrato con el real.
+  - `Data/Requirements/`: 4 casos (`caso-juntas-01..04`, transcritos de `Data/Corpus/juntas.json`:
+    torneo de fútbol, tienda, colegio, aerolínea) y `matices.json` (4 personalidades de M5).
+    `caso-juntas-03` (colegio) solo llega a 4 requerimientos reales narrados en el corpus — motivó
+    bajar `MinimoRequerimientos` de 6 a 4 en el cargador antes que inventar contenido.
+  - `RequirementCasesDataTests.cs`: valida los 4 `.json` reales contra el esquema (patrón
+    `ClinicalCasesDataTests` de M15) — esquema mínimo por requerimiento, `id` == nombre de
+    archivo, cobertura de los 3 niveles de receptividad por caso, exactamente 4 casos, y que
+    ningún desvío del banco de personalidad filtre una `respuesta` real.
+  - **Pendiente (no bloqueante, M16→M10)**: cablear `RequirementResponder` en el enrutador de
+    sala de juntas (M10, hoy solo doble — bloqueado hasta que M16 cierre) y en la escena real de
+    M11 (sigue sin existir); de dónde salen los bytes de `Data/Requirements/` fuera del Editor es
+    decisión de esa costura, no de M16.
+- **Specs formales**: `respondedor-requerimientos-m16/spec.md` y
+  `catalogo-requerimientos-m16/spec.md` se crean al archivar este cambio SDD
+  (`openspec/changes/2026-09-16-m16-catalogo-respondedor-juntas/`).
