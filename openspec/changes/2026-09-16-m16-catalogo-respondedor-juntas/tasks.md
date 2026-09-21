@@ -117,15 +117,32 @@ automatización VCS/PR ni clasificación de ejecutables).
 
 ## Phase 4: Catálogo de datos + docs (PR4, depende de Fase 3; partir en 4a/4b si el conteo real de 4.2–4.5 supera 400 líneas)
 
-- [x] 4.1 Escribir `Data/Requirements/README.md`: esquema, regla "un caso == un archivo, `id` == nombre de archivo", reglas de redacción de `ejemplosDePregunta` (mínimo 2, mínimo 2 palabras de contenido cada uno). **Hecho (2026-09-18, adelantado)**.
-- [x] 4.2 Transcribir `Data/Requirements/caso-juntas-01.json` (torneo de fútbol) desde `Data/Corpus/juntas.json` — solo contenido ya narrado, **sin `"presupuesto"`** ni ningún requerimiento inventado; ≥4 requerimientos, ≥1 por cada nivel de receptividad. **Hecho (2026-09-18, adelantado)**: 6 requerimientos, corrige además el ejemplo de `design.md` que incluía "presupuesto"/"calendario" (no narrados en el corpus, retirados).
-- [x] 4.3 Transcribir `Data/Requirements/caso-juntas-02.json` (tienda) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: 6 requerimientos.
-- [x] 4.4 Transcribir `Data/Requirements/caso-juntas-03.json` (colegio) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: solo 4 requerimientos reales en el corpus — motivó bajar `MinimoRequerimientos` de 6 a 4 (decisión de Jefferson, ver 1.5).
-- [x] 4.5 Transcribir `Data/Requirements/caso-juntas-04.json` (aerolínea) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: 6 requerimientos.
-- [ ] 4.6 **RED** — `RequirementCasesDataTests.cs` (patrón `ClinicalCasesDataTests`, `AssetDatabase.FindAssets` filtrado por `Data/Requirements/` + prefijo `caso-juntas-`): esquema mínimo por requerimiento; `id` == nombre de archivo; cobertura de los 3 niveles por caso; exactamente 4 casos; ninguna `respuesta` aparece como subcadena en ningún `desvio` de `matices.json`.
-- [ ] 4.7 **GREEN** — Ajustar 4.2–4.5 (solo datos, ninguna clase C#) hasta que 4.6 pase.
-- [ ] 4.8 Actualizar `Docs/MODULES.md` con la fila M16 (`Runtime/RequirementResponse/`, `NpcAi.RequirementResponse`, estado, dependencias M0→M16→M10).
-- [ ] 4.9 **Verify PR4** — 4.6 en verde para los 4 casos; diff no toca `Runtime/Core/`, `Runtime/CoreChannels/`, `Runtime/ClinicalResponse/`, `Runtime/Scenarios/`, `Runtime/Nlu/`, `Data/Corpus/`; los `.meta` de archivos/carpetas nuevos versionados.
+> **Partido en PR4a/PR4b (2026-09-21)**: el lote completo (589 líneas autoradas,
+> contando README + 4 casos + prueba + docs) excedía el presupuesto de 400 por
+> 189 — el mayor exceso de las 4 fases, dentro del rango que ya anticipaba
+> `design.md` (550–650). Se usó el **plan B ya pre-planeado en el encabezado de
+> esta fase**, no el corte genérico A/B de PR2/PR3: **PR4a** = `README.md` +
+> `caso-juntas-01.json` + `caso-juntas-02.json`, sin pruebas nuevas (rama
+> `feat/m16-casos-torneo-tienda`, commit `38f3d97`, 268 líneas con `.meta`).
+> **PR4b** = `caso-juntas-03.json` + `caso-juntas-04.json` +
+> `RequirementCasesDataTests.cs` + `Docs/MODULES.md` (rama
+> `feat/m16-casos-colegio-aerolinea`, sobre PR4a, commit `3933977`, 356 líneas
+> con `.meta`) — el test exige los 4 casos completos para validar "exactamente
+> 4", por eso va junto con los 2 casos restantes.
+>
+> De paso se corrigió `README.md`: seguía diciendo "mínimo 6" cuando
+> `MinimoRequerimientos` se bajó a 4 desde PR1 (commit `aa44564`); quedó
+> desactualizado por escribirse antes de esa decisión.
+
+- [x] 4.1 Escribir `Data/Requirements/README.md`: esquema, regla "un caso == un archivo, `id` == nombre de archivo", reglas de redacción de `ejemplosDePregunta` (mínimo 2, mínimo 2 palabras de contenido cada uno). **Hecho (2026-09-18, adelantado). PR4a.**
+- [x] 4.2 Transcribir `Data/Requirements/caso-juntas-01.json` (torneo de fútbol) desde `Data/Corpus/juntas.json` — solo contenido ya narrado, **sin `"presupuesto"`** ni ningún requerimiento inventado; ≥4 requerimientos, ≥1 por cada nivel de receptividad. **Hecho (2026-09-18, adelantado)**: 6 requerimientos, corrige además el ejemplo de `design.md` que incluía "presupuesto"/"calendario" (no narrados en el corpus, retirados). **PR4a.**
+- [x] 4.3 Transcribir `Data/Requirements/caso-juntas-02.json` (tienda) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: 6 requerimientos. **PR4a.**
+- [x] 4.4 Transcribir `Data/Requirements/caso-juntas-03.json` (colegio) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: solo 4 requerimientos reales en el corpus — motivó bajar `MinimoRequerimientos` de 6 a 4 (decisión de Jefferson, ver 1.5). **PR4b.**
+- [x] 4.5 Transcribir `Data/Requirements/caso-juntas-04.json` (aerolínea) con el mismo criterio. **Hecho (2026-09-18, adelantado)**: 6 requerimientos. **PR4b.**
+- [x] 4.6 **RED** — `RequirementCasesDataTests.cs` (patrón `ClinicalCasesDataTests`, `AssetDatabase.FindAssets` filtrado por `Data/Requirements/` + prefijo `caso-juntas-`): esquema mínimo por requerimiento; `id` == nombre de archivo; cobertura de los 3 niveles por caso; exactamente 4 casos; ninguna `respuesta` aparece como subcadena en ningún `desvio` de `matices.json`. **PR4b.**
+- [x] 4.7 **GREEN** — Ajustar 4.2–4.5 (solo datos, ninguna clase C#) hasta que 4.6 pase. Los 4 casos ya cumplían el esquema, sin cambios de datos necesarios. **PR4b.**
+- [x] 4.8 Actualizar `Docs/MODULES.md` con la fila M16 (`Runtime/RequirementResponse/`, `NpcAi.RequirementResponse`, estado, dependencias M0→M16→M10). **PR4b.**
+- [x] 4.9 **Verify PR4** — 4.6 en verde para los 4 casos; diff no toca `Runtime/Core/`, `Runtime/CoreChannels/`, `Runtime/ClinicalResponse/`, `Runtime/Scenarios/`, `Runtime/Nlu/`, `Data/Corpus/`; los `.meta` de archivos/carpetas nuevos versionados. Conteo total del módulo: 67 pruebas, 4 inconclusas esperadas (ver nota de Fase 3), 0 rojas. Confirmado por Jefferson (2026-09-21).
 
 ## Dependencias entre fases
 Fase 1 → Fase 2 → Fase 3 → Fase 4, estrictamente secuencial (cada PR rama de la rama del PR
