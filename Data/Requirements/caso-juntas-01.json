@@ -1,0 +1,51 @@
+{
+  "id": "caso-juntas-01",
+  "cliente": {
+    "empresa": "Liga municipal de futbol",
+    "rol": "Coordinador del torneo",
+    "proyecto": "Sistema de gestion del torneo",
+    "contexto": "Hoy llevan todo en cuadernos y hojas de calculo sueltas."
+  },
+  "requerimientos": [
+    {
+      "id": "equipos",
+      "receptividadMinima": "NoReceptivo",
+      "ejemplosDePregunta": ["como identifican a cada equipo", "que datos manejan del equipo"],
+      "respuesta": "Cada equipo se registra con su nombre y el ano de fundacion."
+    },
+    {
+      "id": "jugadores",
+      "receptividadMinima": "NoReceptivo",
+      "ejemplosDePregunta": ["que datos manejan de cada jugador", "puede un jugador jugar en dos equipos"],
+      "respuesta": "De cada jugador guardamos documento, nombre y posicion, y solo puede pertenecer a un equipo durante el torneo."
+    },
+    {
+      "id": "partidos",
+      "receptividadMinima": "Neutral",
+      "ejemplosDePregunta": ["como arman un partido", "quien dirige cada partido"],
+      "respuesta": "Un partido enfrenta a dos equipos, uno local y uno visitante, y siempre lo dirige un grupo de arbitros."
+    },
+    {
+      "id": "estadio",
+      "receptividadMinima": "Neutral",
+      "ejemplosDePregunta": ["que informacion registran del estadio", "un estadio tiene varios partidos"],
+      "respuesta": "Cada estadio queda identificado por nombre, ciudad y capacidad, y puede tener varios partidos.",
+      "emotionTag": "neutral",
+      "animationCue": "asentir"
+    },
+    {
+      "id": "arbitros",
+      "receptividadMinima": "Receptivo",
+      "ejemplosDePregunta": ["como asignan los arbitros", "puede un arbitro pitar varios partidos"],
+      "respuesta": "Cada arbitro tiene codigo de licencia y nombre, y puede pitar varios partidos del torneo."
+    },
+    {
+      "id": "estadisticas",
+      "receptividadMinima": "Receptivo",
+      "ejemplosDePregunta": ["como llevan el rendimiento", "como registran goles y tarjetas"],
+      "respuesta": "Registramos los goles y las tarjetas, amarillas y rojas, por jugador y por partido.",
+      "emotionTag": "reservado",
+      "animationCue": "cruzar_brazos"
+    }
+  ]
+}
