@@ -268,7 +268,49 @@ cambió una línea.
 - Estimated review budget impact: 519 líneas totales partidas en 2 PRs de 197 y 322, ambos dentro
   del presupuesto de 400 individualmente
 
+## Alcance de este batch: SOLO PR4 (`feat/m10-doble-y-progreso`), tasks 4.1-4.6 — ÚLTIMO PR de implementación
+
+**Mode**: Strict TDD de autoría. Para `ResetParityTests.cs` el RED real es "el doble viejo (paso
+fijo ±1) no tiene `HasCase`/`AssignCase`/etc. — no compila", el GREEN es la reescritura (tarea 4.1).
+Para `RequirementsProgresoTests.cs` la clase real ya está completa desde PR3a/3b — es cobertura de
+caracterización, no un ciclo RED-then-GREEN de producción nueva.
+
+### Completed Tasks
+
+- [x] 4.1 Reescribir `Runtime/Scenarios/Boardroom/Fakes/ScriptedScenarioObjective.cs`
+- [x] 4.2 Verificar `ScriptedScenarioObjectiveTests.cs` (sin tocar, 11 líneas) sigue pasando los 7 heredados
+- [x] 4.3 `Tests/EditMode/Scenarios/Boardroom/RequirementsProgresoTests.cs`
+- [x] 4.4 `Tests/EditMode/Scenarios/Boardroom/ResetParityTests.cs`
+- [x] 4.5 `Docs/MODULES.md` — sección M10 reescrita
+- [x] 4.6 Verificación: cero `Debug.Log`, cero diff en asmdefs, `.meta` versionados
+
+### Files Changed
+
+| File | Action | What Was Done |
+|---|---|---|
+| `Runtime/Scenarios/Boardroom/Fakes/ScriptedScenarioObjective.cs` | **Modified** (único archivo no nuevo de todo el cambio) | Reescrito de "paso fijo ±1 sobre 4 pasos" (calco de M9) a espejo completo de la superficie de `RequirementsScenarioObjective`. Sin IO ni `Data/`: `Dictionary<string, RequirementId[]>` embebida con los 4 casos reales, verificada id por id contra `Data/Requirements/caso-juntas-0N.json`. Reusa `BoardroomObjectiveSettings.Mezclar` (AD7) para paridad aritmética, mismo criterio que `ScriptedRequirementResponder` (M16) |
+| `Tests/EditMode/Scenarios/Boardroom/RequirementsProgresoTests.cs` | Created | 10 `[Test]`: tabla de sanidad completa de 7 filas (`1e-4`), incluida la fila "cierre temprano honesto" (t=1,c=0.5,k=1→0.70) agregada tras el gate check del orchestrator para que el archivo cubra las 7 filas de design.md literalmente, no 6; renormalización sin caso (fila 7); penalización exacta de 0.04 por `Worsened` no recuperado + reversión de `IsComplete`; clamp `[0,1]` bajo 20 notifies alternados; saturación/piso del trato |
+| `Tests/EditMode/Scenarios/Boardroom/ResetParityTests.cs` | Created | 7 `[Test]`: `Reset()` real y doble vuelven al estado recién construido desde progreso parcial, idempotencia en ambos, `AssignCase` vuelve a funcionar después de `Reset()`, convergencia observable real/doble |
+| `Docs/MODULES.md` | Modified | Sección M10: "solo doble" → implementación real completa (arquitectura, 5 PRs con números #56-#59 + PR4, ~76 pruebas EditMode del módulo) |
+
+### Issues Found
+
+Gate check del orchestrator (validador de contrato en contexto fresco) marcó **PASS** general con un
+hallazgo no bloqueante: `RequirementsProgresoTests.cs` cubría 5 de las 7 filas literalmente más
+renormalización, mezclando la fila "cierre temprano honesto" (t=1,c=0.5,k=1→0.70) con la fila de
+cobertura parcial sola (t=1,c=0.5,k=0→0.5). Corregido antes de commitear: se agregó
+`Fila2b_cierre_temprano_honesto_con_cobertura_parcial` como prueba dedicada.
+
+### Ledger
+
+Attempt ledger: `acquire` (token `sha256:819979656c3fdf4cae8be4563cf807f4deae627b59a236b3388c37e884c9b6a9`)
+→ mutación cero, `state: proceed`. Trabajo ejecutado sobre `feat/m10-doble-y-progreso`. `settle` con
+`outcome: passed`, `evidence-revision: sha256:79f5499fffe1476e7b6fb0cb9239efbc8099b32d990670ebbba80b2342d5481d`,
+`harness-disposition: reused` → `state: complete`.
+
 ## Status
 
-16/22 tareas completas (PR1 + PR2 + PR3a + PR3b código completo, split confirmado). Ready for next
-batch (PR4, tasks 4.1-4.6) una vez PR3a/PR3b tengan rama/commit/PR abiertos.
+**22/22 tareas completas — los 5 PRs de M10 tienen código listo.** PR1 (#56), PR2 (#57), PR3a (#58),
+PR3b (#59) abiertos en GitHub, self-merge pendiente de Jefferson. PR4 (`feat/m10-doble-y-progreso`)
+validado (PASS + 1 hallazgo corregido), listo para commit/push/PR. Próximo paso real tras el PR4:
+`sdd-verify` (no otro `sdd-apply`) → `sdd-archive`.

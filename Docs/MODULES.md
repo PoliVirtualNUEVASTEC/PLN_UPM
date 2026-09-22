@@ -354,14 +354,68 @@ por ser la rama compartida real del equipo.
 
 - **Carpeta**: `Runtime/Scenarios/Boardroom`
 - **Dueño**: Jefferson Estiven Aristizábal Quiceno
-- **Qué hace** (según el contrato — ver Estado actual): define y mide el progreso del objetivo
-  del escenario de levantamiento de requerimientos en sala de juntas.
+- **Qué hace**: define y mide el progreso del objetivo del escenario de levantamiento de
+  requerimientos en sala de juntas. `Progress01`/`IsComplete` mezclan TRES vías — cobertura del
+  catálogo de requerimientos (vía M16), cierre explícito y fiel, y trato sostenido con el
+  cliente — sobre el checklist que resuelve el `RequirementCaseId` asignado.
 - **Contrato que expone**: `IScenarioObjective` — idéntico al de M9 (mismo puerto, dos
-  implementaciones distintas por escenario).
-- **Estado actual**: **solo doble**. `Runtime/Scenarios/Boardroom/` en `origin/main` únicamente
-  contiene `Fakes/ScriptedScenarioObjective.cs`, con la misma lógica de paso fijo ±1 que la de
-  M9 (mismo patrón, distinto escenario). No implementa condiciones propias de sala de juntas.
-- **Specs formales**: no existe.
+  implementaciones distintas por escenario). `IScenarioObjective` y `ScenarioObjectiveContract`
+  no cambian un byte: M10 es la segunda implementación real del puerto, hermana de
+  `TriageScenarioObjective` (M9).
+- **Estado actual**: **implementación real completa, en revisión — ningún PR mergeado a `main`
+  todavía**. Espejo estructural de M9 (`Runtime/Scenarios/Emergency/`), con dos piezas que M9 no
+  tiene: tres vías de progreso en vez de dos, y los pesos como dato editable
+  (`Data/Scenarios/Boardroom.asset`, regla dura 7) en vez de constantes C#. 5 PR encadenados
+  (`feature-branch-chain`, mismo patrón que M0/M16): PR1 (#56, pesos + asset), PR2 (#57,
+  checklist + cargador), PR3a (#58, clase real + contrato heredado), PR3b (#59, superficie
+  aditiva), PR4 (doble rediseñado + progreso + esta fila, pendiente de apertura).
+  - `BoardroomObjectiveSettings.cs` (`Config/`): pesos complementarios inyectables — `PesoDeTrato`
+    (~0.2 por defecto) y su complemento `PesoDeLevantamiento`; dentro del levantamiento,
+    `PesoDeCobertura` (~0.75) y su complemento `PesoDeCierre`. `Mezclar(hayCaso, cobertura, cierre,
+    trato)` es el ÚNICO lugar donde viven las tres vías combinadas — la llaman la implementación
+    real y el doble, así la paridad aritmética no depende de copiar la fórmula a mano. Con los
+    pesos por defecto aplana a `Progress01 = 0.2·trato + 0.6·cobertura + 0.2·cierre`; sin caso
+    asignado renormaliza y el trato es el 100 % del progreso.
+  - `Unity/BoardroomObjectiveSettingsAsset.cs`: `ScriptableObject` sin lógica que expone esos
+    pesos como dato editable en `Data/Scenarios/Boardroom.asset`.
+  - `RequirementChecklist.cs` / `RequirementChecklistLoader.cs`: proyección MÍNIMA del catálogo
+    de M16 (solo `id` del caso + `requerimientos[].id`, nunca `respuesta` ni
+    `receptividadMinima`), espejo de `TriageKey`/`TriageKeyLoader` (M9). No exige el mínimo de 4
+    requerimientos que sí exige `RequirementCaseLoader` (eso es invariante de M16, no de M10).
+  - `RequirementsScenarioObjective.cs`: implementación real. Superficie aditiva sobre la clase
+    concreta (mismo patrón que `BertIntentClassifier`/`VrInputBehaviour`/`TriageScenarioObjective`):
+    `AssignCase(RequirementCaseId)` (nunca lanza — id desconocido, cargador `null`, función que
+    lanza, JSON inválido o checklist vacío dejan `HasCase` en falso), `RegisterDisclosure(Core.
+    RequirementResponse)` (acredita solo `Outcome == Revelado` del caso asignado, idempotente por
+    id), `PresentSummary(IReadOnlyCollection<RequirementId>)` (acredita el cierre solo con
+    coincidencia EXACTA entre lo presentado y lo revelado; un resumen vacío sin ninguna
+    revelación nunca acredita), y `Reset()` (real, idempotente). El trato es un libro mayor
+    simétrico (no una racha estilo M9): `AssignCase` lo siembra lleno, cada `Worsened` resta 1
+    con piso en 0, cada `Improved` suma 1 saturado — divergencia consciente frente a M9 (que
+    reinicia la racha a 0 ante cualquier `Worsened`), porque el cliente arranca en `Receptivo` y
+    un reinicio total lo dejaría irrecuperable ante un solo gesto malo.
+  - `Fakes/ScriptedScenarioObjective.cs` (doble, único archivo NO nuevo del cambio): rediseñado
+    para espejar la superficie aditiva completa del real, punto por punto. Sin IO ni `Data/`: los
+    4 casos reales del catálogo (`caso-juntas-01`..`04`) viven embebidos como tabla de ids en C#
+    puro (mismo criterio que `ScriptedRequirementResponder`, M16), y reusa
+    `BoardroomObjectiveSettings.Mezclar` para la paridad aritmética con el real en vez de
+    reimplementar la fórmula.
+  - **Tests**: ~67 pruebas EditMode nuevas en `NpcAi.Scenarios.Boardroom.Tests` — pesos y asset
+    (`BoardroomObjectiveSettingsTests`, `BoardroomObjectiveSettingsAssetTests`), checklist y
+    cargador (`RequirementChecklistLoaderTests`, `RequirementChecklistDataTests` contra los 4
+    `.json` reales), las 7 pruebas heredadas de `ScenarioObjectiveContract` en real y doble
+    (`RequirementsScenarioObjectiveTests`, `ScriptedScenarioObjectiveTests`, ninguna omitida por
+    `Assume`), la superficie aditiva (`RequirementsSuperficieAditivaTests`), la tabla de sanidad
+    de la aritmética del progreso con tolerancia `1e-4` (`RequirementsProgresoTests` — 7 filas,
+    renormalización sin caso, clamp a `[0,1]`, reversibilidad de `IsComplete`, penalización
+    exacta de 0.04 por un `Worsened` sin recuperar) y la paridad de `Reset()` entre real y doble
+    (`ResetParityTests`).
+  - **Pendiente (no bloqueante)**: cablear `RequirementResponder` (M16) →
+    `RequirementsScenarioObjective` en el enrutador real de la escena, y de dónde salen los bytes
+    de `Data/Scenarios/` y `Data/Requirements/` fuera del Editor — decisión de M11, que sigue sin
+    escena construida.
+- **Specs formales**: `openspec/specs/escenario-sala-juntas-m10/spec.md` se crea al archivar este
+  cambio SDD (`openspec/changes/2026-09-16-m10-escenario-sala-juntas/`).
 
 ---
 
