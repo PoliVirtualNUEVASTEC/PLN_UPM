@@ -170,7 +170,105 @@ Attempt ledger: `acquire` (mismo attempt del orchestrator, token
 - Estimated review budget impact: 378 líneas autoradas, dentro del presupuesto de 400 para un
   PR individual, ~11 % arriba del estimado de diseño (~340)
 
+## Alcance de este batch: SOLO PR3 (`feat/m10-objetivo-real`), tasks 3.1-3.4
+
+**Mode**: Standard workflow. `strict_tdd: true` en config, pero design.md fija que ningún agente
+ejecuta Unity — el verde de las pruebas es compuerta humana (mismo criterio que PR1/PR2).
+Implementación escrita completa y autoconsistente contra la interfaz exacta fijada en
+design.md ("Interfaces / Contracts" → `RequirementsScenarioObjective.cs`), espejo estructural de
+`TriageScenarioObjective` (M9) divergiendo a propósito en AD1 (libro mayor simétrico de trato,
+resta 1 en vez de reiniciar a 0 ante `Worsened`).
+
+### Completed Tasks
+
+- [x] 3.1 `Runtime/Scenarios/Boardroom/RequirementsScenarioObjective.cs`
+- [x] 3.2 `Tests/EditMode/Scenarios/Boardroom/RequirementsScenarioObjectiveTests.cs : ScenarioObjectiveContract`
+- [x] 3.3 `Tests/EditMode/Scenarios/Boardroom/RequirementsSuperficieAditivaTests.cs`
+- [x] 3.4 Verificación: suites 3.2/3.3 listas para correr en verde — pendiente de verde humano en
+  Unity Editor (ningún agente ejecuta Unity); cero `Assume` omitidos confirmado por inspección
+  manual línea por línea. **Conteo real reportado, sin decidir split (instrucción explícita del
+  orchestrator).**
+
+### Files Changed
+
+| File | Action | What Was Done |
+|---|---|---|
+| `Runtime/Scenarios/Boardroom/RequirementsScenarioObjective.cs` | Created | Implementación real de `IScenarioObjective` (segunda, hermana de `TriageScenarioObjective`). Dos ctores (sin parámetros = sujeto sin caso; rico = pesos + `Func<RequirementCaseId,string>`). Lecturas aditivas `HasCase`/`RequirementCount`/`RequirementsDisclosed`/`SummaryIsFaithful` (AD8/AD9, recalculada en cada lectura). `Progress01` delega en `BoardroomObjectiveSettings.Mezclar` (AD7) con `cobertura = revelados/checklist.Count`, `cierre = SummaryIsFaithful ? 1 : 0`, `trato = _trato/PasosDeTrato`. `Notify` = libro mayor simétrico (AD1/AD2): `Improved` satura en `PasosDeTrato`, `Worsened` resta 1 con piso en 0, `!Changed` no-op. `AssignCase` limpia siempre y solo siembra el trato lleno si la carga tiene éxito (id conocido + `RequirementChecklistLoader.TryParse` exitoso); nunca lanza (id `None`, cargador `null`, función que lanza, JSON inválido o checklist vacío → `HasCase` falso). `RegisterDisclosure(Core.RequirementResponse)` acredita solo `Outcome == Revelado` de un id del caso asignado, idempotente por `HashSet`, "Core." calificado a propósito (AD6, previene shadowing futuro con el namespace `NpcAi.RequirementResponse` de M16). `PresentSummary` sobrescribible, sin efecto antes de `AssignCase`, `null`/vacío seguros. `Reset()` vuelve al estado recién construido, idempotente. 179 líneas |
+| `Tests/EditMode/Scenarios/Boardroom/RequirementsScenarioObjectiveTests.cs` | Created | `: ScenarioObjectiveContract`, `CreateSubject() => new RequirementsScenarioObjective()` — hereda las 7 pruebas sin modificar la base, espejo de `TriageScenarioObjectiveTests`. 18 líneas |
+| `Tests/EditMode/Scenarios/Boardroom/RequirementsSuperficieAditivaTests.cs` | Created | 23 `[Test]`: `AssignCase` (8 — id desconocido, cargador `null`, función que lanza, JSON basura, `RequirementCaseId.None`, checklist vacío AD4, éxito puebla `HasCase`/`RequirementCount`, reasignación descarta progreso previo y resiembra el trato lleno AD1); `RegisterDisclosure` (6 — acredita `Revelado` del caso, filtra otros `Outcome` y `NoAplica`, filtra id ajeno, idempotente, no-op antes de `AssignCase`, `default` seguro); `PresentSummary` (9 — coincidencia exacta acredita aun con cobertura parcial, falta un id no acredita, sobra un id no acredita, sobrescribible, no-op antes de `AssignCase`, `null` seguro, vacío sin revelaciones no acredita AD9, revelar después de cerrar vuelve el cierre infiel y re-presentar lo recupera AD8). Espejo estructural de `TriageSuperficieAditivaTests`. 322 líneas |
+| `Runtime/Scenarios/Boardroom/RequirementsScenarioObjective.cs.meta`, `Tests/.../RequirementsScenarioObjectiveTests.cs.meta`, `Tests/.../RequirementsSuperficieAditivaTests.cs.meta` | Created | 3 `.meta` nuevos, GUIDs generados con `/dev/urandom`, todos versionados |
+
+Total: 3 archivos de contenido + 3 `.meta` = 6 archivos nuevos. **519 líneas autoradas**
+(179+18+322) frente a ~450 estimadas en design.md — **supera la válvula explícita de 490 líneas**
+del forecast de `sdd-tasks`. Cero archivos modificados (todo `Create`); `Runtime/Core/` intacto.
+
+### Work Unit Evidence
+
+| Evidence | Value |
+|---|---|
+| Focused test command | `Unity -batchmode -runTests -projectPath <repo> -testPlatform EditMode -testFilter "RequirementsScenarioObjectiveTests\|RequirementsSuperficieAditivaTests"` — **no ejecutado por el agente** (compuerta humana, design.md). Verificación manual: la tabla de sanidad de `Progress01` recalculada a mano contra `Mezclar(hayCaso, cobertura, cierre, trato)` para cada assert numérico (p. ej. 0.2/0.6/0.7/0.8/0.96 de design.md); los 7 tests heredados de `ScenarioObjectiveContract` recorridos contra el libro mayor simétrico (`_trato` arranca en 0 sin `AssignCase`, satura en `PasosDeTrato`, nunca baja de 0) confirmando que ninguno requiere `Assume` |
+| Runtime harness | N/A — M11 (compositor) no existe todavía, ningún arnés de escena puede ejercitar el objetivo fuera de EditMode |
+| Rollback boundary | Borrar `Runtime/Scenarios/Boardroom/RequirementsScenarioObjective.cs` y sus 2 archivos de prueba (+ 3 `.meta`) — ningún otro archivo tocado, `Fakes/ScriptedScenarioObjective.cs` (PR4) sin tocar |
+
+### Deviations from Design
+
+Ninguna de comportamiento; implementación matches la interfaz exacta de design.md
+("Interfaces / Contracts" → `RequirementsScenarioObjective.cs`) firma por firma. Una nota de
+ambigüedad resuelta: el texto narrativo del XML doc de `AssignCase` en design.md dice "siembra el
+crédito de trato LLENO" sin calificar, pero la sección "Aritmética del progreso" (más precisa)
+dice explícitamente "`AssignCase` **exitoso**: `_trato = PasosDeTrato`". Se implementó la versión
+precisa: el trato se resetea a 0 al inicio de todo `AssignCase` y solo se resiembra a
+`PasosDeTrato` si la carga tiene éxito — consistente con el spec (el escenario de trato solo está
+definido "dado un caso recién asignado", es decir, exitosamente asignado) y sin dejar `_trato`
+lleno tras una carga fallida (lo que inflaría `Progress01` con `HasCase == false`, violando la
+renormalización).
+
+### Issues Found
+
+None.
+
+### Ledger
+
+Attempt ledger: `acquire` (mismo attempt del orchestrator, token
+`sha256:3861dc04b176a08e097e76d8c8574fc8b6d11e3f00de040933bbd3254819802c`) → mutación cero,
+`state: proceed`. Trabajo ejecutado sobre `feat/m10-objetivo-real`. `settle` con
+`outcome: passed`, `evidence-revision:
+sha256:2be5ec0730f1b08c78f60c34715d989e027dd98791c97e307d168036d7fffdc8`,
+`harness-disposition: reused`, cleanup y process evidence registrados → `state: complete`.
+
+### Split Decision (orchestrator, 2026-09-22)
+
+Fresh-context contract validator corrió una sola vez contra todo el batch de PR3 (los 3 archivos
+juntos, antes de partir) — **PASS**: conformidad de contrato, AD1/AD2 (libro mayor simétrico,
+confirmado como decremento real y no reset a 0), AD8/AD9 (recalculo de `SummaryIsFaithful` en cada
+lectura), confinamiento de alcance, 519 líneas confirmadas exactas. Jefferson confirmó partir en 2
+PRs (válvula ya prevista en design.md/tasks.md), mismo patrón `PR3a`/`PR3b` que M16 ya usó para su
+propio exceso de presupuesto:
+
+- **PR3a** `feat/m10-objetivo-real` (base: PR2): tareas 3.1-3.2 — `RequirementsScenarioObjective.cs`
+  (179) + `RequirementsScenarioObjectiveTests.cs` (18) = **197 líneas**.
+- **PR3b** `feat/m10-superficie-aditiva` (base: PR3a): tareas 3.3-3.4 —
+  `RequirementsSuperficieAditivaTests.cs` (322) = **322 líneas**.
+
+El split es un corte de commit/rama, no una reimplementación: el código ya escrito y validado no
+cambió una línea.
+
+## Remaining Tasks
+
+- [ ] 4.1-4.6 (PR4 `feat/m10-doble-y-progreso`, base = rama de PR3b) — pendiente
+
+## Workload / PR Boundary
+
+- Mode: chained PR slice (`feature-branch-chain`) — **válvula de 490 líneas superada (519),
+  partido en PR3a (197) + PR3b (322), confirmado por Jefferson 2026-09-22**
+- Current work unit: Unit 3 — "Real objective: 7 inherited + additive surface" (PR3a + PR3b)
+- Boundary: arranca en cero implementaciones reales de `IScenarioObjective` para M10 (solo el
+  doble `±1` existía) y termina con `RequirementsScenarioObjective` completo, pasando los 7 tests
+  heredados y su superficie aditiva propia probada; el doble sigue sin rediseñar — eso es PR4
+- Estimated review budget impact: 519 líneas totales partidas en 2 PRs de 197 y 322, ambos dentro
+  del presupuesto de 400 individualmente
+
 ## Status
 
-12/22 tareas completas (PR1 + PR2 completos). Ready for next batch (PR3, tasks 3.1-3.4) —
-rama/PR de PR2 aún no creados, eso lo maneja el orchestrator.
+16/22 tareas completas (PR1 + PR2 + PR3a + PR3b código completo, split confirmado). Ready for next
+batch (PR4, tasks 4.1-4.6) una vez PR3a/PR3b tengan rama/commit/PR abiertos.

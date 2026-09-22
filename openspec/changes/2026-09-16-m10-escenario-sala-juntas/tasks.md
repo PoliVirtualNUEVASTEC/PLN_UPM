@@ -7,7 +7,7 @@
 | Estimated changed lines | ~1,565 authored (+~110 generated `.meta`) |
 | 400-line budget risk | High |
 | Chained PRs recommended | Yes |
-| Suggested split | PR1 → PR2 → PR3 → PR4 (valve to 5 if PR3 confirms >490 lines) |
+| Suggested split | PR1 → PR2 → PR3a → PR3b → PR4 (5 PRs — valve applied: PR3's real diff hit 519 lines, over the 490-line trigger, confirmed by Jefferson 2026-09-22) |
 | Delivery strategy | ask-on-risk |
 | Chain strategy | `feature-branch-chain` (confirmed by Jefferson 2026-09-22) — PR1 bases on the feature/tracker branch, each child bases on its immediate predecessor, mirrors M0/M16 |
 
@@ -24,10 +24,16 @@ Focused-test pattern (human-run, EditMode; no agent executes Unity): `Unity -bat
 |---|---|---|---|---|---|
 | 1 | Weight formula + asset, isolated | PR1 `feat/m10-pesos-y-asset` | `BoardroomObjectiveSettingsTests\|BoardroomObjectiveSettingsAssetTests` | N/A (M11 pending) | Delete `Config/`, `Unity/`, `Data/Scenarios/` — no other file touched |
 | 2 | Catalog projection vs. memory JSON + real files | PR2 `feat/m10-checklist-y-lector` | `RequirementChecklistLoaderTests\|RequirementChecklistDataTests` | N/A (M11 pending) | Delete `RequirementChecklist.cs`, `RequirementChecklistLoader.cs` + their 2 test files |
-| 3 | Real objective: 7 inherited + additive surface | PR3 `feat/m10-objetivo-real` | `RequirementsScenarioObjectiveTests\|RequirementsSuperficieAditivaTests` | N/A (M11 pending) | Delete `RequirementsScenarioObjective.cs` + its 2 test files |
+| 3a | Real objective: class + inherited contract | PR3a `feat/m10-objetivo-real` | `RequirementsScenarioObjectiveTests` | N/A (M11 pending) | Delete `RequirementsScenarioObjective.cs` + `RequirementsScenarioObjectiveTests.cs` |
+| 3b | Real objective: additive surface | PR3b `feat/m10-superficie-aditiva` | `RequirementsSuperficieAditivaTests` | N/A (M11 pending) | Delete `RequirementsSuperficieAditivaTests.cs` |
 | 4 | Double parity, sanity table, docs | PR4 `feat/m10-doble-y-progreso` | `RequirementsProgresoTests\|ResetParityTests\|ScriptedScenarioObjectiveTests` | N/A (M11 pending) | Revert `Fakes/ScriptedScenarioObjective.cs`; delete `RequirementsProgresoTests.cs`, `ResetParityTests.cs`; revert `Docs/MODULES.md` |
 
-Valve: if PR3's real diff confirms >490 lines, split into `feat/m10-objetivo-real` (class + contract test, ~220) and `feat/m10-superficie-aditiva` (~230), giving 5 PRs on the same chain pattern.
+Valve applied: PR3's real diff confirmed 519 lines (179+18+322), over the 490-line trigger. Split
+into `feat/m10-objetivo-real` (PR3a: class + contract test, 197 real) and
+`feat/m10-superficie-aditiva` (PR3b: additive-surface tests, 322 real), same chain pattern —
+PR3b bases on PR3a. Fresh-context contract validator ran once against the whole PR3 batch before
+the split (PASS: contract conformance, AD1/AD2, AD8/AD9, scope confinement) — the split below is
+a branch/commit boundary only, not a re-implementation.
 
 ## Phase 1: Weights & Asset — PR1, base = feature/tracker branch
 
@@ -47,14 +53,17 @@ Valve: if PR3's real diff confirms >490 lines, split into `feat/m10-objetivo-rea
 - [x] 2.4 Create `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistDataTests.cs` — 4 real `caso-juntas-0N.json` via `AssetDatabase.FindAssets`: all present, parse ok, `Id == filename`, `Count >= 1`, no `RequirementId.None`, no dup, denominator 4–6 asserted
 - [x] 2.5 Verify: 2.3/2.4 suites green; stage new `.meta` — listas para correr, pendiente de verde humano en Unity Editor (ningún agente ejecuta Unity)
 
-## Phase 3: Real Objective — PR3, base = PR2 branch
+## Phase 3a: Real Objective — class + contract — PR3a, base = PR2 branch
 
-- [ ] 3.1 Create `Runtime/Scenarios/Boardroom/RequirementsScenarioObjective.cs` — both ctors; `HasCase`/`RequirementCount`/`RequirementsDisclosed`/`SummaryIsFaithful`; `Progress01`/`IsComplete`/`Notify` (AD1/AD2 symmetric ledger); `AssignCase`; `RegisterDisclosure` (AD5/AD6); `PresentSummary` (AD8/AD9); `Reset`
-- [ ] 3.2 Create `Tests/EditMode/Scenarios/Boardroom/RequirementsScenarioObjectiveTests.cs : ScenarioObjectiveContract` — 7 inherited tests, zero `Assume` skips
-- [ ] 3.3 Create `Tests/EditMode/Scenarios/Boardroom/RequirementsSuperficieAditivaTests.cs` — `AssignCase` (unknown id / null loader / throwing func / bad JSON never throw, resets+reseeds progress); `RegisterDisclosure` (idempotent, filters non-`Revelado`/foreign id, no-op pre-`AssignCase`, `default` safe); `PresentSummary` (exact/partial/missing/extra, overwrite, pre-`AssignCase` no-op, null/empty safe, AD8 post-disclosure staleness, AD9 empty-summary non-credit)
-- [ ] 3.4 Verify: 3.2/3.3 suites green, no `Assume` skips; if diff >490 lines apply the PR3 valve split before opening the PR
+- [x] 3.1 Create `Runtime/Scenarios/Boardroom/RequirementsScenarioObjective.cs` — both ctors; `HasCase`/`RequirementCount`/`RequirementsDisclosed`/`SummaryIsFaithful`; `Progress01`/`IsComplete`/`Notify` (AD1/AD2 symmetric ledger); `AssignCase`; `RegisterDisclosure` (AD5/AD6); `PresentSummary` (AD8/AD9); `Reset`
+- [x] 3.2 Create `Tests/EditMode/Scenarios/Boardroom/RequirementsScenarioObjectiveTests.cs : ScenarioObjectiveContract` — 7 inherited tests, zero `Assume` skips
 
-## Phase 4: Double, Progress & Docs — PR4, base = PR3 branch
+## Phase 3b: Real Objective — additive surface — PR3b, base = PR3a branch
+
+- [x] 3.3 Create `Tests/EditMode/Scenarios/Boardroom/RequirementsSuperficieAditivaTests.cs` — `AssignCase` (unknown id / null loader / throwing func / bad JSON never throw, resets+reseeds progress); `RegisterDisclosure` (idempotent, filters non-`Revelado`/foreign id, no-op pre-`AssignCase`, `default` safe); `PresentSummary` (exact/partial/missing/extra, overwrite, pre-`AssignCase` no-op, null/empty safe, AD8 post-disclosure staleness, AD9 empty-summary non-credit)
+- [x] 3.4 Verify: 3.2/3.3 suites ready to run green (listas para correr, pendiente de verde humano en Unity Editor — ningun agente ejecuta Unity), no `Assume` skips confirmed by inspection. Real diff = 519 authored lines (179+18+322), exceeded the 490-line valve — split into PR3a (197)/PR3b (322) confirmed by Jefferson 2026-09-22.
+
+## Phase 4: Double, Progress & Docs — PR4, base = PR3b branch
 
 - [ ] 4.1 Rewrite `Runtime/Scenarios/Boardroom/Fakes/ScriptedScenarioObjective.cs` — mirror additive surface, no IO/`Data/`, embedded table of 4 real case ids, reuse `Mezclar`
 - [ ] 4.2 Verify existing `Tests/EditMode/Scenarios/Boardroom/ScriptedScenarioObjectiveTests.cs` (untouched, 11 lines) still passes 7 inherited tests against the rewritten double
