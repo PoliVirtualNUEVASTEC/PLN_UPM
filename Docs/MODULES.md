@@ -369,16 +369,41 @@ por ser la rama compartida real del equipo.
 
 - **Carpeta**: `Samples~/Harness`
 - **Dueño**: Jefferson Estiven Aristizábal Quiceno
-- **Qué hace**: escena de escritorio, sin VR, donde se escribe una frase por teclado para
-  ejercitar el pipeline completo. Se arma contra los dobles de cada módulo y se van
-  reemplazando por implementaciones reales de a uno, sin tocar el resto. En Sprint 13-14 se
-  convierte en el instrumento de medición del Objetivo 4 del proyecto.
+- **Qué hace**: escena de escritorio, sin VR, donde se habla por micrófono (M1) para ejercitar el
+  pipeline completo (M1 → M2 → M4 → M6/M15 → M8, más M9 y M13). Ya no se arma contra dobles: las
+  cinco implementaciones reales están construidas e inyectadas (ver "Estado actual" abajo). En
+  Sprint 13-14 se convierte en el instrumento de medición del Objetivo 4 del proyecto.
 - **Contrato que expone**: no es un puerto — es una herramienta de integración/demostración que
   consume los 7 puertos de M0.
-- **Estado actual**: solo existe `Samples~/Harness/README.md` en `origin/main` (la descripción
-  del banco). No hay escena `.unity` ni script de arnés commiteados todavía — el diseño está
-  escrito pero la construcción de la escena no se ha entregado.
-- **Specs formales**: no existe `openspec/specs/banco-pruebas-*`.
+- **Estado actual**: real e implementado en tres piezas, ya no solo el README. `Runtime/Harness/SessionDirector.cs`
+  (M11 PR1) elige, secuencia, enruta y delega entre M2, M4, M6, M9 y M15 -- C# puro, sin una sola
+  referencia a UnityEngine. `Runtime/Harness/Unity/HarnessBehaviour.cs` (M11 PR2, ensamblado
+  `NpcAi.Harness.Unity`) es la cascara `MonoBehaviour` que traduce canal -> argumento de metodo y
+  valor de retorno -> canal, con 29 pruebas de cableado en
+  `Tests/EditMode/Harness/HarnessBehaviourWiringTests.cs`. `Samples~/Harness/CompositorDeArnes.cs`
+  (sin `.asmdef` propio, sin pruebas EditMode por diseno: `Samples~/` no lo compila Unity dentro
+  del paquete) construye los cinco concretos y los inyecta en la cascara;
+  `Samples~/Harness/README.md` documenta el cableado de escena paso a paso, con los 8 slots de
+  Inspector sobre 3 assets compartidos como primer punto.
+  - **Diferido, no bloqueante**: M10 y M16 (sala de juntas) quedan fuera de este modulo; la
+    brecha M9<->M15 de indices de bandera roja se omite a proposito (M11 no llama
+    `RegisterRedFlag` en ninguna parte); las tres acciones de M7 sin productor real
+    (`EntregarObjeto`, `SenalarPantalla`, `GestoCalma`) no tienen fuente que las emita;
+    `IntentResultChannel` y `ReceptivityChangeChannel` siguen sin cablear a proposito (el director
+    ya tiene ambos valores en mano dentro del mismo turno); no hay control de UI para
+    `DeclararTriaje` en esta entrega, solo el metodo publico de la cascara; la escena `.unity`
+    queda fuera del repositorio, reconstruible de forma mecanica desde el README.
+  - **Nota (hallazgo W7 del verify de PR1, decision 3 de la propuesta de PR2, vetable por el
+    usuario)**: `Runtime/Harness/` no publica `Fakes/` porque solo consume puertos y no implementa
+    ninguno -- no hay gemela de contrato que heredar (regla dura 4). `Runtime/Core/` y
+    `Runtime/CoreChannels/` tampoco publican dobles, por el mismo motivo.
+  - Los resultados de las Compuertas humanas 1-3 (verde/rojo, hallazgos) no se afirman aqui: ver
+    `openspec/changes/2026-09-21-m11-harness-behaviour/apply-progress.md`.
+- **Specs formales**: `openspec/specs/banco-de-pruebas-m11/spec.md` -- hoy cubre solo PR1 (7
+  requisitos, `SessionDirector`); la addenda de PR2 sobre `HarnessBehaviour` (10 requisitos, 28
+  escenarios) vive todavia en
+  `openspec/changes/2026-09-21-m11-harness-behaviour/specs/banco-de-pruebas-m11/spec.md` y se
+  promueve al archivar ese cambio, no antes.
 
 ---
 

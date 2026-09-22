@@ -22,7 +22,7 @@ namespace NpcAi.Harness
         /// <summary>
         /// Puente hacia la superficie aditiva de M9 (design.md, AD1): <see cref="IScenarioObjective"/>
         /// no declara <c>AssignCase</c>, y este ensamblado solo referencia <c>NpcAi.Core</c>.
-        /// Lo cablea el compositor real (<c>HarnessBehaviour</c>, PR2) o la prueba.
+        /// Lo cablea el compositor real (<c>CompositorDeArnes</c>, PR2) o la prueba.
         /// </summary>
         private readonly Action<ClinicalCaseId> _asignarCaso;
 
