@@ -12,15 +12,19 @@ capacidad documenta y fija el contrato ya existente (commit `a7a0590`); no lo re
 
 ### Requirement: Version del contrato
 
-`Contract.Version` DEBE ser `1` y DEBE permanecer congelado en este cambio. Una prueba DEBE
-atar ese valor al mayor encabezado `## v<N>` de `Docs/CONTRACT-CHANGELOG.md`. Si ese archivo
-no existe, la prueba DEBE llamar `Assert.Ignore`, no fallar.
+`Contract.Version` DEBE ser `3` y DEBE permanecer congelado hasta el proximo cambio de
+contrato. Una prueba DEBE atar ese valor al mayor encabezado `## v<N>` de
+`Docs/CONTRACT-CHANGELOG.md`. Si ese archivo no existe, la prueba DEBE llamar
+`Assert.Ignore`, no fallar.
+(Previously: DEBE ser `1`. Esta capacidad nunca formalizo el bump a `2` que hizo
+`respuesta-clinica-m0`; ese historial intermedio quedo solo en `Docs/CONTRACT-CHANGELOG.md`
+`## v2`, no en este spec. Este delta salta directo de `1` a `3`.)
 
-#### Scenario: La version publicada es 1
+#### Scenario: La version publicada es 3
 
 - Dado el ensamblado `NpcAi.Core`
 - Cuando se lee `Contract.Version`
-- Entonces vale `1`
+- Entonces vale `3`
 
 #### Scenario: La version coincide con el changelog
 
