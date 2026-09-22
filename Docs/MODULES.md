@@ -631,11 +631,11 @@ por ser la rama compartida real del equipo.
   el contrato v3 (`2026-09-16-m0-puerto-requerimientos-juntas`, PRs #39-#42, M0→M16), con su
   propia base de pruebas de contrato (`RequirementResponderContract`). M16 no modifica ese
   contrato: lo implementa por primera vez, igual que M15 hace con `IClinicalResponder`.
-- **Estado actual**: **implementación real completa, en revisión — ningún PR mergeado a `main`
-  todavía**. 5 PR encadenados (`stacked-to-main`, mismo patrón de M0): PR1 (#45, tipo de caso +
+- **Estado actual**: **implementación real completa, verificada y mergeada a `main`** (2026-09-21).
+  7 PR encadenados (`stacked-to-main`, mismo patrón de M0), todos mergeados: PR1 (#45, tipo de caso +
   cargador), PR2a (#47, emparejador + puerta de receptividad) y PR2b (#48, doble determinista en
   paridad de contrato) sobre PR1, PR3a (#50, banco de matices) y PR3b (#51, adaptador real) sobre
-  PR2b, y este PR4 (catálogo de datos + pruebas de datos + esta fila) sobre PR3b.
+  PR2b, PR4a (#52, casos 1-2) y PR4b (#53, casos 3-4 + tests de datos + docs) sobre PR3b. Verificación: 67 pruebas, 0 rojas, 4 Assume-inconclusive (esperadas: sin inventar datos no narrado en `juntas.json`).
   - `RequirementCase.cs`: POCO (`Cliente`, `Requerimiento`) — sin bloque de evaluación, mismo
     principio que `ClinicalCase` (M15) con `Clave`.
   - `RequirementCaseLoader.cs`: JSON → `RequirementCase`. `receptividadMinima` viaja como texto
