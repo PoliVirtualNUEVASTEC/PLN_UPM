@@ -159,7 +159,7 @@ ante el mismo par repetido.
 | Conformidad con `RequirementResponderContract` (con divergencia documentada) | `ScriptedRequirementResponderTests` (10/10 verde); `RequirementResponderTests` (verde salvo `Assume` en los casos ligados a "presupuesto") |
 | La revelacion sale de la tabla, nunca se inventa | `RequirementResponderTests.La_respuesta_del_caso_siempre_aparece_intacta_en_el_texto` |
 | El emparejamiento es determinista con un criterio de empate fijo | `RequirementMatcherTests.Match_encuentra_el_requerimiento_esperado`, `...No_encuentra_nada_en_un_turno_social`, `...En_empate_gana_el_de_menor_indice` |
-| El emparejamiento no depende de `Intent` | `RequirementMatcherTests.El_Intent_no_cambia_el_emparejamiento` |
+| El emparejamiento no depende de `Intent` | `ScriptedRequirementResponderTests.El_Intent_no_cambia_el_requerimiento_emparejado` |
 | La puerta de receptividad decide `Revelado` vs `AunNoRevelado` | `RequirementDisclosurePolicyTests` (3 niveles x 3 valores de `Receptivity`), `RequirementResponderContract.Baja_receptividad_y_alta_receptividad_no_dan_el_mismo_texto` |
 | Un turno no relacionado nunca se fuerza a coincidir | `RequirementResponderContract.El_RequirementId_esta_poblado_si_y_solo_si_el_turno_aplica` |
 | `AssignCase` nunca lanza pase lo que pase con el cargador inyectado | `RequirementResponderContract.AssignCase_con_caso_desconocido_no_lanza_y_deja_no_listo` |
