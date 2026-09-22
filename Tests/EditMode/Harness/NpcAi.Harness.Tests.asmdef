@@ -3,7 +3,9 @@
     "rootNamespace": "NpcAi.Harness.Tests",
     "references": [
         "NpcAi.Core",
+        "NpcAi.Core.Channels",
         "NpcAi.Harness",
+        "NpcAi.Harness.Unity",
         "NpcAi.ClinicalResponse",
         "NpcAi.Presentation",
         "UnityEngine.TestRunner",
