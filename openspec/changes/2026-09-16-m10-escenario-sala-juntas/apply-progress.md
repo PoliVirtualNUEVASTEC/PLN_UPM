@@ -91,7 +91,86 @@ complete`.
 - Estimated review budget impact: 375 líneas autoradas, dentro del presupuesto de 400 para un PR
   individual y cerca del estimado de diseño (~355)
 
+## Alcance de este batch: SOLO PR2 (`feat/m10-checklist-y-lector`), tasks 2.1-2.5
+
+**Mode**: Standard workflow. `strict_tdd: true` en config, pero design.md fija que ningún
+agente ejecuta Unity — el verde de las pruebas es compuerta humana (mismo criterio que PR1).
+Implementación directa con tests escritos junto a cada clase (no RED-then-GREEN estricto en
+este batch: `RequirementChecklist`/`RequirementChecklistLoader` son espejo literal de
+`TriageKey`/`TriageKeyLoader`, ya congelados en design.md — las pruebas se escribieron
+completas y autoconsistentes contra la interfaz fija en vez de RED contra una clase inexistente).
+
+### Completed Tasks
+
+- [x] 2.1 `Runtime/Scenarios/Boardroom/RequirementChecklist.cs`
+- [x] 2.2 `Runtime/Scenarios/Boardroom/RequirementChecklistLoader.cs`
+- [x] 2.3 `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistLoaderTests.cs`
+- [x] 2.4 `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistDataTests.cs`
+- [x] 2.5 Verificación: suites 2.3/2.4 listas para correr en verde — pendiente de verde humano
+  en Unity Editor (ningún agente ejecuta Unity); `.meta` nuevos versionados
+
+### Files Changed
+
+| File | Action | What Was Done |
+|---|---|---|
+| `Runtime/Scenarios/Boardroom/RequirementChecklist.cs` | Created | POCO: `Id` (diagnóstico), `Requerimientos` (`IReadOnlyList<RequirementId>` ordenada), `Count`, `Contains` O(1) vía `HashSet<RequirementId>` interno (AD11). Sin `UnityEngine` |
+| `Runtime/Scenarios/Boardroom/RequirementChecklistLoader.cs` | Created | `TryParse(string, out RequirementChecklist)`, clases `Raw*` privadas mínimas (solo `id` + `requerimientos[].id`, AD10), sin exigir mínimo de 4 (AD12), descarta ids vacíos y duplicados conservando el orden del archivo (gana el primero). Nunca lanza |
+| `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistLoaderTests.cs` | Created | 9 `[Test]`/`[TestCase]`: carga válida; entradas inválidas parametrizadas (`null`/vacío/blanco/basura/`{}`/`[]`) → `false` sin lanzar; `id` de caso vacío → `false`; `requerimientos` ausente o vacío → `false`; descarta ids de requerimiento vacíos conservando los válidos; dedupe conserva orden (incluye normalización de mayúsculas/espacios); campos extra del esquema de M16 ignorados sin romper; caso de un solo requerimiento aceptado (AD12) |
+| `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistDataTests.cs` | Created | 4 `[Test]` contra los 4 `caso-juntas-0N.json` **reales** vía `AssetDatabase.FindAssets` (mismo patrón que `RequirementCasesDataTests` de M16): los 4 presentes y parsean solos; `Id == nombre de archivo`; `Count >= 1`, sin `RequirementId.None`, sin duplicados; denominador real entre 4 y 6 confirmado (`caso-juntas-03` es el mínimo con 4) |
+| 4 `.meta` nuevos (uno por archivo de contenido) | Created | Todos versionados, GUIDs generados con `crypto.randomBytes` |
+
+Total: 4 archivos de contenido + 4 `.meta` = 8 archivos nuevos. **378 líneas autoradas**
+(estimado del design.md: ~340; la primera versión de `RequirementChecklistLoaderTests.cs`
+llegó a 441 líneas totales del batch — por encima del presupuesto de 400 — y se consolidó a
+tests parametrizados con `[TestCase]` sin perder ninguno de los escenarios de tasks.md 2.3,
+bajando el total a 378). Cero archivos modificados (todo `Create`); `Data/Requirements/` se
+leyó pero no se tocó (regla dura del repo).
+
+### Work Unit Evidence
+
+| Evidence | Value |
+|---|---|
+| Focused test command | `Unity -batchmode -runTests -projectPath <repo> -testPlatform EditMode -testFilter "RequirementChecklistLoaderTests\|RequirementChecklistDataTests"` — **no ejecutado por el agente** (compuerta humana, design.md). Revisados a mano línea por línea contra la implementación: cada aserción de `RequirementChecklistLoaderTests` recorrida contra `TryParse`; `RequirementChecklistDataTests` recorrida a mano contra los 4 JSON reales leídos en este mismo batch (`caso-juntas-01`: 6, `-02`: 6, `-03`: 4, `-04`: 6 requerimientos — confirma el rango 4-6) |
+| Runtime harness | N/A — M11 (compositor) no existe todavía, ningún arnés de escena puede ejercitar el cargador fuera de EditMode |
+| Rollback boundary | Borrar `Runtime/Scenarios/Boardroom/RequirementChecklist.cs`, `Runtime/Scenarios/Boardroom/RequirementChecklistLoader.cs` y sus 2 archivos de prueba (+ 4 `.meta`) — ningún otro archivo tocado, `Data/Requirements/` sin modificar |
+
+### Deviations from Design
+
+Ninguna de comportamiento. Una consolidación de forma: el diseño no especifica cuántos
+métodos de prueba usar; se combinaron varios casos de entrada inválida (`null`, vacío, blanco,
+basura, `{}`, `[]`) en un solo `[Test]` parametrizado con `[TestCase]` para mantener el
+presupuesto de revisión de PR2 (~340 líneas estimadas) sin perder cobertura de ningún bullet de
+tasks.md 2.3.
+
+### Issues Found
+
+None.
+
+### Ledger
+
+Attempt ledger: `acquire` (mismo attempt del orchestrator, token
+`sha256:e2b2678e1577f4039746e6bb2c6c129702f598dd05d384d3e657c19b110fd3e2`) → mutación cero,
+`state: proceed`. Trabajo ejecutado sobre `feat/m10-checklist-y-lector`. `settle` pendiente
+(se ejecuta al cierre de este resultado).
+
+## Remaining Tasks
+
+- [ ] 3.1-3.4 (PR3 `feat/m10-objetivo-real`, base = rama de PR2) — pendiente
+- [ ] 4.1-4.6 (PR4 `feat/m10-doble-y-progreso`) — pendiente
+
+## Workload / PR Boundary
+
+- Mode: chained PR slice (`feature-branch-chain`)
+- Current work unit: Unit 2 — "Catalog projection vs. memory JSON + real files" (PR2)
+- Boundary: arranca en cero requerimientos de M10 sobre `Data/Requirements/` (solo
+  `RequirementCaseLoader`/M16 existía) y termina con la proyección mínima de M10
+  (`RequirementChecklist`/`RequirementChecklistLoader`) probada contra JSON en memoria **y**
+  contra los 4 archivos reales; ningún objetivo (`RequirementsScenarioObjective`) los consume
+  todavía — eso es PR3
+- Estimated review budget impact: 378 líneas autoradas, dentro del presupuesto de 400 para un
+  PR individual, ~11 % arriba del estimado de diseño (~340)
+
 ## Status
 
-7/22 tareas completas (PR1 completo). Ready for next batch (PR2, tasks 2.1-2.5) — rama/PR de
-PR1 aún no creados, eso lo maneja el orchestrator.
+12/22 tareas completas (PR1 + PR2 completos). Ready for next batch (PR3, tasks 3.1-3.4) —
+rama/PR de PR2 aún no creados, eso lo maneja el orchestrator.
