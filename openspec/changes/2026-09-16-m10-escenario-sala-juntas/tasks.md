@@ -41,11 +41,11 @@ Valve: if PR3's real diff confirms >490 lines, split into `feat/m10-objetivo-rea
 
 ## Phase 2: Checklist & Loader — PR2, base = PR1 branch
 
-- [ ] 2.1 Create `Runtime/Scenarios/Boardroom/RequirementChecklist.cs` — `Id`, ordered `RequirementId` list, internal `HashSet`, `Contains`, `Count` (AD11)
-- [ ] 2.2 Create `Runtime/Scenarios/Boardroom/RequirementChecklistLoader.cs` — `TryParse`, minimal `Raw*` (AD10), no min-4 gate (AD12), dedupe/discard empty ids, preserve order
-- [ ] 2.3 Create `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistLoaderTests.cs` — valid load; null/empty/garbage/`{}`/`[]` → false; empty `id` → false; missing/empty `requerimientos` → false; dedupe keeps order; extra M16 fields ignored; single-requirement case accepted
-- [ ] 2.4 Create `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistDataTests.cs` — 4 real `caso-juntas-0N.json` via `AssetDatabase.FindAssets`: all present, parse ok, `Id == filename`, `Count >= 1`, no `RequirementId.None`, no dup, denominator 4–6 asserted
-- [ ] 2.5 Verify: 2.3/2.4 suites green; stage new `.meta`
+- [x] 2.1 Create `Runtime/Scenarios/Boardroom/RequirementChecklist.cs` — `Id`, ordered `RequirementId` list, internal `HashSet`, `Contains`, `Count` (AD11)
+- [x] 2.2 Create `Runtime/Scenarios/Boardroom/RequirementChecklistLoader.cs` — `TryParse`, minimal `Raw*` (AD10), no min-4 gate (AD12), dedupe/discard empty ids, preserve order
+- [x] 2.3 Create `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistLoaderTests.cs` — valid load; null/empty/garbage/`{}`/`[]` → false; empty `id` → false; missing/empty `requerimientos` → false; dedupe keeps order; extra M16 fields ignored; single-requirement case accepted
+- [x] 2.4 Create `Tests/EditMode/Scenarios/Boardroom/RequirementChecklistDataTests.cs` — 4 real `caso-juntas-0N.json` via `AssetDatabase.FindAssets`: all present, parse ok, `Id == filename`, `Count >= 1`, no `RequirementId.None`, no dup, denominator 4–6 asserted
+- [x] 2.5 Verify: 2.3/2.4 suites green; stage new `.meta` — listas para correr, pendiente de verde humano en Unity Editor (ningún agente ejecuta Unity)
 
 ## Phase 3: Real Objective — PR3, base = PR2 branch
 
