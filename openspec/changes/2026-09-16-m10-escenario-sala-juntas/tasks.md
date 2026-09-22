@@ -65,9 +65,11 @@ a branch/commit boundary only, not a re-implementation.
 
 ## Phase 4: Double, Progress & Docs — PR4, base = PR3b branch
 
-- [ ] 4.1 Rewrite `Runtime/Scenarios/Boardroom/Fakes/ScriptedScenarioObjective.cs` — mirror additive surface, no IO/`Data/`, embedded table of 4 real case ids, reuse `Mezclar`
-- [ ] 4.2 Verify existing `Tests/EditMode/Scenarios/Boardroom/ScriptedScenarioObjectiveTests.cs` (untouched, 11 lines) still passes 7 inherited tests against the rewritten double
-- [ ] 4.3 Create `Tests/EditMode/Scenarios/Boardroom/RequirementsProgresoTests.cs` — 7-row sanity table (`1e-4` tolerance), isolated ways, no-case renormalization, `clamp01`, reversible `IsComplete`, 0.04-per-unrecovered-`Worsened` penalty
-- [ ] 4.4 Create `Tests/EditMode/Scenarios/Boardroom/ResetParityTests.cs` — `Reset()` on real and double: fresh-construction state, idempotent, re-`AssignCase` works after
-- [ ] 4.5 Update `Docs/MODULES.md` M10 section: "solo doble" → real implementation
-- [ ] 4.6 Verify: full `Tests/EditMode/Scenarios/Boardroom/` suite green; confirm no `Debug.Log` in runtime; asmdefs unchanged; stage `.meta`
+- [x] 4.1 Rewrite `Runtime/Scenarios/Boardroom/Fakes/ScriptedScenarioObjective.cs` — mirror additive surface, no IO/`Data/`, embedded table of 4 real case ids, reuse `Mezclar`
+- [x] 4.2 Verify existing `Tests/EditMode/Scenarios/Boardroom/ScriptedScenarioObjectiveTests.cs` (untouched, 11 lines) still passes 7 inherited tests against the rewritten double
+- [x] 4.3 Create `Tests/EditMode/Scenarios/Boardroom/RequirementsProgresoTests.cs` — 7-row sanity table (`1e-4` tolerance), isolated ways, no-case renormalization, `clamp01`, reversible `IsComplete`, 0.04-per-unrecovered-`Worsened` penalty
+- [x] 4.4 Create `Tests/EditMode/Scenarios/Boardroom/ResetParityTests.cs` — `Reset()` on real and double: fresh-construction state, idempotent, re-`AssignCase` works after
+- [x] 4.5 Update `Docs/MODULES.md` M10 section: "solo doble" → real implementation
+- [x] 4.6 Verify: full `Tests/EditMode/Scenarios/Boardroom/` suite green; confirm no `Debug.Log` in runtime; asmdefs unchanged; stage `.meta`
+
+Estado PR4: **código completo, 22/22 tareas de M10 completas** (código + tests + docs, `RED-then-GREEN` de autoría; verde de pruebas es compuerta humana en Unity Editor, no ejecutada por agente). `Fakes/ScriptedScenarioObjective.cs` reescrito en paridad de superficie con `RequirementsScenarioObjective`, reusando `BoardroomObjectiveSettings.Mezclar` y una tabla embebida de los 4 casos reales (sin IO). `RequirementsProgresoTests.cs` (10 pruebas: las 7 filas de la tabla de sanidad probadas literalmente + 2 de clamp/saturación) y `ResetParityTests.cs` (7 pruebas: paridad real/doble) nuevos. `Docs/MODULES.md` actualizado. `.meta` de los 2 archivos de prueba nuevos versionados. Sin commit, rama ni PR — el orchestrator los crea a partir de este working tree. Último PR de implementación de M10: próximo paso real es `sdd-verify`, no otro `sdd-apply`.
