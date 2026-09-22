@@ -309,3 +309,168 @@ Fases 0-10 completas (todas las tareas agent-ejecutables de la unidad 1). Fase 1
 correctiva"): 29 `[Test]`, compilación de descarte correcta con 0 advertencias y 0 errores, nada
 ejecutado. `sdd-apply` de la unidad 1 termina aquí: el siguiente paso del orquestador es preparar
 el commit (Fase 15, rutas explícitas) y el del usuario, correr la Compuerta 1.
+
+---
+
+# Apply Progress: M11 PR2 — raíz de composición y documentación, unidad 2 (PR 2b)
+
+## Change
+
+`2026-09-21-m11-harness-behaviour`
+
+## Scope of this batch
+
+Unidad 2 (PR 2b, `stacked-to-main`, decisión del usuario 2026-09-21), ejecutada por el agente
+sobre `main` ya con la unidad 1 (PR 2a) mergeada (`HarnessBehaviour` + `NpcAi.Harness.Unity.asmdef`
++ 29 pruebas de cableado, confirmadas en verde por el usuario). Cubre las tareas agent-ejecutables
+de las Fases 12-13 de `tasks.md`: 12.1-12.3 (`Samples~/Harness/CompositorDeArnes.cs`) y 13.1-13.6
+(README, `Docs/MODULES.md`, comentario de `SessionDirector.cs:25`). Rama
+`feat/m11-03-compositor-arnes`, ya existente al arrancar el batch. Ningún comando git de escritura
+fue ejecutado por el agente (ni `add`, ni `commit`, ni `push`); el orquestador hace el commit.
+Quedan fuera de este batch, sin marcar en `tasks.md` por diseño: Fase 14 (las dos compuertas
+humanas 2 y 3, cuatro tareas MANUAL) y Fase 15 (git y `.meta`, del orquestador).
+
+No se tocó ningún archivo de la unidad 1: `git status`/`git diff` confirman que
+`Runtime/Harness/Unity/HarnessBehaviour.cs` y `Tests/EditMode/Harness/HarnessBehaviourWiringTests.cs`
+no aparecen como modificados (bytes idénticos a lo mergeado). Tampoco se tocó ningún archivo fuera
+de la frontera del diff (`Runtime/Core/`, `Runtime/CoreChannels/`, otro `Runtime/<Modulo>/`,
+`Data/`, `package.json`); los `.meta` ajenos sin trackear que ya estaban en el árbol de trabajo
+(`Training/`, `Registro_Modelo_Etiquetado/`, `openspec/changes/archive/**`, `.meta` sueltos de
+`openspec/changes/2026-09-16-*` y `2026-09-21-m11-harness-behaviour/*`) tampoco se tocaron.
+
+## Restricción de evidencia de esta unidad (Strict TDD no aplica)
+
+Fase 12 (`CompositorDeArnes.cs`) **no tiene pruebas por diseño**, decisión ya tomada en
+`design.md` (AD10) y en `proposal.md` ("Approach", opción A): `Samples~/` no lo compila Unity
+dentro del paquete (ninguna prueba EditMode puede ejercitarlo) y depende de Sentis
+(`Unity.InferenceEngine.ModelAsset`), que tampoco está disponible al arnés `dotnet` de descarte de
+la unidad 1 (ese arnés cubre `Runtime/Harness/Unity/**`, no `Samples~/`). No es una desviación:
+es la consecuencia declarada en voz alta de la opción A del `Approach` ("la raíz de composición del
+anfitrión queda sin ninguna prueba automatizada"). Fases 13 son documentación pura (README,
+`Docs/MODULES.md`, un comentario), sin comportamiento que probar. Por lo tanto, para esta unidad:
+
+- No se afirma RED/GREEN/REFACTOR de ningún tipo para 12.1-12.3.
+- La única evidencia de correctitud de `CompositorDeArnes.cs` es la revisión por lectura de la
+  tarea 12.3 (ver más abajo): contraste explícito de cada constructor y de `m9.AssignCase`/
+  `m9.DeclareTriage` contra sus firmas reales, leyendo el código fuente de M2, M4, M6, M9, M15,
+  M13 y M0 tal cual existe hoy en el repositorio (no de memoria ni de `design.md`).
+  **"Revisado por lectura, no compilado."**
+- La primera compilación real de este archivo es la tarea 14.1 (Compuerta humana 2), fuera de este
+  batch.
+
+## Revisión por lectura (tarea 12.3)
+
+Cada línea de construcción de `Awake()` en `CompositorDeArnes.cs` contra la firma real leída del
+archivo fuente correspondiente:
+
+| Línea del compositor | Constructor/método real leído | Archivo | Coincide |
+|---|---|---|---|
+| `new BertIntentClassifier(_modelo, _tokenizador)` | `BertIntentClassifier(ModelAsset modelo, TextAsset tokenizadorJson)` | `Runtime/Nlu/BertIntentClassifier.cs:81` | Sí — dos argumentos en el mismo orden y tipo (`ModelAsset`, `TextAsset`); nunca lanza (try/catch interno) |
+| `new ReceptivityEngine()` | `ReceptivityEngine()` (usa `ReceptivityProfileCatalog.Standard()`) | `Runtime/Receptivity/ReceptivityEngine.cs:22` | Sí — constructor sin argumentos existe y es público |
+| `new MarkovDialogueGenerator(corpusPorPersonalidad)` | `MarkovDialogueGenerator(IReadOnlyDictionary<string, TextAsset> corpusPorPersonalidad)` | `Runtime/Dialogue/MarkovDialogueGenerator.cs:45` | Sí — `Dictionary<string, TextAsset>` implementa `IReadOnlyDictionary<string, TextAsset>`; clave = `PersonalityId.Value` (confirmado en el doc del parámetro, línea 41) |
+| `new TriageScenarioObjective(new TriageObjectiveSettings(), CargarCaso)` | `TriageScenarioObjective(TriageObjectiveSettings pesos, Func<ClinicalCaseId, string> cargarJson)` | `Runtime/Scenarios/Emergency/TriageScenarioObjective.cs:42` | Sí — `TriageObjectiveSettings()` sin argumentos existe (`Runtime/Scenarios/Emergency/Config/TriageObjectiveSettings.cs:33`, todos con default); `CargarCaso` tiene la firma `Func<ClinicalCaseId, string>` exacta |
+| `new ClinicalResponder(CargarCaso)` | `ClinicalResponder(Func<ClinicalCaseId, string> cargarJson)` | `Runtime/ClinicalResponse/ClinicalResponder.cs:25` | Sí — mismo delegado `CargarCaso` reutilizado (M9 y M15 comparten la misma fuente, AD10) |
+| `new SessionDirector(_clasificador, receptividad, dialogo, objetivo, respondedorClinico, objetivo.AssignCase, objetivo.DeclareTriage, casos, personalidades, _semilla)` | `SessionDirector(IIntentClassifier m2, IReceptivityEngine m4, IDialogueGenerator m6, IScenarioObjective m9, IClinicalResponder m15, Action<ClinicalCaseId> asignarCasoAlObjetivo, Action<string> declararTriajeEnObjetivo, IReadOnlyList<ClinicalCaseId> casos, IReadOnlyList<PersonalityId> personalidades, int semilla)` | `Runtime/Harness/SessionDirector.cs:55` | Sí — 10 argumentos en el mismo orden y tipo; `List<ClinicalCaseId>`/`List<PersonalityId>` implementan `IReadOnlyList<T>` |
+| `objetivo.AssignCase` | `public void AssignCase(ClinicalCaseId caseId)` | `Runtime/Scenarios/Emergency/TriageScenarioObjective.cs:104` | Sí — `void(ClinicalCaseId)`, coincide con `Action<ClinicalCaseId>` |
+| `objetivo.DeclareTriage` | `public void DeclareTriage(string category)` | `Runtime/Scenarios/Emergency/TriageScenarioObjective.cs:141` | Sí — `void(string)`, coincide con `Action<string>` |
+| `_arnes.Inyectar(director, _bitacora.IniciarSesion, _bitacora.FinalizarSesion)` | `Inyectar(SessionDirector director, Action<string> abrirBitacora, Action cerrarBitacora)` (M11, unidad 1) | `Runtime/Harness/Unity/HarnessBehaviour.cs:58` | Sí — `_bitacora.IniciarSesion` es `public void IniciarSesion(string etiqueta)` (`Action<string>`) y `_bitacora.FinalizarSesion` es `public void FinalizarSesion()` (`Action`), ambos de `Runtime/SessionLog/Unity/SessionLogBehaviour.cs:34-37` |
+| `new ClinicalCaseId(asset.name) == id` en `CargarCaso` | `ClinicalCaseId(string value)` recorta y pasa a minúsculas (`Value = ... value.Trim().ToLowerInvariant()`) | `Runtime/Core/ClinicalCaseId.cs:19-22` | Sí — comparación por el constructor normalizado, no por `asset.name == id.Value` crudo (AD10 lo exige explícitamente) |
+| `new PersonalityId(entrada.Personalidad)` en `Awake` | `PersonalityId(string value)`, misma normalización | `Runtime/Core/PersonalityId.cs:18-21` | Sí |
+| `(_clasificador as IDisposable)?.Dispose()` en `OnDestroy` | `BertIntentClassifier : IIntentClassifier, IDisposable` | `Runtime/Nlu/BertIntentClassifier.cs:52` | Sí — implementa `IDisposable` directamente; el campo está tipado `IIntentClassifier` (el puerto), así que el cast es necesario y deliberado |
+
+No se encontró ninguna discrepancia de firma. `Debug\.` sobre el archivo: 0 coincidencias
+(verificado con Grep). Ningún `.meta` creado para este archivo (correcto: está bajo `Samples~/`).
+
+## TDD Applicability (por fase, ninguna es una prueba EditMode)
+
+| Fase | Aplica TDD | Motivo |
+|---|---|---|
+| 12 (`CompositorDeArnes.cs`) | No, por diseño (AD10) | `Samples~/` no lo compila Unity dentro del paquete; depende de Sentis. Evidencia = revisión por lectura (12.3, tabla arriba) |
+| 13 (README, `MODULES.md`, comentario) | No aplica | Documentación y un comentario XML-doc; sin comportamiento ejecutable que afirmar |
+
+## Work Unit Evidence
+
+| Evidence | Value |
+|---|---|
+| Focused test command and exact result | N/A — no existe ningún comando de prueba aplicable a esta unidad: `CompositorDeArnes.cs` no tiene asmdef ni lo compila Unity dentro del paquete (no hay EditMode posible), y Fase 13 es documentación. Evidencia disponible, distinta de una corrida de pruebas: revisión por lectura constructor-por-constructor (tabla arriba) y `rg "Debug\."` sobre el archivo nuevo (0 coincidencias) |
+| Runtime harness command/scenario and exact result | N/A — ningún arnés agente-ejecutable cubre `Samples~/`: ni Unity Editor (el agente no tiene acceso), ni el proyecto `dotnet` de descarte de la unidad 1 (cubre solo `Runtime/Harness/Unity/**`, no `Samples~/`, y no referencia Sentis). La primera ejecución real es la Compuerta humana 2 (tarea 14.1, importar el sample; Consola sin errores de `CompositorDeArnes.cs`), fuera de este batch |
+| Rollback boundary | Borrar `Samples~/Harness/CompositorDeArnes.cs`; revertir `Samples~/Harness/README.md` al texto anterior a esta unidad (una línea: la descripción corta pre-PR2); revertir la sección M11 de `Docs/MODULES.md` (solo los bloques "Estado actual" y "Specs formales"); revertir el comentario de `Runtime/Harness/SessionDirector.cs:25`. La unidad 1 (`HarnessBehaviour`, ya mergeada) queda intacta y en verde |
+
+## Files Changed
+
+| File | Action | Lines | What Was Done |
+|------|--------|-------|---------------|
+| `Samples~/Harness/CompositorDeArnes.cs` | Created | 134 | AD10: `MonoBehaviour` sin `.asmdef`, namespace `NpcAi.Samples.Harness`. Construye M2 (`BertIntentClassifier`), M4 (`ReceptivityEngine`), M6 (`MarkovDialogueGenerator`), M9 (`TriageScenarioObjective`), M15 (`ClinicalResponder`) desde assets del Inspector (`_casos`, `_corpus` con la clase anidada `CorpusDePersonalidad`, `_modelo`, `_tokenizador`, `_semilla`), arma el `SessionDirector` y lo inyecta en `_arnes` junto con la costura de M13 (`_bitacora.IniciarSesion`/`FinalizarSesion`). `CargarCaso` compara `new ClinicalCaseId(asset.name) == id`. `OnDestroy` dispone `_clasificador`. Sin `.meta` (correcto: bajo `Samples~/`). Sin la cadena `Debug.` (verificado) |
+| `Samples~/Harness/README.md` | Rewritten | 123 (antes 12) | Reescrito en el orden del "Plan de documentación" de `design.md`: (1) los 8 slots sobre los 3 assets compartidos, uno por uno, en tabla; (2) caveat del micrófono de M1 (`StartListening`/`StopListening`); (3) los tres controles públicos de la cáscara (`IniciarSesion`, `FinalizarSesion`, `DeclararTriaje`) más `_arrancarSolo` y `_prefijoDeEtiqueta`, con la advertencia de `OnApplicationQuit` en Quest/Android; (4) caveats de orden AD2 (mismo pase de carga, `[DefaultExecutionOrder(100)]`, ~85% de fiabilidad, transcript como única red); (5) referencias para un anfitrión con `.asmdef` propio (10 nombres exactos) y pasos de construcción de la escena. Retiradas las promesas fuera de alcance (teclado, HUD, latencias) |
+| `Docs/MODULES.md` | Modified | +29/-4 | Sección M11: reemplazados solo los bloques "Estado actual" y "Specs formales" (el resto de la sección, sin tocar, por instrucción explícita de la tarea 13.5). Nombra las tres piezas reales (`SessionDirector`, `HarnessBehaviour`, `CompositorDeArnes` + README), lo diferido (M10/M16, brecha M9↔M15, 3 acciones de M7, dos canales huérfanos, sin control de UI para `DeclararTriaje`, escena `.unity` fuera del repo), la nota W7 de la regla dura 4 (decisión 3, vetable), y remite los resultados de compuertas a este archivo en vez de afirmarlos |
+| `Runtime/Harness/SessionDirector.cs` | Modified | 1 línea (comentario) | Línea 25: `HarnessBehaviour` → `CompositorDeArnes` en el XML-doc de `_asignarCaso`. Cero cambio de comportamiento (confirmado con `git diff`: única línea tocada) |
+| `openspec/changes/2026-09-21-m11-harness-behaviour/tasks.md` | Modified | 9 checkboxes | Marcadas `[x]` las tareas 12.1-12.3 y 13.1-13.6. Fase 14 (4 tareas MANUAL) y Fase 15 (del orquestador) sin marcar |
+| `openspec/changes/2026-09-21-m11-harness-behaviour/apply-progress.md` | Modified (append) | — | Esta sección, añadida al final del archivo existente. La sección de la unidad 1 (líneas 1-311) no se tocó |
+
+Total nuevo/modificado de esta unidad, fuera de `openspec/` y `.meta`: **~257 líneas** (134 del
+compositor + 123 del README reescrito) más 29 líneas netas de `Docs/MODULES.md` y 1 línea de
+comentario en `SessionDirector.cs`. Dentro del rango pronosticado para la unidad 2 en el Review
+Workload Forecast (~310-430; aquí bien por debajo, sin escena `.unity` que contar).
+
+## Deviations from Design
+
+Ninguna de comportamiento. `CompositorDeArnes.cs` sigue el pseudocódigo de `design.md` (sección
+"Data Flow", bloque de `Awake`) y el `File Inventory` línea por línea. El README sigue el orden
+exacto del "Plan de documentación". La única nota es de alcance de edición: la tarea 13.5 pide
+reemplazar SOLO "Estado actual" y "Specs formales" de la sección M11 de `Docs/MODULES.md`; el
+bloque "Qué hace" de esa sección sigue mencionando "se escribe una frase por teclado", una promesa
+ya retirada del README (no hay entrada por teclado en esta entrega: la entrada es de voz, M1). No
+se tocó porque la tarea no lo pidió explícitamente y no es una obsolescencia de "Estado actual" ni
+de "Specs formales" — queda anotado aquí para que el orquestador o el usuario decidan si amerita un
+ajuste menor separado.
+
+## Issues Found
+
+Ninguno nuevo. La única observación es la ya registrada en "Deviations from Design" sobre el bloque
+"Qué hace" de `Docs/MODULES.md` (fuera del alcance literal de la tarea 13.5).
+
+## Lo que NO se pudo verificar (y por qué)
+
+- **`CompositorDeArnes.cs` nunca se compiló.** Ni el Editor de Unity (el agente no tiene acceso) ni
+  el arnés `dotnet` de descarte de la unidad 1 (que solo cubre `Runtime/Harness/Unity/**` y no
+  referencia `Unity.InferenceEngine`) pueden compilarlo. Toda su correctitud descansa en la
+  revisión por lectura de la tabla de arriba (tarea 12.3): cada constructor y cada delegado se
+  contrastó contra el código fuente real, no contra `design.md` ni de memoria. La primera
+  compilación real es la tarea 14.1.
+- **Ningún caveat de escena (AD2, orden de ejecución; AD3, arranque; AD6, cierre) se observó en
+  ejecución.** Son, por diseño, no observables en EditMode (ver `design.md`, "Testing Strategy",
+  sección "Lo que EditMode no puede cubrir"); su verificación es exclusiva de las Compuertas
+  humanas 2 y 3 (Fase 14), fuera de este batch.
+- **El README y `Docs/MODULES.md` no se validaron contra una escena real** (no existe ninguna
+  escena `.unity` en el repositorio): su exactitud se apoya en la lectura directa del código fuente
+  citado (rutas y números de línea verificados con Read/Grep en este mismo batch), no en haber
+  seguido los pasos en un Editor.
+
+## Remaining Tasks
+
+- [x] 12.1-12.3 (Fase 12): `CompositorDeArnes.cs` creado, revisado por lectura.
+- [x] 13.1-13.6 (Fase 13): README reescrito, `Docs/MODULES.md` actualizado, comentario de
+  `SessionDirector.cs:25` corregido.
+- [ ] 14.1-14.4 (Fase 14): Compuertas humanas 2 (escena de escritorio) y 3 (Quest 3 físico) — las
+  cuatro son MANUAL, ninguna ejecutable por el agente.
+- [ ] 15.1-15.4 (Fase 15): git y `.meta`, del orquestador.
+
+## Workload / PR Boundary
+
+- Mode: stacked PR slice (`stacked-to-main`), decisión del usuario 2026-09-21.
+- Current work unit: unidad 2 (PR 2b) = Fases 12-14; este batch cubre las tareas agent-ejecutables
+  de las Fases 12-13 (12.1-12.3, 13.1-13.6).
+- Boundary: arranca de `main` con la unidad 1 ya mergeada (`HarnessBehaviour` en verde, confirmado
+  por el usuario) y termina con el compositor del anfitrión, el README reescrito y la documentación
+  del módulo al día; autónomo y reversible (ver "Work Unit Evidence" → Rollback boundary).
+- Estimated review budget impact: ~257 líneas de código/prosa nuevas o reescritas (compositor +
+  README) más 29 líneas netas de `Docs/MODULES.md` y 1 línea de comentario — dentro del rango
+  pronosticado (~310-430) y muy por debajo del presupuesto de 800 de la sesión.
+
+## Status
+
+Fases 12-13 completas (todas las tareas agent-ejecutables de la unidad 2): 9/9 marcadas `[x]` en
+`tasks.md`. `CompositorDeArnes.cs` revisado por lectura, no compilado (tarea 12.3). Fase 14 (dos
+compuertas humanas, cuatro tareas MANUAL) y Fase 15 (git y `.meta`, del orquestador) quedan sin
+marcar a propósito. `sdd-apply` de la unidad 2 termina aquí: el siguiente paso es `sdd-verify` sobre
+lo agent-ejecutable de esta unidad, y en paralelo el usuario corriendo las Compuertas 2 y 3.
