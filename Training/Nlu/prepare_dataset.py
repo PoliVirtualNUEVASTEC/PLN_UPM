@@ -6,6 +6,13 @@ combinacion intent x tone en la medida en que el tamano de cada clase lo permita
 clases con un solo ejemplo (si las hubiera) no se pueden estratificar: caen enteras a
 train y se avisa por stderr, sin abortar.
 
+Antes de repartir, agrupa las frases casi identicas (similitud de tokens >= NEAR_DUP_
+THRESHOLD) para que una frase y su variacion no queden separadas entre train y val: si
+quedaran separadas, el modelo veria en entrenamiento algo casi igual a lo que se usa
+para medirlo, e inflaria artificialmente la metrica de validacion (ver
+corpus_fuentes_ejemplos_triaje.md, seccion 9, "Las frases muy parecidas o las
+variaciones de una misma frase deben permanecer en la misma particion").
+
 Uso:
     python prepare_dataset.py [--corpus-dir DIR] [--out-dir DIR]
                               [--val-fraction 0.2] [--seed 42]
@@ -20,9 +27,13 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 import sys
+import unicodedata
 from collections import Counter
 from pathlib import Path
+
+NEAR_DUP_THRESHOLD = 0.72
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -83,30 +94,112 @@ def validate(entries: list[dict]) -> None:
         sys.exit(f"[prepare_dataset] {len(errors)} entradas invalidas; corregir el corpus antes de entrenar")
 
 
-def stratified_split(entries: list[dict], val_fraction: float, seed: int) -> tuple[list[dict], list[dict]]:
-    """Split estratificado por la clave intent||tone, con degradacion para clases chicas.
+def _token_set(text: str) -> frozenset[str]:
+    normalized = unicodedata.normalize("NFD", text.lower())
+    normalized = "".join(c for c in normalized if unicodedata.category(c) != "Mn")
+    return frozenset(re.findall(r"[a-z0-9ñ]+", normalized))
 
-    - grupo con >= 2 ejemplos: se reparte round(n * val_fraction), acotado a [1, n-1].
-    - grupo con 1 ejemplo (no estratificable): va entero a train y se avisa por stderr.
+
+def _cluster_near_duplicates(entries: list[dict], threshold: float) -> list[list[int]]:
+    """Agrupa indices de `entries` con similitud de tokens (Jaccard) >= threshold.
+
+    Bloquea por palabras de mas de 4 letras para no comparar cada par (O(n^2) sobre
+    miles de entradas). Usa union-find para que la cercania sea transitiva.
+    """
+    token_sets = [_token_set(e["text"]) for e in entries]
+    by_word: dict[str, list[int]] = {}
+    for i, toks in enumerate(token_sets):
+        for w in toks:
+            if len(w) > 4:
+                by_word.setdefault(w, []).append(i)
+
+    parent = list(range(len(entries)))
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a: int, b: int) -> None:
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb
+
+    for i, toks in enumerate(token_sets):
+        seen: set[int] = set()
+        for w in toks:
+            if len(w) <= 4:
+                continue
+            for j in by_word[w]:
+                if j <= i or j in seen:
+                    continue
+                seen.add(j)
+                union_size = len(toks | token_sets[j])
+                if union_size == 0:
+                    continue
+                if len(toks & token_sets[j]) / union_size >= threshold:
+                    union(i, j)
+
+    clusters: dict[int, list[int]] = {}
+    for i in range(len(entries)):
+        clusters.setdefault(find(i), []).append(i)
+    return list(clusters.values())
+
+
+def stratified_split(entries: list[dict], val_fraction: float, seed: int) -> tuple[list[dict], list[dict]]:
+    """Split estratificado por la clave intent||tone, con degradacion para clases chicas,
+    manteniendo juntas en la misma particion las frases casi identicas.
+
+    - Las entradas se agrupan primero en clusters de casi-duplicados (ver
+      _cluster_near_duplicates). Cada cluster se reparte como una unidad indivisible:
+      nunca queda mitad en train y mitad en val.
+    - Un cluster cuyas entradas no comparten la misma clase intent||tone no se puede
+      asignar a una sola clase sin distorsionar la estratificacion: cae entero a train
+      y se avisa por stderr (es un caso raro; ver el aviso para revisarlo a mano).
+    - Dentro de cada clase, se reparten clusters (no entradas sueltas) hasta acercarse
+      a round(n * val_fraction) entradas en val, acotado a [1, n-1] igual que antes.
+    - Clase con menos de 2 clusters o menos de 2 entradas: no estratificable, cae
+      entera a train y se avisa por stderr.
     """
     rng = random.Random(seed)
-    groups: dict[str, list[dict]] = {}
-    for e in entries:
-        groups.setdefault(f"{e['intent']}||{e['tone']}", []).append(e)
+    clusters = _cluster_near_duplicates(entries, NEAR_DUP_THRESHOLD)
+    multi = [c for c in clusters if len(c) > 1]
+    if multi:
+        _warn(f"{len(multi)} grupo(s) de frases casi identicas (similitud >= "
+              f"{NEAR_DUP_THRESHOLD}) con {sum(len(c) for c in multi)} entradas en total; "
+              "se mantienen juntas en la misma particion")
 
+    by_class: dict[str, list[list[int]]] = {}
     train: list[dict] = []
     val: list[dict] = []
-    for key in sorted(groups):
-        members = groups[key]
-        rng.shuffle(members)
-        n = len(members)
-        if n < 2:
-            train.extend(members)
-            _warn(f"clase '{key}' con {n} ejemplo(s): no estratificable, cae entera a train")
+    for cluster in clusters:
+        keys = {f"{entries[i]['intent']}||{entries[i]['tone']}" for i in cluster}
+        if len(keys) == 1:
+            by_class.setdefault(keys.pop(), []).append(cluster)
+        else:
+            _warn(f"grupo de {len(cluster)} frases casi identicas mezcla clases "
+                  f"{sorted(keys)}: cae entero a train sin repartir")
+            train.extend(entries[i] for i in cluster)
+
+    for key in sorted(by_class):
+        class_clusters = by_class[key]
+        rng.shuffle(class_clusters)
+        n = sum(len(c) for c in class_clusters)
+        if n < 2 or len(class_clusters) < 2:
+            for cluster in class_clusters:
+                train.extend(entries[i] for i in cluster)
+            _warn(f"clase '{key}' con {n} ejemplo(s) en {len(class_clusters)} grupo(s): "
+                  "no estratificable, cae entera a train")
             continue
-        n_val = min(max(round(n * val_fraction), 1), n - 1)
-        val.extend(members[:n_val])
-        train.extend(members[n_val:])
+        n_val_target = min(max(round(n * val_fraction), 1), n - 1)
+        n_val_so_far = 0
+        for cluster in class_clusters:
+            if n_val_so_far < n_val_target:
+                val.extend(entries[i] for i in cluster)
+                n_val_so_far += len(cluster)
+            else:
+                train.extend(entries[i] for i in cluster)
 
     rng.shuffle(train)
     rng.shuffle(val)
