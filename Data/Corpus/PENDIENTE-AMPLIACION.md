@@ -154,8 +154,41 @@ etiquetas de `intent`/`tone` son consistentes entre personas o reflejan el crite
 |---|---|---|
 | ~~Ampliar y rebalancear `emergencia.json`~~ | ✅ Hecho | 5.000 entradas en voz de enfermero, `Empatico` 1→876+ |
 | ~~Ampliar y rebalancear `juntas.json`~~ | ✅ Hecho | 5.000 entradas en voz de analista, grilla 6×6 completa |
+| ~~Split train/val sin agrupar frases casi-idénticas~~ | ✅ Hecho (2026-09-23) | Ver sección 5 |
 | Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía |
 | Doble etiquetado del 10 % por un segundo etiquetador | Media | 0 frases doble-etiquetadas todavía; regla de `README.md` sin aplicar |
+
+---
+
+## 5. Split train/val: frases casi-idénticas ya quedan agrupadas (2026-09-23)
+
+`corpus_fuentes_ejemplos_triaje.md` (sección 9) exige que "las frases muy parecidas o
+las variaciones de una misma frase" permanezcan en la misma partición, para que la
+métrica de validación no salga inflada por fuga de datos. `Training/Nlu/prepare_
+dataset.py` repartía al azar sin esa regla; ya se corrigió.
+
+**Qué cambió:** `stratified_split` ahora arma primero clusters de frases con similitud
+de tokens (Jaccard) ≥ 0.72 — el mismo umbral usado para descartar casi-duplicados al
+construir el corpus — y reparte esos clusters como unidad indivisible entre train y
+val, nunca frases sueltas dentro de un cluster.
+
+**Resultado medido sobre las 10.000 entradas combinadas:**
+- 40 grupos de frases casi-idénticas (80 entradas) detectados y mantenidos juntos.
+  Antes de este cambio, cualquiera de esos 40 pares podía quedar partido entre train
+  y val por puro azar del `seed`.
+- Incluye las 15 frases idénticas que ya existían entre `emergencia.json` y
+  `juntas.json` (ver sección 1): las 15 quedaron confirmadas del mismo lado.
+- 5 de esos grupos mezclan clases `intent||tone` distintas (mismo texto casi calcado,
+  etiquetas diferentes); no se pueden repartir sin sesgar la estratificación, así que
+  caen enteros a `train` con aviso por stderr — quedan disponibles para revisión manual
+  si alguien quiere usarlos también en validación.
+- El tamaño final del split prácticamente no cambia: train=8.002 / val=1.998 (antes
+  8.000/2.000 exactos); la diferencia es el costo de no partir esos 40 grupos.
+- Verificado con un script aparte: cero frases (exactas o del mismo cluster) aparecen
+  a la vez en `train.jsonl` y en `val.jsonl`.
+
+No se tocó el documento fuente (`corpus_fuentes_ejemplos_triaje.md`): el requisito
+sigue ahí, y ahora el código efectivamente lo cumple.
 
 Este documento no reemplaza a `Data/Corpus/README.md` (que define el esquema y la meta) —
 es un snapshot puntual de la brecha frente a esa meta.
