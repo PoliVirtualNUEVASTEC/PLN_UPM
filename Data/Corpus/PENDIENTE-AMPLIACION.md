@@ -6,8 +6,8 @@ escenario**, en español colombiano hablado, etiquetadas por `intent` y `tone`.
 
 | Archivo | Estado | Entradas | Consumido por `Training/Nlu/` |
 |---|---|---|---|
-| [`emergencia.json`](emergencia.json) | ✅ **Completado** (2026-09-10) | 600 (100 por intención) | Sí (`CORPUS_FILES`) |
-| [`juntas.json`](juntas.json) | ✅ **Completado** (2026-09-14) | 600 (100 por intención) | Sí (`CORPUS_FILES`) |
+| [`emergencia.json`](emergencia.json) | ✅ **Ampliado** (2026-09-18) | 5.000 (833-834 por intención) | Sí (`CORPUS_FILES`) |
+| [`juntas.json`](juntas.json) | ✅ **Ampliado** (2026-09-23) | 5.000 (833-834 por intención) | Sí (`CORPUS_FILES`) |
 
 Snapshot original: 2026-09-09, sobre `emergencia.json` (181) + `juntas.json` (180) tal como
 estaban en `origin/main`. Este documento **no se actualiza solo**: si el corpus vuelve a
@@ -38,6 +38,30 @@ Reescrito de raíz el 2026-09-10. Tres cosas cambiaron respecto del snapshot ori
 | Empatico | 95 | 15.8 % |
 
 `python Training/Nlu/prepare_dataset.py` corre sin errores de esquema.
+
+---
+
+### Ampliación a 5.000 (2026-09-18)
+
+Las 600 frases anteriores se conservaron intactas y se sumaron 4.400 nuevas, en voz del
+profesional (enfermero/médico), sin frases repetidas (5.000 textos únicos tras normalizar
+acentos y puntuación, y sin pares con similitud de tokens ≥ 0,72). Criterios que se
+siguieron de `corpus_fuentes_ejemplos_triaje.md`: variación de largo y registro, frases con
+pausas y oralidad colombiana, y ejemplos contrastivos para que "por favor", "tranquilo" o
+"!" no delaten por sí solos el tono.
+
+- **Reparto por intención:** 833 (×4) y 834 (×2) = 5.000.
+- **Reparto por tono:** Neutral 1.192, Respetuoso 1.042, Ansioso 968, Agresivo 966, Empatico 832.
+- **No es una grilla 6×5 uniforme.** Las celdas contradictorias por definición
+  (`SolicitudAgresiva`+`Empatico`/`Respetuoso`/`Neutral`, `SolicitudRespetuosa`+`Agresivo`,
+  `Empatia`+`Agresivo`, `Interrupcion`+`Empatico`, `PreguntaFueraDeTema`+`Agresivo`) siguen
+  sin existir, igual que antes; por eso las 23 celdas válidas tienen entre 100 y 550 frases
+  en vez de 166 cada una.
+- `labeler` sigue siendo `"Luis"` en el 100 % de las entradas. Las 4.400 nuevas fueron
+  generadas con apoyo de IA y **no** han pasado revisión humana (§3.5 del documento de
+  fuentes exige esa revisión antes de darlas por buenas).
+- `prepare_dataset.py` corre sin avisos ni errores: 5.600 entradas (con `juntas.json`),
+  train=4.480, val=1.120.
 
 ---
 
@@ -85,32 +109,42 @@ No es una grilla rígida 20×5: `SolicitudAgresiva` e `Interrupcion` no llevan `
 | SolicitudAgresiva | 70 | 30 | 0 | 0 | 0 |
 | SolicitudRespetuosa | 0 | 15 | 20 | 30 | 35 |
 
-### Pipeline combinado
+### Ampliación a 5.000 (2026-09-23)
 
-`Training/Nlu/prepare_dataset.py` ya lista `juntas.json` en `CORPUS_FILES` y corre limpio
-sobre los dos escenarios juntos:
+Las 600 frases anteriores se conservaron intactas y se sumaron 4.400 nuevas, en voz del
+analista, ancladas a los 10 escenarios y a la guía de
+`guia_corpus_analista_requerimientos.md` (compartida por el usuario): pares mínimos
+intención/tono, muletillas colombianas de oficina, y ejemplos contrastivos para que "ya",
+"por favor" o "!" no delaten por sí solos el tono. Sin frases repetidas (5.000 textos
+únicos tras normalizar acentos y puntuación, y sin pares con similitud de tokens ≥ 0,72),
+y sin solapes nuevos con `emergencia.json` (los 15 que hay ya existían en las 600
+originales de ambos archivos).
 
-```
-corpus: 1200 entradas (emergencia.json, juntas.json)
-split: train=960  val=240
-intent: 160/40 por clase, las 6 parejas iguales
-tone train: Agresivo 200, Ansioso 168, Empatico 152, Neutral 240, Respetuoso 200
-```
-
-Estratificado sin avisos de clases sin ejemplos.
+- **Reparto por intención:** 833 (×4) y 834 (×2) = 5.000, igual que en `emergencia.json`.
+- **Reparto por tono:** Respetuoso 1.198, Agresivo 1.055, Neutral 968, Ansioso 903, Empatico 876.
+- **Grilla 6×6 completa, a diferencia de `emergencia.json`.** La guía del usuario sí admite
+  `Interrupcion`+`Empatico` y `PreguntaFueraDeTema`+`Agresivo` (aquí el NPC es el
+  interesado/cliente, no el paciente), así que las 24 combinaciones válidas están todas
+  representadas, de 104 a 1.198 frases cada una según su peso en la guía.
+- `labeler` es `"Luis"` en las 600 originales y `"Nataly"` en las 4.400 nuevas — ninguna
+  entrada quedó con `"claude"`. Las 4.400 nuevas fueron generadas con apoyo de IA y
+  **no** han pasado revisión humana.
+- `prepare_dataset.py` corre sin avisos ni errores: 10.000 entradas (con `emergencia.json`),
+  train=8.000, val=2.000.
 
 ---
 
 ## 3. Acuerdo entre etiquetadores — sin aplicar todavía
 
 `Data/Corpus/README.md` fija como regla de calidad: **10 % de las frases doble-etiquetadas
-para medir acuerdo entre etiquetadores**. Hoy `labeler` es `"Luis"` en el 100 % de las 1200
-entradas combinadas (600 + 600) — no hay ni una frase etiquetada por una segunda persona.
+para medir acuerdo entre etiquetadores**. Hoy `labeler` es `"Luis"` o `"Nataly"` en el
+100 % de las 10.000 entradas combinadas — no hay ni una frase con doble etiqueta
+independiente de un tercer etiquetador.
 
-**Pendiente concreto:** un segundo integrante etiqueta independientemente al menos el 10 %
-(≈ 120 de las 1200) para poder calcular una métrica de acuerdo (p. ej. Cohen's kappa). Sin
-esta medición no hay forma de saber si las etiquetas de `intent`/`tone` son consistentes
-entre personas o reflejan el criterio de uno solo.
+**Pendiente concreto:** un segundo integrante (distinto de quien puso `"Nataly"`) etiqueta
+independientemente al menos el 10 % (≈ 1.000 de las 10.000) para poder calcular una
+métrica de acuerdo (p. ej. Cohen's kappa). Sin esta medición no hay forma de saber si las
+etiquetas de `intent`/`tone` son consistentes entre personas o reflejan el criterio de una sola.
 
 ---
 
@@ -118,8 +152,9 @@ entre personas o reflejan el criterio de uno solo.
 
 | Pendiente | Prioridad | Alcance |
 |---|---|---|
-| ~~Ampliar y rebalancear `emergencia.json`~~ | ✅ Hecho | 600 entradas en voz de enfermero, `Empatico` 1→95 |
-| ~~Ampliar y rebalancear `juntas.json`~~ | ✅ Hecho | 600 entradas en voz de analista, escenario redefinido a toma de requerimientos, `Empatico` 0→95 |
+| ~~Ampliar y rebalancear `emergencia.json`~~ | ✅ Hecho | 5.000 entradas en voz de enfermero, `Empatico` 1→876+ |
+| ~~Ampliar y rebalancear `juntas.json`~~ | ✅ Hecho | 5.000 entradas en voz de analista, grilla 6×6 completa |
+| Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía |
 | Doble etiquetado del 10 % por un segundo etiquetador | Media | 0 frases doble-etiquetadas todavía; regla de `README.md` sin aplicar |
 
 Este documento no reemplaza a `Data/Corpus/README.md` (que define el esquema y la meta) —
