@@ -158,8 +158,8 @@ etiquetas de `intent`/`tone` son consistentes entre personas o reflejan el crite
 | ~~Entrenar y evaluar M2 con el corpus ampliado~~ | ✅ Hecho (2026-09-25) | Ver sección 6 |
 | Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía. Al revisar, prestar atención especial a los límites `AportaInformacion` / `PreguntaFueraDeTema` vs. `SolicitudAgresiva` — ver hallazgo en sección 6 |
 | Doble etiquetado del 10 % por un segundo etiquetador | Media | 0 frases doble-etiquetadas todavía; regla de `README.md` sin aplicar |
-| Repetir la comparación de 4 candidatos de encoder (tarea 1.6) sobre el corpus de 10.000 | Alta | 0 hecho. El encoder commiteado hoy (`distilbert-base-multilingual-cased`) ganó esa comparación el 2026-09-14 sobre un corpus 8× más chico (1.200 entradas); no hay garantía de que siga ganando. Script nuevo: `Training/Nlu/compare_encoders.py` |
-| Reentrenar con el encoder elegido y reemplazar el `.onnx` vía Git LFS | Media | Depende de la fila anterior. Generado hoy con MiniLM (no el commiteado) en `Runtime/Nlu/Models/`, sin exportar todavía el definitivo; ver `Training/Nlu/README.md` |
+| ~~Repetir la comparación de 4 candidatos de encoder (tarea 1.6) sobre el corpus de 10.000~~ | ✅ Hecho (2026-09-25) | `distilbert-base-multilingual-cased` gana otra vez. Ver sección 7 |
+| Reentrenar `distilbert-base-multilingual-cased` con el corpus de 10.000 y reemplazar el `.onnx` vía Git LFS | Media | El `.onnx` commiteado hoy sigue siendo el del corpus viejo (1.200 entradas, 2026-09-14); el generado hoy en disco es de MiniLM, no del ganador confirmado. Falta correr `train.py --encoder distilbert-base-multilingual-cased` y commitear el resultado |
 
 ---
 
@@ -260,6 +260,41 @@ de este documento.
 inferencia sobre `val.jsonl` completo (no requiere entrenar, no es una compuerta
 humana): imprime la matriz de confusión por clase para `Intent` y `Tone`. Se usó
 para el análisis de arriba; ver `Training/Nlu/README.md` para el uso.
+
+---
+
+## 7. Comparación de encoders repetida sobre el corpus de 10.000 (2026-09-25)
+
+El 2026-09-14 se compararon 4 candidatos de encoder de punta a punta y ganó
+`distilbert-base-multilingual-cased`, pero esa comparación se hizo sobre un corpus
+8 veces más chico (1.200 entradas). Se repitió con `Training/Nlu/compare_encoders.py`
+sobre las 10.000 entradas actuales, mismo split/seed/hiperparámetros para los 4,
+por una persona (compuerta humana, tarea 1.6).
+
+| Encoder | Parámetros | Intent acc | Tone acc |
+|---|---|---|---|
+| **`distilbert-base-multilingual-cased`** | 134.7 M | **0.813** | **0.799** |
+| `microsoft/Multilingual-MiniLM-L12-H384` | 117.7 M | 0.796 | 0.796 |
+| `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | 117.7 M | 0.778 | 0.774 |
+| `huawei-noah/TinyBERT_General_4L_312D` | 14.4 M | 0.635 | 0.678 |
+
+**Resultado: `distilbert-base-multilingual-cased` gana otra vez, en las dos métricas.**
+Con 8 veces más datos, el ganador no cambió respecto al 2026-09-14.
+
+**Sobre el tamaño:** los tres candidatos "grandes" están parejos (117-135 M);
+`distilbert` es apenas ~14 % más pesado que los MiniLM, no una diferencia relevante
+para la decisión. El único candidato realmente chico (`TinyBERT`, 14.4 M — el único
+de los 4 que cae cerca del rango ~20-60 M que pedía `design.md`) es también,
+por lejos, el peor: 13-18 puntos porcentuales menos de accuracy que los otros tres.
+No hay ahí un trade-off razonable de tamaño por precisión — es simplemente peor.
+
+**Conclusión accionable:** la fila "Opción A" del análisis anterior queda confirmada
+con datos, no solo como la opción conservadora. El siguiente paso es reentrenar con
+`distilbert-base-multilingual-cased` sobre el corpus de 10.000 (mismo comando que ya
+se usó para MiniLM, solo cambiando `--encoder`) y reemplazar el `.onnx` commiteado
+—que sigue siendo el del corpus viejo de 1.200 entradas— vía Git LFS. No hace falta
+repetir ningún spike de Sentis: el encoder no cambia, solo los datos con que se
+entrena.
 
 Este documento no reemplaza a `Data/Corpus/README.md` (que define el esquema y la meta) —
 es un snapshot puntual de la brecha frente a esa meta.
