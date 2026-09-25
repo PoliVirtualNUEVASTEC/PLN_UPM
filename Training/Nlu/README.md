@@ -71,6 +71,36 @@ exporta el grafo (encoder + cabezas + softmax) a ONNX. Junto al `.onnx` guarda e
 tokenizador en `tokenizer/`; PR2 lo necesita para alimentar Sentis con los mismos
 `input_ids`.
 
+### Antes del Paso 2: comparar candidatos de encoder (opcional, recomendado si el corpus cambio mucho)
+
+```bash
+python compare_encoders.py
+```
+
+El encoder que hoy esta commiteado (`distilbert-base-multilingual-cased`) se eligio
+el 2026-09-14 comparando 4 candidatos sobre el corpus que existia entonces (1200
+entradas). Si el corpus crecio bastante desde esa comparacion (como paso con la
+ampliacion a 10000 entradas, ver `Data/Corpus/PENDIENTE-AMPLIACION.md`), no hay
+garantia de que el mismo candidato siga siendo el mejor.
+
+`compare_encoders.py` entrena y evalua cada candidato (mismo split, mismo seed,
+mismos hiperparametros que `train.py`, para que la comparacion sea justa) y al
+final imprime una tabla con accuracy y F1 macro de Intent y Tone por candidato, mas
+el numero de parametros de cada encoder (mas grande = mas lento/pesado on-device).
+No exporta ningun `.onnx`: la decision de cual usar cruza accuracy con el
+presupuesto de rendimiento del dispositivo objetivo, y es del equipo. Una vez
+decidido, correr el Paso 2 normal con `--encoder <el-elegido>`.
+
+Con los 4 candidatos por defecto, en CPU, tarda varias veces mas que una sola
+corrida de `train.py` (una descarga y un calculo de embeddings por candidato).
+
+Opciones: `--encoders` (lista de ids de Hugging Face; default los 4 candidatos de
+arriba), el resto son las mismas de `train.py`.
+
+**Es la misma compuerta humana que el resto de este pipeline**: comparar encoders
+es la tarea 1.6 (ver `openspec/changes/archive/2026-09-09-m2-clasificador-bert-reducido/tasks.md`),
+y sigue exigiendo que la corra una persona, no un agente.
+
 ## Como leer las metricas por clase
 
 Al terminar, `train.py` imprime un `classification_report` de scikit-learn **por

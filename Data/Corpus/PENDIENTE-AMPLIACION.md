@@ -158,7 +158,8 @@ etiquetas de `intent`/`tone` son consistentes entre personas o reflejan el crite
 | ~~Entrenar y evaluar M2 con el corpus ampliado~~ | ✅ Hecho (2026-09-25) | Ver sección 6 |
 | Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía. Al revisar, prestar atención especial a los límites `AportaInformacion` / `PreguntaFueraDeTema` vs. `SolicitudAgresiva` — ver hallazgo en sección 6 |
 | Doble etiquetado del 10 % por un segundo etiquetador | Media | 0 frases doble-etiquetadas todavía; regla de `README.md` sin aplicar |
-| Commitear el `.onnx` entrenado vía Git LFS ("PR2") | Media | Generado localmente en `Runtime/Nlu/Models/`, no commiteado; es tarea separada de este documento (ver `Training/Nlu/README.md`) |
+| Repetir la comparación de 4 candidatos de encoder (tarea 1.6) sobre el corpus de 10.000 | Alta | 0 hecho. El encoder commiteado hoy (`distilbert-base-multilingual-cased`) ganó esa comparación el 2026-09-14 sobre un corpus 8× más chico (1.200 entradas); no hay garantía de que siga ganando. Script nuevo: `Training/Nlu/compare_encoders.py` |
+| Reentrenar con el encoder elegido y reemplazar el `.onnx` vía Git LFS | Media | Depende de la fila anterior. Generado hoy con MiniLM (no el commiteado) en `Runtime/Nlu/Models/`, sin exportar todavía el definitivo; ver `Training/Nlu/README.md` |
 
 ---
 
