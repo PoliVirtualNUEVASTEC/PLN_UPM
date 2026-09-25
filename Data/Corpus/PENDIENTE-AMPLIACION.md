@@ -221,29 +221,44 @@ la clase predicha para las 6 frases fijas de `REPRO_PHRASES` — coincidieron ta
 las probabilidades, dígito por dígito, y la curva de loss completa de las tres
 corridas. Determinismo total en CPU con `seed=42`.
 
-**Hallazgo a tener en cuenta para la revisión humana pendiente (sección 3):** de las
-6 frases del chequeo de reproducibilidad, 2 salieron con `Intent` predicho con baja
-confianza y, aparentemente, equivocado:
+**Hallazgo inicial (de las 6 frases fijas) y su confirmación con la matriz de
+confusión completa:** de las 6 frases del chequeo de reproducibilidad, 2 salieron
+con `Intent` predicho con baja confianza — `"la presion esta en catorce sobre
+noventa"` → `SolicitudAgresiva` (p=0.448) en vez de `AportaInformacion`, y `"y usted
+donde compro esa corbata tan fea"` → `SolicitudAgresiva` (p=0.559) en vez de
+`PreguntaFueraDeTema`. Con solo 2 de 6 frases no se podía saber si era un patrón
+sistemático o ruido puntual, así que se corrió `Training/Nlu/evaluate.py` (nuevo,
+ver más abajo) para mirar la matriz de confusión completa sobre las 1.998 entradas
+de validación. **Resultado: no es un sesgo específico hacia `SolicitudAgresiva`.**
 
-- `"la presion esta en catorce sobre noventa"` → predijo `SolicitudAgresiva` (p=0.448,
-  casi una moneda al aire); se esperaría `AportaInformacion` (es una frase
-  informativa). El `Tone` sí salió bien (`Neutral`, p=0.929).
-- `"y usted donde compro esa corbata tan fea"` → predijo `SolicitudAgresiva` (p=0.559);
-  se esperaría `PreguntaFueraDeTema` (es una pregunta burlona, no una solicitud).
+- `PreguntaFueraDeTema→SolicitudAgresiva`: 5 de 333 (1.5 %) — es la intención mejor
+  clasificada de las seis (88.9 % de acierto); esa frase concreta fue ruido, no una
+  debilidad real.
+- `AportaInformacion→SolicitudAgresiva`: 25 de 333 (7.5 %) — real, pero no es "la"
+  confusión de esa clase. `AportaInformacion` es una de las dos intenciones más
+  débiles (72.7 % de acierto, junto con `Interrupcion` en 72.1 %), y sus errores se
+  reparten casi igual entre `SolicitudAgresiva` (25), `Empatia` (25) e
+  `Interrupcion` (19) — no hay un imán específico hacia "solicitud agresiva".
 
-No es alarmante para una prueba de humo — el propio script lo advierte — pero es
-evidencia concreta, no especulación, de que al modelo le cuesta distinguir "pedir
-algo" de "informar/preguntar con carga emocional". Como son solo 2 frases de una
-lista fija de 6, no alcanza para saber si es un patrón sistemático o ruido de esos
-dos ejemplos puntuales; para confirmarlo haría falta mirar la matriz de confusión
-completa sobre las 1.998 entradas de validación, no solo este chequeo puntual. Vale
-la pena que quien haga la revisión humana del corpus revise en particular cómo están
-etiquetadas las fronteras entre estas tres intenciones.
+**Hallazgo más grande, no anticipado:** en `Tone`, la confusión más fuerte de toda
+la matriz es `Agresivo↔Neutral` — 68 de 404 frases de `Agresivo` real (16.8 %) se
+predijeron como `Neutral`, y 36 de 431 de `Neutral` real (8.4 %) como `Agresivo`.
+`Agresivo` es el tono con menor recall (70.3 %).
+
+Vale la pena que quien haga la revisión humana del corpus (sección 3) revise en
+particular cómo están etiquetadas las fronteras `AportaInformacion` /
+`Interrupcion` (las intenciones más débiles) y `Agresivo` / `Neutral` (la confusión
+de tono más grande) — no la pareja que se sospechaba al principio.
 
 **`.onnx` generado, no commiteado.** `Runtime/Nlu/Models/intent-tone-classifier.onnx`
 y `Runtime/Nlu/Models/tokenizer/` quedaron en el disco de quien entrenó. Subirlos al
 repo vía Git LFS es tarea de "PR2" (ver `Training/Nlu/README.md`), fuera del alcance
 de este documento.
+
+**Nuevo script `Training/Nlu/evaluate.py`.** Carga el `.onnx` ya exportado y corre
+inferencia sobre `val.jsonl` completo (no requiere entrenar, no es una compuerta
+humana): imprime la matriz de confusión por clase para `Intent` y `Tone`. Se usó
+para el análisis de arriba; ver `Training/Nlu/README.md` para el uso.
 
 Este documento no reemplaza a `Data/Corpus/README.md` (que define el esquema y la meta) —
 es un snapshot puntual de la brecha frente a esa meta.
