@@ -158,8 +158,8 @@ etiquetas de `intent`/`tone` son consistentes entre personas o reflejan el crite
 | ~~Entrenar y evaluar M2 con el corpus ampliado~~ | ✅ Hecho (2026-09-25) | Ver sección 6 |
 | Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía. Al revisar, prestar atención especial a los límites `AportaInformacion` / `PreguntaFueraDeTema` vs. `SolicitudAgresiva` — ver hallazgo en sección 6 |
 | Doble etiquetado del 10 % por un segundo etiquetador | Media | 0 frases doble-etiquetadas todavía; regla de `README.md` sin aplicar |
-| Repetir la comparación de 4 candidatos de encoder (tarea 1.6) sobre el corpus de 10.000 | Alta | 0 hecho. El encoder commiteado hoy (`distilbert-base-multilingual-cased`) ganó esa comparación el 2026-09-14 sobre un corpus 8× más chico (1.200 entradas); no hay garantía de que siga ganando. Script nuevo: `Training/Nlu/compare_encoders.py` |
-| Reentrenar con el encoder elegido y reemplazar el `.onnx` vía Git LFS | Media | Depende de la fila anterior. Generado hoy con MiniLM (no el commiteado) en `Runtime/Nlu/Models/`, sin exportar todavía el definitivo; ver `Training/Nlu/README.md` |
+| ~~Repetir la comparación de 4 candidatos de encoder (tarea 1.6) sobre el corpus de 10.000~~ | ✅ Hecho (2026-09-25) | `distilbert-base-multilingual-cased` gana otra vez. Ver sección 7 |
+| ~~Reentrenar `distilbert-base-multilingual-cased` con el corpus de 10.000 y reemplazar el `.onnx` vía Git LFS~~ | ✅ Hecho (2026-09-25) | Intent 0.813, Tone 0.799, reproducibilidad confirmada. Ver sección 8 |
 
 ---
 
@@ -260,6 +260,89 @@ de este documento.
 inferencia sobre `val.jsonl` completo (no requiere entrenar, no es una compuerta
 humana): imprime la matriz de confusión por clase para `Intent` y `Tone`. Se usó
 para el análisis de arriba; ver `Training/Nlu/README.md` para el uso.
+
+---
+
+## 7. Comparación de encoders repetida sobre el corpus de 10.000 (2026-09-25)
+
+El 2026-09-14 se compararon 4 candidatos de encoder de punta a punta y ganó
+`distilbert-base-multilingual-cased`, pero esa comparación se hizo sobre un corpus
+8 veces más chico (1.200 entradas). Se repitió con `Training/Nlu/compare_encoders.py`
+sobre las 10.000 entradas actuales, mismo split/seed/hiperparámetros para los 4,
+por una persona (compuerta humana, tarea 1.6).
+
+| Encoder | Parámetros | Intent acc | Tone acc |
+|---|---|---|---|
+| **`distilbert-base-multilingual-cased`** | 134.7 M | **0.813** | **0.799** |
+| `microsoft/Multilingual-MiniLM-L12-H384` | 117.7 M | 0.796 | 0.796 |
+| `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | 117.7 M | 0.778 | 0.774 |
+| `huawei-noah/TinyBERT_General_4L_312D` | 14.4 M | 0.635 | 0.678 |
+
+**Resultado: `distilbert-base-multilingual-cased` gana otra vez, en las dos métricas.**
+Con 8 veces más datos, el ganador no cambió respecto al 2026-09-14.
+
+**Sobre el tamaño:** los tres candidatos "grandes" están parejos (117-135 M);
+`distilbert` es apenas ~14 % más pesado que los MiniLM, no una diferencia relevante
+para la decisión. El único candidato realmente chico (`TinyBERT`, 14.4 M — el único
+de los 4 que cae cerca del rango ~20-60 M que pedía `design.md`) es también,
+por lejos, el peor: 13-18 puntos porcentuales menos de accuracy que los otros tres.
+No hay ahí un trade-off razonable de tamaño por precisión — es simplemente peor.
+
+**Conclusión accionable:** la fila "Opción A" del análisis anterior queda confirmada
+con datos, no solo como la opción conservadora. El siguiente paso es reentrenar con
+`distilbert-base-multilingual-cased` sobre el corpus de 10.000 (mismo comando que ya
+se usó para MiniLM, solo cambiando `--encoder`) y reemplazar el `.onnx` commiteado
+—que sigue siendo el del corpus viejo de 1.200 entradas— vía Git LFS. No hace falta
+repetir ningún spike de Sentis: el encoder no cambia, solo los datos con que se
+entrena.
+
+---
+
+## 8. Modelo final: `distilbert-base-multilingual-cased` reentrenado y commiteado (2026-09-25)
+
+Con el ganador confirmado en la sección 7, se corrió el Paso 2 de `Training/Nlu/README.md`
+con el encoder elegido sobre el corpus de 10.000 entradas:
+
+```
+python train.py --encoder distilbert-base-multilingual-cased --device cpu
+```
+
+**Resultado (split de validación, 1.998 entradas):**
+
+| | accuracy global |
+|---|---|
+| Intent | 0.813 |
+| Tone | 0.799 |
+
+Coincide exactamente con lo que ya había dado `compare_encoders.py` para este mismo
+candidato (sección 7) — mismo split, mismo seed, mismos hiperparámetros: buena señal de
+consistencia entre los dos scripts. Mejora sobre el modelo anterior (MiniLM, sección 6):
+Intent +3.5 puntos (0.778→0.813), Tone +2.5 puntos (0.774→0.799).
+
+**Reproducibilidad (tarea 1.7): confirmada, corrida dos veces.** Coincidieron no solo las
+clases predichas de las 6 frases fijas de `REPRO_PHRASES`, sino las probabilidades dígito
+por dígito y la curva de loss completa de ambas corridas.
+
+**La frase que motivó el hallazgo de la sección 6 ahora se clasifica bien:**
+`"la presion esta en catorce sobre noventa"` pasó de `SolicitudAgresiva` (p=0.448, MiniLM)
+a `AportaInformacion` (p=0.977, distilbert) — la confusión puntual desapareció con el
+cambio de encoder. La otra frase señalada (`"y usted donde compro esa corbata tan fea"`)
+sigue sin acertar (ahora predice `Empatia` en vez de `PreguntaFueraDeTema`, con más
+confianza que antes, p=0.805) — coherente con el hallazgo de la sección 6 de que ese caso
+puntual no era parte de un patrón sistemático, así que cambiar de encoder no garantiza
+resolverlo.
+
+**`.onnx` y tokenizador commiteados en esta misma rama**, reemplazando el artefacto que
+seguía siendo el entrenado sobre el corpus viejo de 1.200 entradas (2026-09-14).
+`Runtime/Nlu/Models/intent-tone-classifier.onnx` y `Runtime/Nlu/Models/tokenizer/` quedan
+así alineados con el corpus de 10.000 entradas y con el encoder ganador confirmado.
+
+**Pendiente, todavía (no bloqueante):** la matriz de confusión completa con
+`Training/Nlu/evaluate.py` no se ha vuelto a correr contra este `.onnx` nuevo — el
+análisis de la sección 6 (confusión `Agresivo↔Neutral`) fue sobre el modelo de MiniLM.
+Repetirlo sobre el modelo commiteado aquí queda como trabajo de seguimiento opcional.
+
+---
 
 Este documento no reemplaza a `Data/Corpus/README.md` (que define el esquema y la meta) —
 es un snapshot puntual de la brecha frente a esa meta.
