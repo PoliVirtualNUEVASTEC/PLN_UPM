@@ -1,21 +1,30 @@
 schema: spec-driven
 project: com.poli.npc-ai
 
-# Detected by sdd-init on 2026-08-31. Artifact store: hybrid (files + Engram).
+# Detected by sdd-init on 2026-08-31. Refreshed by sdd-init on 2026-09-25 (hybrid: files + Engram).
 context: |
   Stack: Unity 6000.5.4f1 UPM package (com.poli.npc-ai), pure C#, Unity Sentis
-  (com.unity.ai.inference 2.6.1) for on-device NLU. The git repo IS this package;
-  a host Unity project wraps it only to run tests.
-  Architecture: hexagonal / ports-and-adapters. NpcAi.Core is the frozen contract v1
-  (asmdef noEngineReferences: true): 5 immutable DTO structs, 4 enums, 7 ports, zero
-  logic. 10 runtime assemblies; feature modules reference only NpcAi.Core, plus
-  NpcAi.Core.Channels when Inspector-wired via ScriptableObject EventChannels. No
-  other inter-module references.
-  Modules: M0 Core/CoreChannels, M1 Speech, M2 Nlu, M3 Data/Corpus, M4 Receptivity
-  (pure C#, no UnityEngine), M5 Data/Personalities, M6 Dialogue, M7 VrInput,
-  M8 Presentation, M9 Scenarios/Emergency, M10 Scenarios/Boardroom,
-  M11 Samples~/Harness, M12 Docs.
-  Testing: Unity Test Framework 1.7.0 EditMode + NUnit 3. Each of the 7 ports has an
+  (com.unity.ai.inference 2.6.1) for on-device NLU (BertIntentClassifier). The git
+  repo IS this package; a host Unity project wraps it only to run tests.
+  Architecture: hexagonal / ports-and-adapters. NpcAi.Core is the frozen contract
+  (asmdef noEngineReferences: true): 5 immutable DTO structs, 4 enums, 9 ports (the
+  original 7 plus IClinicalResponder [contract v2] and IRequirementResponder
+  [contract v3]), zero logic. 17 runtime assemblies across 16 modules; feature
+  modules reference only NpcAi.Core, plus NpcAi.Core.Channels when Inspector-wired
+  via ScriptableObject EventChannels. No other inter-module references.
+  Modules: M0 Core/CoreChannels, M1 Speech, M2 Nlu (BertIntentClassifier on Sentis;
+  training pipeline in Training/Nlu/), M3 Data/Corpus, M4 Receptivity (pure C#, no
+  UnityEngine), M5 Data/Personalities, M6 Dialogue (Markov), M7 VrInput,
+  M8 Presentation (Piper TTS), M9 Scenarios/Emergency, M10 Scenarios/Boardroom
+  (fake only, not yet implemented), M11 Samples~/Harness, M12 Docs, M13 SessionLog
+  (SQLite recorder), M14 Data/Cases, M15 ClinicalResponse (IClinicalResponder),
+  M16 RequirementResponse (IRequirementResponder).
+  Pending direction (not yet an SDD change): exposing a semantic sentence-embedding
+  capability from M2 (BertIntentClassifier / Training/Nlu/train.py) through a new
+  NpcAi.Core port, for M15 (and potentially M16) to do semantic fact-matching
+  instead of literal keyword matching. This is a contract (M0) change per rule 2
+  below — scope it as its own SDD change, reviewed by the other shared M0 owner.
+  Testing: Unity Test Framework 1.7.0 EditMode + NUnit 3. Each of the 9 ports has an
   abstract contract-test base class in NpcAi.Core.Tests; every module fake
   (Runtime/<Module>/Fakes/) and its future real implementation inherit that same
   base. Tests run with no scene, no VR, no real implementations.
@@ -78,7 +87,8 @@ testing:
     Contract-first by construction: NpcAi.Core.Tests holds one abstract base class per
     port (SpeechToTextContract, IntentClassifierContract, PhysicalActionSourceContract,
     ReceptivityEngineContract, DialogueGeneratorContract, NpcPresenterContract,
-    ScenarioObjectiveContract) plus ContractTypeTests for DTO/enum invariants. A module
-    fake and its real implementation must pass the identical base class.
+    ScenarioObjectiveContract, ClinicalResponderContract, RequirementResponderContract)
+    plus ContractTypeTests for DTO/enum invariants. A module fake and its real
+    implementation must pass the identical base class.
     No automated integration/E2E layer yet; M11 Samples~/Harness is a manual desktop
     (no-VR) wiring of the fakes. No coverage tool, linter or formatter configured.

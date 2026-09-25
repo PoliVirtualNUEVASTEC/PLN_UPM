@@ -43,6 +43,34 @@ namespace NpcAi.Core
         IntentResult Classify(string text);
     }
 
+    /// <summary>M2 — de texto libre a un vector de embedding de oracion.</summary>
+    public interface ISentenceEmbedder
+    {
+        /// <summary>
+        /// False mientras el modelo/encoder no este cargado. Leer esta propiedad NO DEBE
+        /// lanzar en ningun estado.
+        /// </summary>
+        bool IsReady { get; }
+
+        /// <summary>
+        /// NO DEBE lanzar en ningun estado: ni con <see cref="IsReady"/> en <c>false</c>,
+        /// ni ante entradas atipicas (<c>null</c>, vacio, solo espacios, simbolos, cadenas
+        /// muy largas, numeros). Con <see cref="IsReady"/> en <c>false</c> o texto
+        /// <c>null</c> / vacio / solo espacios DEBE devolver
+        /// <see cref="SentenceEmbedding.Empty"/>. Con <see cref="IsReady"/> en <c>true</c> y
+        /// texto con contenido DEBE devolver un vector no vacio de componentes finitos (sin
+        /// <c>NaN</c> ni <c>+-Inf</c>). Todo vector no vacio de una misma instancia DEBE
+        /// tener la misma <see cref="SentenceEmbedding.Length"/>; esa longitud NO es una
+        /// constante del contrato, depende del encoder cargado. DEBE ser determinista bit a
+        /// bit para el mismo texto en la misma instancia (asimetria deliberada frente a
+        /// <see cref="IIntentClassifier.Classify"/>, que solo exige determinismo en
+        /// <c>Intent</c>/<c>Tone</c>): el vector completo es la senal primaria de
+        /// emparejamiento de consumidores deterministas como
+        /// <see cref="IClinicalResponder.Respond"/>.
+        /// </summary>
+        SentenceEmbedding Embed(string text);
+    }
+
     // ------------------------------------------------------------------ Respuesta clinica
 
     /// <summary>

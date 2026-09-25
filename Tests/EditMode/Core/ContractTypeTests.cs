@@ -12,11 +12,11 @@ namespace NpcAi.Core.Tests
     public class ContractTypeTests
     {
         [Test]
-        public void Version_del_contrato_es_tres()
+        public void Version_del_contrato_es_cuatro()
         {
-            // v3: segundo cambio de contrato. La atadura version <-> changelog la cubre
+            // v4: tercer cambio de contrato. La atadura version <-> changelog la cubre
             // ContractVersionChangelogTests; este es el pin literal.
-            Assert.AreEqual(3, Contract.Version);
+            Assert.AreEqual(4, Contract.Version);
         }
 
         [Test]
@@ -335,6 +335,70 @@ namespace NpcAi.Core.Tests
                 ("AunNoRevelado", 1),
                 ("Revelado",      2),
             });
+        }
+
+        // --- v4: embeddings de oraciones ---
+
+        [Test]
+        public void SentenceEmbedding_Empty_es_el_valor_por_defecto_y_hashea_a_cero()
+        {
+            Assert.IsTrue(SentenceEmbedding.Empty.IsEmpty);
+            Assert.AreEqual(0, SentenceEmbedding.Empty.Length);
+            Assert.AreEqual(0, SentenceEmbedding.Empty.GetHashCode());
+            Assert.AreEqual(default(SentenceEmbedding), SentenceEmbedding.Empty);
+        }
+
+        [Test]
+        public void SentenceEmbedding_con_null_o_arreglo_vacio_es_Empty()
+        {
+            Assert.AreEqual(SentenceEmbedding.Empty, new SentenceEmbedding(null));
+            Assert.AreEqual(SentenceEmbedding.Empty, new SentenceEmbedding(new float[0]));
+        }
+
+        [Test]
+        public void SentenceEmbedding_copia_el_arreglo_recibido()
+        {
+            var original = new[] { 1f, 2f, 3f };
+            var vector = new SentenceEmbedding(original);
+
+            original[0] = 99f;
+
+            Assert.AreEqual(1f, vector[0], "El constructor DEBE copiar el arreglo, no referenciarlo");
+            Assert.AreEqual(3, vector.Length);
+        }
+
+        [Test]
+        public void SentenceEmbedding_ToArray_devuelve_una_copia()
+        {
+            var vector = new SentenceEmbedding(new[] { 1f, 2f, 3f });
+            var copia = vector.ToArray();
+            copia[0] = 99f;
+
+            Assert.AreEqual(1f, vector[0], "Mutar la copia de ToArray NO DEBE afectar la instancia original");
+            Assert.AreEqual(3, copia.Length);
+        }
+
+        [Test]
+        public void SentenceEmbedding_compara_bit_a_bit()
+        {
+            var a = new SentenceEmbedding(new[] { 1f, 0f });
+            var b = new SentenceEmbedding(new[] { 1f, -0f });
+            var c = new SentenceEmbedding(new[] { 1f, 0f });
+
+            Assert.AreNotEqual(a, b, "0f y -0f tienen bits distintos: Equals DEBE distinguirlos");
+            Assert.IsTrue(a != b);
+            Assert.AreEqual(a, c);
+            Assert.IsTrue(a == c);
+        }
+
+        [Test]
+        public void SentenceEmbedding_iguales_hashean_igual()
+        {
+            var a = new SentenceEmbedding(new[] { 1f, 2f, 3f });
+            var b = new SentenceEmbedding(new[] { 1f, 2f, 3f });
+
+            Assert.AreEqual(a, b);
+            Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
         }
 
         // --- Helpers ---
