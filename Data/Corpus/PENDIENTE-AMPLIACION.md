@@ -155,8 +155,10 @@ etiquetas de `intent`/`tone` son consistentes entre personas o reflejan el crite
 | ~~Ampliar y rebalancear `emergencia.json`~~ | ✅ Hecho | 5.000 entradas en voz de enfermero, `Empatico` 1→876+ |
 | ~~Ampliar y rebalancear `juntas.json`~~ | ✅ Hecho | 5.000 entradas en voz de analista, grilla 6×6 completa |
 | ~~Split train/val sin agrupar frases casi-idénticas~~ | ✅ Hecho (2026-09-23) | Ver sección 5 |
-| Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía |
+| ~~Entrenar y evaluar M2 con el corpus ampliado~~ | ✅ Hecho (2026-09-25) | Ver sección 6 |
+| Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía. Al revisar, prestar atención especial a los límites `AportaInformacion` / `PreguntaFueraDeTema` vs. `SolicitudAgresiva` — ver hallazgo en sección 6 |
 | Doble etiquetado del 10 % por un segundo etiquetador | Media | 0 frases doble-etiquetadas todavía; regla de `README.md` sin aplicar |
+| Commitear el `.onnx` entrenado vía Git LFS ("PR2") | Media | Generado localmente en `Runtime/Nlu/Models/`, no commiteado; es tarea separada de este documento (ver `Training/Nlu/README.md`) |
 
 ---
 
@@ -189,6 +191,59 @@ val, nunca frases sueltas dentro de un cluster.
 
 No se tocó el documento fuente (`corpus_fuentes_ejemplos_triaje.md`): el requisito
 sigue ahí, y ahora el código efectivamente lo cumple.
+
+---
+
+## 6. Entrenamiento y evaluación de M2 (2026-09-25)
+
+Corrida end-to-end del pipeline (`Training/Nlu/train.py`) sobre el corpus ampliado de
+10.000 entradas, por una persona con GPU/CPU y acceso a internet, según exige la
+sección "Compuertas humanas" de `Training/Nlu/README.md` (ningún agente entrena el
+modelo de forma autónoma).
+
+```
+python train.py --encoder sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 --device cpu
+```
+
+**Resultado (split de validación, 1.998 entradas):**
+
+| | accuracy global |
+|---|---|
+| Intent | 0.778 |
+| Tone | 0.774 |
+
+Ninguna clase con soporte real colapsó a 0 (la única que el script marca con pocos
+ejemplos es `Intent.Desconocida`, con 0 en val, porque esa clase nunca aparece en el
+corpus — es el valor "sin clasificar" del enum, no una intención que se etiquete).
+
+**Reproducibilidad (tarea 1.7): confirmada, corrida tres veces.** No solo coincidió
+la clase predicha para las 6 frases fijas de `REPRO_PHRASES` — coincidieron también
+las probabilidades, dígito por dígito, y la curva de loss completa de las tres
+corridas. Determinismo total en CPU con `seed=42`.
+
+**Hallazgo a tener en cuenta para la revisión humana pendiente (sección 3):** de las
+6 frases del chequeo de reproducibilidad, 2 salieron con `Intent` predicho con baja
+confianza y, aparentemente, equivocado:
+
+- `"la presion esta en catorce sobre noventa"` → predijo `SolicitudAgresiva` (p=0.448,
+  casi una moneda al aire); se esperaría `AportaInformacion` (es una frase
+  informativa). El `Tone` sí salió bien (`Neutral`, p=0.929).
+- `"y usted donde compro esa corbata tan fea"` → predijo `SolicitudAgresiva` (p=0.559);
+  se esperaría `PreguntaFueraDeTema` (es una pregunta burlona, no una solicitud).
+
+No es alarmante para una prueba de humo — el propio script lo advierte — pero es
+evidencia concreta, no especulación, de que al modelo le cuesta distinguir "pedir
+algo" de "informar/preguntar con carga emocional". Como son solo 2 frases de una
+lista fija de 6, no alcanza para saber si es un patrón sistemático o ruido de esos
+dos ejemplos puntuales; para confirmarlo haría falta mirar la matriz de confusión
+completa sobre las 1.998 entradas de validación, no solo este chequeo puntual. Vale
+la pena que quien haga la revisión humana del corpus revise en particular cómo están
+etiquetadas las fronteras entre estas tres intenciones.
+
+**`.onnx` generado, no commiteado.** `Runtime/Nlu/Models/intent-tone-classifier.onnx`
+y `Runtime/Nlu/Models/tokenizer/` quedaron en el disco de quien entrenó. Subirlos al
+repo vía Git LFS es tarea de "PR2" (ver `Training/Nlu/README.md`), fuera del alcance
+de este documento.
 
 Este documento no reemplaza a `Data/Corpus/README.md` (que define el esquema y la meta) —
 es un snapshot puntual de la brecha frente a esa meta.
