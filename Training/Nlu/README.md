@@ -96,6 +96,24 @@ veces sobre el mismo corpus y verificar que ese bloque sale identico en `Intent`
 `Tone` (la confianza y la latencia pueden variar minimamente, como permite el
 contrato del puerto).
 
+## Paso 3 — evaluacion mas a fondo (opcional)
+
+```bash
+python evaluate.py
+```
+
+`train.py` solo imprime `classification_report` (precision/recall/f1 por clase) y
+el chequeo de reproducibilidad sobre 6 frases fijas. `evaluate.py` complementa eso:
+carga el `.onnx` ya exportado (no entrena nada, no es una compuerta humana) y corre
+inferencia sobre `val.jsonl` completo para imprimir la **matriz de confusion**
+completa de `Intent` y de `Tone` — util para ver, por ejemplo, si una clase se
+confunde sistematicamente con otra en particular o si sus errores estan repartidos
+entre varias (ver el caso analizado en `Data/Corpus/PENDIENTE-AMPLIACION.md`,
+seccion 6).
+
+Opciones: `--onnx`, `--tokenizer`, `--val-jsonl`, `--max-length` (64); por defecto
+apunta a la salida de `train.py`.
+
 ## Donde queda el `.onnx`
 
 Por defecto en `Runtime/Nlu/Models/intent-tone-classifier.onnx`. **PR1 solo lo
