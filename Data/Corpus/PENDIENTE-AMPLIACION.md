@@ -155,8 +155,11 @@ etiquetas de `intent`/`tone` son consistentes entre personas o reflejan el crite
 | ~~Ampliar y rebalancear `emergencia.json`~~ | ✅ Hecho | 5.000 entradas en voz de enfermero, `Empatico` 1→876+ |
 | ~~Ampliar y rebalancear `juntas.json`~~ | ✅ Hecho | 5.000 entradas en voz de analista, grilla 6×6 completa |
 | ~~Split train/val sin agrupar frases casi-idénticas~~ | ✅ Hecho (2026-09-23) | Ver sección 5 |
-| Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía |
+| ~~Entrenar y evaluar M2 con el corpus ampliado~~ | ✅ Hecho (2026-09-25) | Ver sección 6 |
+| Revisión humana de las 8.800 frases generadas con IA | Alta | 0 revisadas todavía. Al revisar, prestar atención especial a los límites `AportaInformacion` / `PreguntaFueraDeTema` vs. `SolicitudAgresiva` — ver hallazgo en sección 6 |
 | Doble etiquetado del 10 % por un segundo etiquetador | Media | 0 frases doble-etiquetadas todavía; regla de `README.md` sin aplicar |
+| ~~Repetir la comparación de 4 candidatos de encoder (tarea 1.6) sobre el corpus de 10.000~~ | ✅ Hecho (2026-09-25) | `distilbert-base-multilingual-cased` gana otra vez. Ver sección 7 |
+| ~~Reentrenar `distilbert-base-multilingual-cased` con el corpus de 10.000 y reemplazar el `.onnx` vía Git LFS~~ | ✅ Hecho (2026-09-25) | Intent 0.813, Tone 0.799, reproducibilidad confirmada. Ver sección 8 |
 
 ---
 
@@ -189,6 +192,172 @@ val, nunca frases sueltas dentro de un cluster.
 
 No se tocó el documento fuente (`corpus_fuentes_ejemplos_triaje.md`): el requisito
 sigue ahí, y ahora el código efectivamente lo cumple.
+
+---
+
+## 6. Entrenamiento y evaluación de M2 (2026-09-25)
+
+Corrida end-to-end del pipeline (`Training/Nlu/train.py`) sobre el corpus ampliado de
+10.000 entradas, por una persona con GPU/CPU y acceso a internet, según exige la
+sección "Compuertas humanas" de `Training/Nlu/README.md` (ningún agente entrena el
+modelo de forma autónoma).
+
+```
+python train.py --encoder sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 --device cpu
+```
+
+**Resultado (split de validación, 1.998 entradas):**
+
+| | accuracy global |
+|---|---|
+| Intent | 0.778 |
+| Tone | 0.774 |
+
+Ninguna clase con soporte real colapsó a 0 (la única que el script marca con pocos
+ejemplos es `Intent.Desconocida`, con 0 en val, porque esa clase nunca aparece en el
+corpus — es el valor "sin clasificar" del enum, no una intención que se etiquete).
+
+**Reproducibilidad (tarea 1.7): confirmada, corrida tres veces.** No solo coincidió
+la clase predicha para las 6 frases fijas de `REPRO_PHRASES` — coincidieron también
+las probabilidades, dígito por dígito, y la curva de loss completa de las tres
+corridas. Determinismo total en CPU con `seed=42`.
+
+**Hallazgo inicial (de las 6 frases fijas) y su confirmación con la matriz de
+confusión completa:** de las 6 frases del chequeo de reproducibilidad, 2 salieron
+con `Intent` predicho con baja confianza — `"la presion esta en catorce sobre
+noventa"` → `SolicitudAgresiva` (p=0.448) en vez de `AportaInformacion`, y `"y usted
+donde compro esa corbata tan fea"` → `SolicitudAgresiva` (p=0.559) en vez de
+`PreguntaFueraDeTema`. Con solo 2 de 6 frases no se podía saber si era un patrón
+sistemático o ruido puntual, así que se corrió `Training/Nlu/evaluate.py` (nuevo,
+ver más abajo) para mirar la matriz de confusión completa sobre las 1.998 entradas
+de validación. **Resultado: no es un sesgo específico hacia `SolicitudAgresiva`.**
+
+- `PreguntaFueraDeTema→SolicitudAgresiva`: 5 de 333 (1.5 %) — es la intención mejor
+  clasificada de las seis (88.9 % de acierto); esa frase concreta fue ruido, no una
+  debilidad real.
+- `AportaInformacion→SolicitudAgresiva`: 25 de 333 (7.5 %) — real, pero no es "la"
+  confusión de esa clase. `AportaInformacion` es una de las dos intenciones más
+  débiles (72.7 % de acierto, junto con `Interrupcion` en 72.1 %), y sus errores se
+  reparten casi igual entre `SolicitudAgresiva` (25), `Empatia` (25) e
+  `Interrupcion` (19) — no hay un imán específico hacia "solicitud agresiva".
+
+**Hallazgo más grande, no anticipado:** en `Tone`, la confusión más fuerte de toda
+la matriz es `Agresivo↔Neutral` — 68 de 404 frases de `Agresivo` real (16.8 %) se
+predijeron como `Neutral`, y 36 de 431 de `Neutral` real (8.4 %) como `Agresivo`.
+`Agresivo` es el tono con menor recall (70.3 %).
+
+Vale la pena que quien haga la revisión humana del corpus (sección 3) revise en
+particular cómo están etiquetadas las fronteras `AportaInformacion` /
+`Interrupcion` (las intenciones más débiles) y `Agresivo` / `Neutral` (la confusión
+de tono más grande) — no la pareja que se sospechaba al principio.
+
+**`.onnx` generado, no commiteado.** `Runtime/Nlu/Models/intent-tone-classifier.onnx`
+y `Runtime/Nlu/Models/tokenizer/` quedaron en el disco de quien entrenó. Subirlos al
+repo vía Git LFS es tarea de "PR2" (ver `Training/Nlu/README.md`), fuera del alcance
+de este documento.
+
+**Nuevo script `Training/Nlu/evaluate.py`.** Carga el `.onnx` ya exportado y corre
+inferencia sobre `val.jsonl` completo (no requiere entrenar, no es una compuerta
+humana): imprime la matriz de confusión por clase para `Intent` y `Tone`. Se usó
+para el análisis de arriba; ver `Training/Nlu/README.md` para el uso.
+
+---
+
+## 7. Comparación de encoders repetida sobre el corpus de 10.000 (2026-09-25)
+
+El 2026-09-14 se compararon 4 candidatos de encoder de punta a punta y ganó
+`distilbert-base-multilingual-cased`, pero esa comparación se hizo sobre un corpus
+8 veces más chico (1.200 entradas). Se repitió con `Training/Nlu/compare_encoders.py`
+sobre las 10.000 entradas actuales, mismo split/seed/hiperparámetros para los 4,
+por una persona (compuerta humana, tarea 1.6).
+
+| Encoder | Parámetros | Intent acc | Tone acc |
+|---|---|---|---|
+| **`distilbert-base-multilingual-cased`** | 134.7 M | **0.813** | **0.799** |
+| `microsoft/Multilingual-MiniLM-L12-H384` | 117.7 M | 0.796 | 0.796 |
+| `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` | 117.7 M | 0.778 | 0.774 |
+| `huawei-noah/TinyBERT_General_4L_312D` | 14.4 M | 0.635 | 0.678 |
+
+**Resultado: `distilbert-base-multilingual-cased` gana otra vez, en las dos métricas.**
+Con 8 veces más datos, el ganador no cambió respecto al 2026-09-14.
+
+**Sobre el tamaño:** los tres candidatos "grandes" están parejos (117-135 M);
+`distilbert` es apenas ~14 % más pesado que los MiniLM, no una diferencia relevante
+para la decisión. El único candidato realmente chico (`TinyBERT`, 14.4 M — el único
+de los 4 que cae cerca del rango ~20-60 M que pedía `design.md`) es también,
+por lejos, el peor: 13-18 puntos porcentuales menos de accuracy que los otros tres.
+No hay ahí un trade-off razonable de tamaño por precisión — es simplemente peor.
+
+**Conclusión accionable:** la fila "Opción A" del análisis anterior queda confirmada
+con datos, no solo como la opción conservadora. El siguiente paso es reentrenar con
+`distilbert-base-multilingual-cased` sobre el corpus de 10.000 (mismo comando que ya
+se usó para MiniLM, solo cambiando `--encoder`) y reemplazar el `.onnx` commiteado
+—que sigue siendo el del corpus viejo de 1.200 entradas— vía Git LFS. No hace falta
+repetir ningún spike de Sentis: el encoder no cambia, solo los datos con que se
+entrena.
+
+---
+
+## 8. Modelo final: `distilbert-base-multilingual-cased` reentrenado y commiteado (2026-09-25)
+
+Con el ganador confirmado en la sección 7, se corrió el Paso 2 de `Training/Nlu/README.md`
+con el encoder elegido sobre el corpus de 10.000 entradas:
+
+```
+python train.py --encoder distilbert-base-multilingual-cased --device cpu
+```
+
+**Resultado (split de validación, 1.998 entradas):**
+
+| | accuracy global |
+|---|---|
+| Intent | 0.813 |
+| Tone | 0.799 |
+
+Coincide exactamente con lo que ya había dado `compare_encoders.py` para este mismo
+candidato (sección 7) — mismo split, mismo seed, mismos hiperparámetros: buena señal de
+consistencia entre los dos scripts. Mejora sobre el modelo anterior (MiniLM, sección 6):
+Intent +3.5 puntos (0.778→0.813), Tone +2.5 puntos (0.774→0.799).
+
+**Reproducibilidad (tarea 1.7): confirmada, corrida dos veces.** Coincidieron no solo las
+clases predichas de las 6 frases fijas de `REPRO_PHRASES`, sino las probabilidades dígito
+por dígito y la curva de loss completa de ambas corridas.
+
+**La frase que motivó el hallazgo de la sección 6 ahora se clasifica bien:**
+`"la presion esta en catorce sobre noventa"` pasó de `SolicitudAgresiva` (p=0.448, MiniLM)
+a `AportaInformacion` (p=0.977, distilbert) — la confusión puntual desapareció con el
+cambio de encoder. La otra frase señalada (`"y usted donde compro esa corbata tan fea"`)
+sigue sin acertar (ahora predice `Empatia` en vez de `PreguntaFueraDeTema`, con más
+confianza que antes, p=0.805) — coherente con el hallazgo de la sección 6 de que ese caso
+puntual no era parte de un patrón sistemático, así que cambiar de encoder no garantiza
+resolverlo.
+
+**`.onnx` y tokenizador commiteados en esta misma rama**, reemplazando el artefacto que
+seguía siendo el entrenado sobre el corpus viejo de 1.200 entradas (2026-09-14).
+`Runtime/Nlu/Models/intent-tone-classifier.onnx` y `Runtime/Nlu/Models/tokenizer/` quedan
+así alineados con el corpus de 10.000 entradas y con el encoder ganador confirmado.
+
+**Matriz de confusión repetida sobre este `.onnx` (2026-09-25).** Se corrió
+`Training/Nlu/evaluate.py` contra el modelo ya commiteado para ver si la confusión de
+la sección 6 (`Agresivo↔Neutral`, el hallazgo más grande de ese análisis) cambió con
+el nuevo encoder:
+
+| Confusión | MiniLM (sección 6) | distilbert (este modelo) |
+|---|---|---|
+| Tone `Agresivo→Neutral` | 68/404 (16.8 %) | **42/404 (10.4 %)** |
+| Tone `Neutral→Agresivo` | 36/431 (8.4 %) | 37/431 (8.6 %) |
+| Intent `AportaInformacion→SolicitudAgresiva` | 25/333 (7.5 %) | 20/333 (6.0 %) |
+| Intent `PreguntaFueraDeTema→SolicitudAgresiva` | 5/333 (1.5 %) | 3/333 (0.9 %) |
+
+El cambio de encoder no solo subió el accuracy global (sección 8) — redujo casi a la
+mitad la confusión `Agresivo→Neutral`, que explica buena parte de la mejora de 2.5
+puntos en Tone. La otra dirección (`Neutral→Agresivo`) no cambió, y las dos confusiones
+de Intent bajo observación siguen bajas, confirmando que nunca fueron un patrón
+sistemático (igual que se concluyó en la sección 6). Sigue valiendo la recomendación de
+que la revisión humana (sección 3) preste atención especial a la frontera
+`Agresivo`/`Neutral` de tono.
+
+---
 
 Este documento no reemplaza a `Data/Corpus/README.md` (que define el esquema y la meta) —
 es un snapshot puntual de la brecha frente a esa meta.

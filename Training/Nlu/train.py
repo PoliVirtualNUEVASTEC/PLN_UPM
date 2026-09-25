@@ -25,6 +25,7 @@ import json
 import os
 import random
 import sys
+from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -34,6 +35,11 @@ from sklearn.metrics import accuracy_score, classification_report
 from transformers import AutoModel, AutoTokenizer
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+# Debajo de este numero de ejemplos en el split de validacion, la precision reportada
+# para esa clase no es confiable (el aviso al final de report() se calcula con esto,
+# no queda hardcodeado a una clase fija que se desactualiza cuando el corpus cambia).
+LOW_SUPPORT_THRESHOLD = 5
 
 # Espejo de Runtime/Core/Enums.cs, en el orden de declaracion. El indice de cada
 # salida ONNX coincide 1:1 con el valor del enum de C# (indice 0 = Desconocida /
@@ -162,6 +168,7 @@ def report(model: Classifier, emb: torch.Tensor, y_intent: torch.Tensor, y_tone:
     emb = emb.to(device)
     pi = model.intent_head(emb).argmax(-1).cpu().numpy()
     pt = model.tone_head(emb).argmax(-1).cpu().numpy()
+    low_support: list[str] = []
     for name, y_true, y_pred, classes in (
         ("INTENT", y_intent.numpy(), pi, INTENT_CLASSES),
         ("TONE", y_tone.numpy(), pt, TONE_CLASSES),
@@ -171,8 +178,15 @@ def report(model: Classifier, emb: torch.Tensor, y_intent: torch.Tensor, y_tone:
         print(classification_report(
             y_true, y_pred, labels=list(range(len(classes))), target_names=list(classes),
             zero_division=0, digits=3))
-    print("NOTA: la precision de Tone.Empatico no es fiable (0-1 ejemplos en el corpus); "
-          "ver Data/Corpus/PENDIENTE-AMPLIACION.md.")
+        support = Counter(y_true.tolist())
+        for i, cls in enumerate(classes):
+            n = support.get(i, 0)
+            if n < LOW_SUPPORT_THRESHOLD:
+                low_support.append(f"{name.capitalize()}.{cls} ({n} ejemplo(s) en val)")
+    if low_support:
+        print("\nNOTA: estas clases tienen pocos ejemplos en el split de validacion (< "
+              f"{LOW_SUPPORT_THRESHOLD}) y su precision no es fiable todavia: "
+              + ", ".join(low_support) + " (ver Data/Corpus/PENDIENTE-AMPLIACION.md).")
 
 
 def export_onnx(model: Classifier, tok, out_path: Path, opset: int, max_length: int) -> None:

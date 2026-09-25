@@ -34,20 +34,18 @@ adelante sin sorpresas de versiones.
 python prepare_dataset.py
 ```
 
-Carga `Data/Corpus/emergencia.json`, valida el esquema de cada entrada
+Carga `Data/Corpus/emergencia.json` y `Data/Corpus/juntas.json` (los dos archivos
+listados en `CORPUS_FILES`), valida el esquema de cada entrada
 (`text`/`intent`/`tone`/`scenario`/`labeler`, con `intent`/`tone` miembros validos
-de `NpcAi.Core.Intent` / `NpcAi.Core.Tone`) y escribe el split en
+de `NpcAi.Core.Intent` / `NpcAi.Core.Tone`) y escribe el split combinado en
 `Training/Nlu/data/` (`train.jsonl`, `val.jsonl`, `split_summary.json`).
 
-`Data/Corpus/juntas.json` queda excluido a proposito: el escenario de sala de
-juntas (toma de requerimientos) todavia no esta definido y su corpus actual modela
-una reunion de junta directiva. Se reincorpora editando `CORPUS_FILES` en
-`prepare_dataset.py` cuando exista el corpus que corresponde.
-
 El split se estratifica por la combinacion `intent x tone` **en la medida en que
-el tamano de cada clase lo permita**. Las clases con un solo ejemplo (hoy
-`Tone.Empatico`) no se pueden estratificar: caen enteras a `train` y el script lo
-avisa por stderr, sin abortar.
+el tamano de cada clase lo permita**, agrupando antes las frases casi identicas
+(similitud de tokens >= 0.72) para que no queden separadas entre train y val (ver
+`corpus_fuentes_ejemplos_triaje.md`, seccion 9). Las clases con un solo ejemplo no
+se pueden estratificar: caen enteras a `train` y el script lo avisa por stderr, sin
+abortar.
 
 Opciones: `--corpus-dir`, `--out-dir`, `--val-fraction` (default `0.2`),
 `--seed` (default `42`).
@@ -73,6 +71,36 @@ exporta el grafo (encoder + cabezas + softmax) a ONNX. Junto al `.onnx` guarda e
 tokenizador en `tokenizer/`; PR2 lo necesita para alimentar Sentis con los mismos
 `input_ids`.
 
+### Antes del Paso 2: comparar candidatos de encoder (opcional, recomendado si el corpus cambio mucho)
+
+```bash
+python compare_encoders.py
+```
+
+El encoder que hoy esta commiteado (`distilbert-base-multilingual-cased`) se eligio
+el 2026-09-14 comparando 4 candidatos sobre el corpus que existia entonces (1200
+entradas). Si el corpus crecio bastante desde esa comparacion (como paso con la
+ampliacion a 10000 entradas, ver `Data/Corpus/PENDIENTE-AMPLIACION.md`), no hay
+garantia de que el mismo candidato siga siendo el mejor.
+
+`compare_encoders.py` entrena y evalua cada candidato (mismo split, mismo seed,
+mismos hiperparametros que `train.py`, para que la comparacion sea justa) y al
+final imprime una tabla con accuracy y F1 macro de Intent y Tone por candidato, mas
+el numero de parametros de cada encoder (mas grande = mas lento/pesado on-device).
+No exporta ningun `.onnx`: la decision de cual usar cruza accuracy con el
+presupuesto de rendimiento del dispositivo objetivo, y es del equipo. Una vez
+decidido, correr el Paso 2 normal con `--encoder <el-elegido>`.
+
+Con los 4 candidatos por defecto, en CPU, tarda varias veces mas que una sola
+corrida de `train.py` (una descarga y un calculo de embeddings por candidato).
+
+Opciones: `--encoders` (lista de ids de Hugging Face; default los 4 candidatos de
+arriba), el resto son las mismas de `train.py`.
+
+**Es la misma compuerta humana que el resto de este pipeline**: comparar encoders
+es la tarea 1.6 (ver `openspec/changes/archive/2026-09-09-m2-clasificador-bert-reducido/tasks.md`),
+y sigue exigiendo que la corra una persona, no un agente.
+
 ## Como leer las metricas por clase
 
 Al terminar, `train.py` imprime un `classification_report` de scikit-learn **por
@@ -81,11 +109,13 @@ separado para `Intent` y para `Tone`**, con precision, recall y F1 **por clase**
 `NpcAi.Core.Enums` (indice 0 = `Desconocida` / `Neutral`), el mismo que tendran
 las salidas del `.onnx`.
 
-Mirar especificamente la fila `Empatico` del reporte de `Tone`: con 0-1 ejemplos
-en el corpus su precision sera baja o cero. **Es un resultado esperado**, no un
-fallo del pipeline: se corrige ampliando el corpus, no tocando estos scripts (ver
-`Data/Corpus/PENDIENTE-AMPLIACION.md`). Lo mismo, en menor grado, aplica a
-`Tone.Ansioso` en el escenario de juntas.
+Si alguna clase tiene menos de `LOW_SUPPORT_THRESHOLD` (5) ejemplos en el split de
+validacion, `train.py` lo avisa por su nombre al final del reporte: su precision no
+es fiable todavia. **Es un resultado esperado en ese caso**, no un fallo del
+pipeline: se corrige ampliando el corpus para esa clase, no tocando estos scripts
+(ver `Data/Corpus/PENDIENTE-AMPLIACION.md`). El aviso se calcula sobre el soporte
+real de cada corrida, no sobre una clase fija, para no quedar desactualizado si el
+corpus vuelve a cambiar.
 
 ## Reproducibilidad
 
@@ -95,6 +125,24 @@ fijo de frases. Para confirmar reproducibilidad (tarea 1.7): correr `train.py` d
 veces sobre el mismo corpus y verificar que ese bloque sale identico en `Intent` y
 `Tone` (la confianza y la latencia pueden variar minimamente, como permite el
 contrato del puerto).
+
+## Paso 3 — evaluacion mas a fondo (opcional)
+
+```bash
+python evaluate.py
+```
+
+`train.py` solo imprime `classification_report` (precision/recall/f1 por clase) y
+el chequeo de reproducibilidad sobre 6 frases fijas. `evaluate.py` complementa eso:
+carga el `.onnx` ya exportado (no entrena nada, no es una compuerta humana) y corre
+inferencia sobre `val.jsonl` completo para imprimir la **matriz de confusion**
+completa de `Intent` y de `Tone` — util para ver, por ejemplo, si una clase se
+confunde sistematicamente con otra en particular o si sus errores estan repartidos
+entre varias (ver el caso analizado en `Data/Corpus/PENDIENTE-AMPLIACION.md`,
+seccion 6).
+
+Opciones: `--onnx`, `--tokenizer`, `--val-jsonl`, `--max-length` (64); por defecto
+apunta a la salida de `train.py`.
 
 ## Donde queda el `.onnx`
 
