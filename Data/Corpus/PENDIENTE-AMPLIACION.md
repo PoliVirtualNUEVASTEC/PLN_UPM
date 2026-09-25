@@ -337,10 +337,25 @@ seguía siendo el entrenado sobre el corpus viejo de 1.200 entradas (2026-09-14)
 `Runtime/Nlu/Models/intent-tone-classifier.onnx` y `Runtime/Nlu/Models/tokenizer/` quedan
 así alineados con el corpus de 10.000 entradas y con el encoder ganador confirmado.
 
-**Pendiente, todavía (no bloqueante):** la matriz de confusión completa con
-`Training/Nlu/evaluate.py` no se ha vuelto a correr contra este `.onnx` nuevo — el
-análisis de la sección 6 (confusión `Agresivo↔Neutral`) fue sobre el modelo de MiniLM.
-Repetirlo sobre el modelo commiteado aquí queda como trabajo de seguimiento opcional.
+**Matriz de confusión repetida sobre este `.onnx` (2026-09-25).** Se corrió
+`Training/Nlu/evaluate.py` contra el modelo ya commiteado para ver si la confusión de
+la sección 6 (`Agresivo↔Neutral`, el hallazgo más grande de ese análisis) cambió con
+el nuevo encoder:
+
+| Confusión | MiniLM (sección 6) | distilbert (este modelo) |
+|---|---|---|
+| Tone `Agresivo→Neutral` | 68/404 (16.8 %) | **42/404 (10.4 %)** |
+| Tone `Neutral→Agresivo` | 36/431 (8.4 %) | 37/431 (8.6 %) |
+| Intent `AportaInformacion→SolicitudAgresiva` | 25/333 (7.5 %) | 20/333 (6.0 %) |
+| Intent `PreguntaFueraDeTema→SolicitudAgresiva` | 5/333 (1.5 %) | 3/333 (0.9 %) |
+
+El cambio de encoder no solo subió el accuracy global (sección 8) — redujo casi a la
+mitad la confusión `Agresivo→Neutral`, que explica buena parte de la mejora de 2.5
+puntos en Tone. La otra dirección (`Neutral→Agresivo`) no cambió, y las dos confusiones
+de Intent bajo observación siguen bajas, confirmando que nunca fueron un patrón
+sistemático (igual que se concluyó en la sección 6). Sigue valiendo la recomendación de
+que la revisión humana (sección 3) preste atención especial a la frontera
+`Agresivo`/`Neutral` de tono.
 
 ---
 
