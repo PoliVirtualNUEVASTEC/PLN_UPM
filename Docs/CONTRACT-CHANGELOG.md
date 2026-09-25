@@ -3,6 +3,72 @@
 Toda modificacion a `NpcAi.Core` sube `Contract.Version` y deja una entrada aqui.
 Regla: un cambio de contrato a `Runtime/Core` o `Runtime/CoreChannels` es su propio cambio SDD, revisado antes del merge por el otro dueno compartido de M0 (o, en su defecto, el asesor). Sin ventana fija ni quorum de todos los duenos.
 
+## v4 — 2026-09-25 — Puerto de embeddings semanticos de oraciones (M2)
+
+Tercer cambio de contrato despues del congelamiento de v1. Extension **puramente aditiva**:
+ningun enum, DTO ni puerto de v1/v2/v3 cambia (nombre, valor, orden, cardinalidad, firma).
+Agrega la superficie para que M2 exponga un vector de embedding por oracion y que modulos
+consumidores (M15, M16, M9) comparen texto por similitud en vez de por palabras.
+
+### Tipos nuevos
+
+- **DTO inmutables:** `SentenceEmbedding` (los DTO pasan de 10 a 11).
+- **Puertos:** `ISentenceEmbedder` (los puertos pasan de 9 a 10).
+
+Ambos son C# puro (`float[]` privado, `System.BitConverter`): `NpcAi.Core` mantiene
+`noEngineReferences: true` y cero referencias `NpcAi.*` ajenas (`CoreAssemblyPurityTests`).
+
+### `SentenceEmbedding` — vector inmutable por construccion
+
+`readonly struct` que copia el arreglo recibido y nunca lo expone: `Length`, indexador de solo
+lectura, `IsEmpty`, `ToArray()` (copia defensiva). `null` o longitud `0` ⇒ `Empty`;
+`Empty == default`, `Length == 0`, `GetHashCode() == 0`. Igualdad completa **bit a bit**
+(`Equals`, `GetHashCode`, `operator ==`, `operator !=`): misma `Length` y mismos bits en cada
+componente (`0f` y `-0f` son distintos). La dimension NO es parte del contrato: depende del
+encoder de cada reentrenamiento de M2 (768 hoy, 384 con MiniLM), **nunca** un cambio de contrato.
+
+### Invariantes de `ISentenceEmbedder`
+
+Toda implementacion real y todo doble DEBE heredar `NpcAi.Core.Tests.SentenceEmbedderContract`
+y pasar el 100% de sus `[Test]`, sin escena de Unity ni entorno de VR.
+
+- **`IsReady`**: leer NO DEBE lanzar en ningun estado.
+- **`Embed(string)`**: NO DEBE lanzar en ningun estado (`IsReady == false`, `null`, vacio, solo
+  espacios, simbolos, numeros, cadenas de 5000 caracteres). Con `IsReady == false` o texto
+  `null` / vacio / solo espacios DEBE devolver `SentenceEmbedding.Empty`. Con `IsReady == true`
+  y texto con contenido DEBE devolver un vector no vacio de componentes finitos (sin `NaN` ni
+  `±Inf`). Todo vector no vacio de una misma instancia DEBE tener la misma `Length`. La
+  normalizacion L2 NO esta obligada.
+
+### Asimetria de determinismo
+
+`ISentenceEmbedder.Embed` **DEBE** ser determinista **bit a bit** para el mismo texto en la
+misma instancia (mismo modelo cargado, mismo dispositivo); no se garantiza igualdad entre
+dispositivos. A diferencia de `IntentResult.Confidence` / `LatencyMs` (metadatos de medicion,
+exentos desde v1), el embedding es la senal primaria de emparejamiento de consumidores
+deterministas como `IClinicalResponder.Respond`: sin esta clausula su determinismo seria
+inalcanzable. `SentenceEmbedding` no lleva latencia por esa razon.
+
+### Advertencia de calidad
+
+El `.onnx` vigente usa `distilbert-base-multilingual-cased` (masked-LM generico, sin objetivo
+de similitud). Este contrato no garantiza que sus embeddings sirvan para emparejar hechos: es
+una pregunta empirica de los cambios consumidores.
+
+### Decisiones y proceso (regla 10)
+
+- **Enfoque**: puerto nuevo y separado; `IIntentClassifier` / `IntentResult` intactos.
+- AD1 (dimension definida por la implementacion) y AD2 (determinismo bit a bit) resueltas en
+  el diseno de `2026-09-25-m0-puerto-embeddings-semanticos`.
+- **Co-revision de M0** (regla 2): APROBADA por Luis Miguel Canaveral Restrepo, confirmacion
+  informal, el 2026-09-25 (referencia de PR a completar si tambien comenta sobre el mismo).
+- **Ciclo SDD**: cambio `2026-09-25-m0-puerto-embeddings-semanticos`. Ejecucion Unity 6
+  EditMode; ningun agente corre Unity: el verde es compuerta humana.
+- **Diferido**: implementacion real en M2 y consumo en M15 / M16, un cambio SDD por modulo.
+
+El pin `ContractTypeTests.Version_del_contrato_es_tres()` se renombra a
+`Version_del_contrato_es_cuatro()` con valor `4` en el mismo commit (mismo criterio que v3).
+
 ## v3 — 2026-09-16 — Puerto de requerimientos de sala de juntas (M16)
 
 Segundo cambio de contrato despues del congelamiento de v1. Extension **puramente aditiva**:
