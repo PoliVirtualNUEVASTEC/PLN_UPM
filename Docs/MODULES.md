@@ -399,6 +399,18 @@ por ser la rama compartida real del equipo.
     `Runtime/CoreChannels/` tampoco publican dobles, por el mismo motivo.
   - Los resultados de las Compuertas humanas 1-3 (verde/rojo, hallazgos) no se afirman aqui: ver
     `openspec/changes/2026-09-21-m11-harness-behaviour/apply-progress.md`.
+  - **Diagnostico de calibracion (aditivo, no bloqueante)**: `HarnessBehaviour` expone cinco
+    propiedades de solo lectura -- `UltimoIntentClasificado` (el `IntentResult` que M2 clasifico
+    en el ultimo turno), `UltimoTurnoFueClinico` (si ese turno lo respondio M15, anclado al caso
+    asignado, o cayo al generador generico de M6), `CasoActual` y `PersonalidadActual` (lo que la
+    sesion asigno al NPC) y `ReceptividadActual` (el estado de M4 ahora mismo, leido en cada
+    consulta, nunca cacheado) --, ninguna usada por el enrutado real; solo reenvian lo que ya
+    calcula `SessionDirector`. La consola de muestra (`ConsolaDeTranscripcion.cs`,
+    `Samples~/Harness/`) fija un encabezado permanente con caso, personalidad y receptividad, e
+    imprime junto a cada respuesta el origen (M15/M6), la clasificacion de M2, la receptividad
+    resultante y la emocion de la respuesta, para afinar M2/M4/M6/M15 durante el desarrollo, no
+    para la experiencia final. Para probar sin voz, el anfitrion puede usar un sustituto de M1 que
+    publique `Utterance` en el canal (p. ej. `DebugForzarUtterance`, fuera del paquete).
 - **Specs formales**: `openspec/specs/banco-de-pruebas-m11/spec.md` -- hoy cubre solo PR1 (7
   requisitos, `SessionDirector`); la addenda de PR2 sobre `HarnessBehaviour` (10 requisitos, 28
   escenarios) vive todavia en

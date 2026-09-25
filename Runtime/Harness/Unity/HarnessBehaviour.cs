@@ -48,6 +48,44 @@ namespace NpcAi.Harness.Unity
         public string EtiquetaActiva { get; private set; } = "";
 
         /// <summary>
+        /// Diagnostico, solo para calibrar M2/M6/M15 durante el desarrollo (p. ej. desde una
+        /// consola de presentacion): reenvia <see cref="SessionDirector.UltimoIntentClasificado"/>.
+        /// No lo usa ninguna logica de enrutado de esta cascara. <see cref="IntentResult.Unknown"/>
+        /// sin director inyectado.
+        /// </summary>
+        public IntentResult UltimoIntentClasificado =>
+            _director != null ? _director.UltimoIntentClasificado : IntentResult.Unknown();
+
+        /// <summary>
+        /// Diagnostico, solo para calibrar M2/M6/M15 durante el desarrollo: reenvia
+        /// <see cref="SessionDirector.UltimoTurnoFueClinico"/>. No lo usa ninguna logica de
+        /// enrutado de esta cascara. <c>false</c> sin director inyectado.
+        /// </summary>
+        public bool UltimoTurnoFueClinico => _director != null && _director.UltimoTurnoFueClinico;
+
+        /// <summary>
+        /// Diagnostico: caso clinico asignado a la sesion en curso, para mostrarlo de forma
+        /// permanente en una consola de presentacion. Reenvia
+        /// <see cref="SessionDirector.CasoActual"/>; <see cref="ClinicalCaseId.None"/> sin director
+        /// inyectado o antes del primer <see cref="IniciarSesion"/>.
+        /// </summary>
+        public ClinicalCaseId CasoActual => _director != null ? _director.CasoActual : ClinicalCaseId.None;
+
+        /// <summary>
+        /// Diagnostico: personalidad asignada a la sesion en curso. Reenvia
+        /// <see cref="SessionDirector.PersonalidadActual"/>; <see cref="PersonalityId.None"/> sin
+        /// director inyectado o antes del primer <see cref="IniciarSesion"/>.
+        /// </summary>
+        public PersonalityId PersonalidadActual => _director != null ? _director.PersonalidadActual : PersonalityId.None;
+
+        /// <summary>
+        /// Diagnostico: estado de receptividad (M4) del NPC ahora mismo. Reenvia
+        /// <see cref="SessionDirector.ReceptividadActual"/>; <see cref="Receptivity.Neutral"/> (el
+        /// estado que M4 debe reportar antes de su primer <c>Reset</c>) sin director inyectado.
+        /// </summary>
+        public Receptivity ReceptividadActual => _director != null ? _director.ReceptividadActual : Receptivity.Neutral;
+
+        /// <summary>
         /// Entrega el director ya armado y la costura de M13 (AD4, AD5). Ruidoso aqui, en la
         /// raiz de composicion (barato y aislado); silencioso en los handlers de canal, porque
         /// una excepcion ahi abortaria a los demas oyentes de un canal compartido. Las dos

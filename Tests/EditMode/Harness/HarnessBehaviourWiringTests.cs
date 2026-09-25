@@ -186,6 +186,58 @@ namespace NpcAi.Harness.Tests
             Assert.AreEqual(0, m.M6.Invocaciones);
         }
 
+        // --- Requirement: Diagnostico de calibracion (M2/M6/M15), solo lectura ---
+
+        [Test]
+        public void Los_diagnosticos_de_la_cascara_reenvian_los_del_director_tras_un_turno_clinico()
+        {
+            var m = Armar();
+            var intentDeM2 = new IntentResult(Intent.SolicitudRespetuosa, Tone.Respetuoso, 0.85f, 12.5f);
+            m.M2.Resultado = intentDeM2;
+            m.M15.Respuesta = new Core.ClinicalResponse(
+                true, new NpcReply("respuesta clinica", "adolorido", "tocarse_el_pecho"));
+            m.Cascara.CablearParaPrueba(m.Director);
+
+            m.Utterances.Raise(Dicho("desde cuando le duele"));
+
+            Assert.IsTrue(m.Cascara.UltimoTurnoFueClinico);
+            Assert.AreEqual(intentDeM2, m.Cascara.UltimoIntentClasificado);
+        }
+
+        [Test]
+        public void Los_diagnosticos_de_la_cascara_son_el_valor_por_defecto_sin_director()
+        {
+            var m = Armar();
+            m.Cascara.CablearParaPrueba(); // habilitada, SIN director
+
+            Assert.IsFalse(m.Cascara.UltimoTurnoFueClinico);
+            Assert.AreEqual(IntentResult.Unknown(), m.Cascara.UltimoIntentClasificado);
+        }
+
+        [Test]
+        public void Caso_personalidad_y_receptividad_de_la_cascara_reenvian_los_del_director()
+        {
+            var m = Armar();
+            m.Cascara.CablearParaPrueba(m.Director, _ => { }, () => { });
+            m.Cascara.IniciarSesion();
+            m.M4.Current = Core.Receptivity.NoReceptivo; // despues del Reset del arranque
+
+            Assert.AreEqual(Caso01, m.Cascara.CasoActual);
+            Assert.AreEqual(Personalidad, m.Cascara.PersonalidadActual);
+            Assert.AreEqual(Core.Receptivity.NoReceptivo, m.Cascara.ReceptividadActual);
+        }
+
+        [Test]
+        public void Caso_personalidad_y_receptividad_son_el_valor_por_defecto_sin_director()
+        {
+            var m = Armar();
+            m.Cascara.CablearParaPrueba(); // habilitada, SIN director
+
+            Assert.IsTrue(m.Cascara.CasoActual.IsNone);
+            Assert.IsTrue(m.Cascara.PersonalidadActual.IsNone);
+            Assert.AreEqual(Core.Receptivity.Neutral, m.Cascara.ReceptividadActual);
+        }
+
         [Test]
         public void Canal_de_respuesta_sin_asignar_no_lanza()
         {

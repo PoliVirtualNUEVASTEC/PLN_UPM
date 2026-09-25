@@ -61,6 +61,65 @@ El campo serializado `_arrancarSolo` (por defecto `false`) permite que la cascar
 `IniciarSesion()` sola al arrancar la escena, sin esperar al control manual -- util para pruebas
 repetidas, no recomendado para la Compuerta 2 con un usuario real.
 
+### Diagnostico opcional en la consola de muestra (calibracion de M2/M4/M6/M15)
+
+`ConsolaDeTranscripcion.cs` (este mismo directorio) construye su propia UI en `Awake()` -- Canvas,
+panel oscuro, encabezado y un historial con scroll --, igual que `ConsolaDeVoz.cs`: no hay que armar
+nada a mano en el editor ni asignar un `Text`/`TMP_Text` de la escena. Solo hace falta arrastrar el
+componente a un GameObject de la escena y cablear sus tres slots (`_canalDeUtterance`,
+`_canalDeRespuesta`, `_arnes` apuntando al `HarnessBehaviour`). Si la escena todavia tiene el panel
+de texto que se le asignaba a mano en una version anterior de este script, se puede borrar: ya no lo
+usa.
+
+**Encabezado fijo** (arriba del panel, nunca se desplaza con el scroll): el **caso clinico**, la
+**personalidad** y la **receptividad** actuales del NPC (`CasoActual`, `PersonalidadActual`,
+`ReceptividadActual`). Se re-pinta solo cuando alguno cambia, incluso por una accion fisica que no
+produce respuesta. Antes de iniciar sesion muestra `(sin sesion)`.
+
+**Historial con scroll**, debajo del encabezado, separado por una linea divisoria: cada turno agrega
+CUATRO lineas, en este orden --
+
+1. `Enfermero: <texto>`.
+2. **Clasificacion de M2 sobre ESE texto** (pegada a la linea anterior, no a la del paciente): el
+   `Intent`, el `Tono` y la `Confianza-M2` que el clasificador le asigno, mas la
+   `Confianza-transcripcion(M1)` del mismo turno (`Utterance.Confidence` -- con
+   `DebugForzarUtterance` siempre 1.00, porque no hay audio; con M1 real, la confianza de la
+   transcripcion). Son dos numeros distintos que el contrato llama "Confianza" a ambos: el de M1
+   mide la transcripcion, el de M2 mide que tan segura esta la clasificacion de intencion --
+   puede ser bajo con una transcripcion perfecta si la frase es ambigua para el modelo.
+3. `Paciente: <texto>`.
+4. **Origen y estado tras la respuesta**: si el turno lo respondio M15 (anclado a un hecho del caso
+   clinico asignado) o si cayo al generador generico de M6 (respaldo Markov, sin anclaje clinico),
+   mas la receptividad y la emocion resultantes.
+
+M15 solo responde si el texto del enfermero cubre TODAS las palabras de alguno de los
+`ejemplosDePregunta` del caso activo (`Data/Cases/<caso>.json`, campo `hechos[].ejemplosDePregunta`
+-- no `Casos_Medicos.md`, que es solo la narrativa clinica para el estudiante, sin esas frases
+disparadoras). Es un emparejamiento por palabras, no semantico: sin ver ahi las frases exactas del
+caso que el encabezado muestra como activo, es facil que toda la sesion caiga en M6 por no acertar
+la redaccion.
+
+La scrollbar vertical es permanente (siempre visible, no aparece y desaparece). La consola sigue el
+final del historial (ultimos mensajes) mientras el usuario no toque el scroll; en cuanto se sube a
+leer turnos anteriores, un turno nuevo NO lo empuja de vuelta abajo -- para volver al final basta con
+arrastrar la barra hasta el fondo. `_maximoDeLineas` (500 por defecto) es un limite de seguridad
+contra crecimiento sin fin en una sesion muy larga, no una ventana chica: con el scroll se puede leer
+desde el primer turno.
+
+Esto es una ayuda para afinar el corpus de M3 y el clasificador de M2 durante el desarrollo --
+para ver, por ejemplo, si una frase que deberia caer en M15 esta cayendo en el generico por error
+de clasificacion. No es parte de la experiencia final entregada al usuario: ninguna logica de
+enrutado de `SessionDirector` ni de `HarnessBehaviour` lee estos datos, solo los calculan y los
+exponen.
+
+### Probar desde el PC sin voz
+
+En vez del microfono (M1), el anfitrion puede publicar `Utterance` en el mismo `UtteranceChannel`
+que escucha `HarnessBehaviour`. `DebugForzarUtterance` (en `Assets/` del proyecto anfitrion, fuera
+del paquete) muestra un campo de texto en pantalla: escribir la frase del enfermero y pulsar Enter
+(o "Enviar") con la vista Game enfocada en Play Mode. Su menu contextual sigue enviando la frase
+fija del Inspector.
+
 ## 4. Orden de escucha y limites de la garantia (AD2)
 
 `HarnessBehaviour` lleva `[DefaultExecutionOrder(100)]` para que su suscripcion a

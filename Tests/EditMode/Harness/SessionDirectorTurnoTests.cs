@@ -238,5 +238,47 @@ namespace NpcAi.Harness.Tests
             Assert.AreEqual(Personalidades[0], director.PersonalidadActual);
             Assert.AreEqual(director.PersonalidadActual, m6.Llamadas[0].Personality);
         }
+
+        // --- Diagnostico de calibracion (M2/M6/M15): solo lectura, no altera el enrutado ---
+
+        [Test]
+        public void Turno_clinico_manejado_deja_el_diagnostico_en_clinico_con_el_intent_de_M2()
+        {
+            var m2 = new EspiaClasificador { Resultado = IntentDeM2 };
+            var m15 = new EspiaClinico
+            {
+                Respuesta = new Core.ClinicalResponse(
+                    true, new NpcReply("[espia-clinico] respuesta clinica", "neutral", "idle")),
+            };
+            var director = Construir(m2: m2, m15: m15);
+
+            director.ProcesarTurno(new Utterance("desde cuando le duele", 1f, 1f));
+
+            Assert.IsTrue(director.UltimoTurnoFueClinico);
+            Assert.AreEqual(IntentDeM2, director.UltimoIntentClasificado);
+        }
+
+        [Test]
+        public void Turno_social_deja_el_diagnostico_en_no_clinico()
+        {
+            var director = Construir(); // M15 por defecto: NoAplica (turno social)
+
+            director.ProcesarTurno(new Utterance("hola futbol", 1f, 1f));
+
+            Assert.IsFalse(director.UltimoTurnoFueClinico);
+        }
+
+        [Test]
+        public void ReceptividadActual_se_lee_de_M4_en_cada_consulta_sin_cachear()
+        {
+            var m4 = new EspiaReceptividad();
+            var director = Construir(m4: m4);
+
+            m4.Current = Receptivity.NoReceptivo;
+            Assert.AreEqual(Receptivity.NoReceptivo, director.ReceptividadActual);
+
+            m4.Current = Receptivity.Receptivo;
+            Assert.AreEqual(Receptivity.Receptivo, director.ReceptividadActual);
+        }
     }
 }

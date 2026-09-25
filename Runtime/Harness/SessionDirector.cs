@@ -43,6 +43,31 @@ namespace NpcAi.Harness
         /// <summary><c>_m9.Progress01</c>, derivado en lectura; nunca cacheado.</summary>
         public float Progreso => _m9.Progress01;
 
+        /// <summary>
+        /// Diagnostico, solo para calibrar la personalidad durante el desarrollo: <c>_m4.Current</c>,
+        /// derivado en lectura (como <see cref="Progreso"/>), nunca cacheado. Tras un
+        /// <see cref="ProcesarTurno"/> es el estado con el que M6 acaba de generar la respuesta.
+        /// </summary>
+        public Receptivity ReceptividadActual => _m4.Current;
+
+        /// <summary>
+        /// Diagnostico, solo para calibrar M2/M6/M15 durante el desarrollo: el <see
+        /// cref="IntentResult"/> que <c>_m2.Classify</c> devolvio en el ultimo
+        /// <see cref="ProcesarTurno"/>. No participa en el enrutado clinico/social; ese ya usa la
+        /// variable local <c>intent</c> dentro del propio metodo. <see cref="IntentResult.Unknown"/>
+        /// antes del primer turno.
+        /// </summary>
+        public IntentResult UltimoIntentClasificado { get; private set; } = IntentResult.Unknown();
+
+        /// <summary>
+        /// Diagnostico, solo para calibrar M2/M6/M15 durante el desarrollo: <c>true</c> si el
+        /// ultimo <see cref="ProcesarTurno"/> lo respondio M15 (<c>clin.Handled</c>), <c>false</c>
+        /// si cayo al generador generico de M6. No participa en el enrutado: es una copia de
+        /// lectura de la misma condicion que ya decide el <c>ternario</c> de <see cref="ProcesarTurno"/>.
+        /// <c>false</c> antes del primer turno.
+        /// </summary>
+        public bool UltimoTurnoFueClinico { get; private set; }
+
         /// <param name="asignarCasoAlObjetivo">
         /// Puente hacia la superficie aditiva de M9 (AD1): <see cref="IScenarioObjective"/> NO
         /// declara <c>AssignCase</c>, y este ensamblado solo referencia <c>NpcAi.Core</c>.
@@ -133,10 +158,12 @@ namespace NpcAi.Harness
         public NpcReply ProcesarTurno(Utterance utterance)
         {
             var intent = _m2.Classify(utterance.Text); // AD9: sin mirar IsReady
+            UltimoIntentClasificado = intent; // diagnostico, no altera el enrutado
             var cambio = _m4.Evaluate(intent, PhysicalAction.Ninguna); // centinela de la otra dimension
             _m9.Notify(cambio); // AD10: un solo sitio, antes de la rama
 
             var clin = _m15.Respond(utterance, intent);
+            UltimoTurnoFueClinico = clin.Handled; // diagnostico, no altera el enrutado
             return clin.Handled
                 ? clin.Reply // tal cual, sin alterar
                 : _m6.Generate(PersonalidadActual, _m4.Current, intent);
