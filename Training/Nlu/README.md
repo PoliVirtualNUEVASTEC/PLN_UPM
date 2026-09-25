@@ -45,9 +45,11 @@ una reunion de junta directiva. Se reincorpora editando `CORPUS_FILES` en
 `prepare_dataset.py` cuando exista el corpus que corresponde.
 
 El split se estratifica por la combinacion `intent x tone` **en la medida en que
-el tamano de cada clase lo permita**. Las clases con un solo ejemplo (hoy
-`Tone.Empatico`) no se pueden estratificar: caen enteras a `train` y el script lo
-avisa por stderr, sin abortar.
+el tamano de cada clase lo permita**, agrupando antes las frases casi identicas
+(similitud de tokens >= 0.72) para que no queden separadas entre train y val (ver
+`corpus_fuentes_ejemplos_triaje.md`, seccion 9). Las clases con un solo ejemplo no
+se pueden estratificar: caen enteras a `train` y el script lo avisa por stderr, sin
+abortar.
 
 Opciones: `--corpus-dir`, `--out-dir`, `--val-fraction` (default `0.2`),
 `--seed` (default `42`).
@@ -81,11 +83,13 @@ separado para `Intent` y para `Tone`**, con precision, recall y F1 **por clase**
 `NpcAi.Core.Enums` (indice 0 = `Desconocida` / `Neutral`), el mismo que tendran
 las salidas del `.onnx`.
 
-Mirar especificamente la fila `Empatico` del reporte de `Tone`: con 0-1 ejemplos
-en el corpus su precision sera baja o cero. **Es un resultado esperado**, no un
-fallo del pipeline: se corrige ampliando el corpus, no tocando estos scripts (ver
-`Data/Corpus/PENDIENTE-AMPLIACION.md`). Lo mismo, en menor grado, aplica a
-`Tone.Ansioso` en el escenario de juntas.
+Si alguna clase tiene menos de `LOW_SUPPORT_THRESHOLD` (5) ejemplos en el split de
+validacion, `train.py` lo avisa por su nombre al final del reporte: su precision no
+es fiable todavia. **Es un resultado esperado en ese caso**, no un fallo del
+pipeline: se corrige ampliando el corpus para esa clase, no tocando estos scripts
+(ver `Data/Corpus/PENDIENTE-AMPLIACION.md`). El aviso se calcula sobre el soporte
+real de cada corrida, no sobre una clase fija, para no quedar desactualizado si el
+corpus vuelve a cambiar.
 
 ## Reproducibilidad
 
